@@ -31,14 +31,47 @@ if ($cusCount > 0) {
 <body>
     <div class="flex justify-between flex-col min-h-screen">
         <main>
+            <div class="hamburger-menu">
+                <input id="menu__toggle" type="checkbox" />
+                <label class="menu__btn" for="menu__toggle">
+                    <span></span>
+                </label>
+
+                <ul class="menu__box">
+                    <li>
+                        <a class="menu__item pzero" href="#">
+                            <div class="flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="padding-left:20px;height:50px;width:50px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                                <span style="padding-right:7px"><?php echo $_SESSION['cname']; ?></span>
+                            </div>
+                        </a>
+                    </li>
+                    <li><a class="menu__item" href="/">Home</a></li>
+                    <li><a class="menu__item mactive" href="/about-us">Information</a></li>
+                    <li><a class="menu__item" href="/pitch">Pitch Types</a></li>
+                    <li><a class="menu__item" href="/features">Features</a></li>
+                    <li><a class="menu__item" href="/local-attraction">Local Attraction</a></li>
+                    <li><a class="menu__item" href="/reviews">Reviews</a></li>
+                    <li><a class="menu__item flex items-center cursor-pointer pzero" href="/cart">
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="padding-left:20px;height:50px;width:50px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                                </svg>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
             <div>
                 <div class="nav">
                     <div class="logo">
-                        <img src="images/logo.png" style="width:120px;">
+                        <img src="images/logo.png" class="logoimg-width">
                         <h1>Global Wild Swimming & Camping</h1>
                     </div>
 
-                    <div class="flex">
+                    <div class="flex disappear">
                         <div class="flex items-center cursor-pointer" id="profile-bar" onmouseenter="toggleProfileMenu()">
                             <div>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="padding-left:20px;height:50px;width:50px;">
@@ -57,7 +90,7 @@ if ($cusCount > 0) {
                     </div>
                 </div>
 
-                <div class="nav-bar">
+                <div class="nav-bar disappear">
                     <a href="/">Home</a>
                     <a class="active" href="/about-us">Information</a>
                     <a href="/pitch">Pitch Types</a>
@@ -88,7 +121,7 @@ if ($cusCount > 0) {
                     </div>
                 </div>
 
-                <div class="py-5">
+                <div class="py-5 mpadding">
                     <div class="about-us-info">
                         <div class="text-center flex justify-center items-center">
                             <p style="color: #4c88dc;">12 Packages</p>

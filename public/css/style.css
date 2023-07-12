@@ -155,6 +155,10 @@ tr:hover {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.flex-wrap{
+  flex-wrap: wrap;
+}
+
 .login-screen {
   background-position: center center;
   background-repeat: no-repeat;
@@ -1143,10 +1147,155 @@ h2 {
   .container {
     max-width: 1280px;
   }
+
 }
 
 @media (min-width: 1536px) {
   .container {
     max-width: 1536px;
+  }
+}
+
+
+
+/* mobile menu */
+#menu__toggle {
+  display: none;
+}
+
+#menu__toggle:checked + .menu__btn > span {
+  transform: rotate(45deg);
+}
+
+#menu__toggle:checked + .menu__btn > span::before {
+  top: 0;
+  transform: rotate(0deg);
+}
+
+#menu__toggle:checked + .menu__btn > span::after {
+  top: 0;
+  transform: rotate(90deg);
+}
+
+#menu__toggle:checked ~ .menu__box {
+  right: 0;
+  z-index: 1000;
+}
+
+.menu__btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  z-index: 1001;
+  display: none;
+}
+
+.menu__btn > span,
+.menu__btn > span::before,
+.menu__btn > span::after {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background-color: #616161;
+  transition-duration: .25s;
+}
+
+.menu__btn > span::before {
+  content: '';
+  top: -8px;
+}
+
+.menu__btn > span::after {
+  content: '';
+  top: 8px;
+}
+
+.menu__box {
+  display: block;
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 250px;
+  height: 100%;
+  margin: 0;
+  padding: 30px 0;
+  list-style: none;
+  background-color: #ECEFF1;
+  box-shadow: -2px 2px 6px rgba(0, 0, 0, .4);
+  transition-duration: .25s;
+}
+
+.menu__item {
+  display: block;
+  padding: 12px 15px;
+  color: #333;
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition-duration: .25s;
+  border-bottom: solid 1px white;
+}
+
+.menu__item:hover {
+  background-color: #CFD8DC;
+}
+.pzero{
+  padding: 0 !important;
+}
+.logoimg-width{
+  width: 120px;
+}
+.review-sec{
+  width:400px;
+  padding:15px 10px;
+}
+@media screen and (max-width: 768px) {
+  .mactive{
+    background-color: #CFD8DC;
+  }
+  .disappear{
+    display: none;
+  }
+  .mcard-container {
+    flex-wrap: wrap;
+  }
+
+  .mcard {
+    flex-basis: 100%;
+    margin-left: 0px !important;
+  }
+  .mpadding{
+    padding: 10px 15px;
+  }
+  .grid-cols-2 {
+    grid-template-columns: 1fr;
+    gap: 4px;
+    padding: 10px 15px;
+  }
+  .w-half{
+    width: 100%;
+  }
+  .about-us-info p{
+    font-size: 20px;
+  }
+  .menu__btn{
+    display: block;
+  }
+  .logoimg-width{
+    width: 50px;
+  }
+  .home-nav{
+    height: 45px;
+  }
+  .nav{
+    height: 45px;
+  }
+  .nav .logo h1{
+    font-size: 15px;
   }
 }
