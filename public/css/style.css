@@ -155,7 +155,7 @@ tr:hover {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.flex-wrap{
+.flex-wrap {
   flex-wrap: wrap;
 }
 
@@ -1163,21 +1163,21 @@ h2 {
   display: none;
 }
 
-#menu__toggle:checked + .menu__btn > span {
+#menu__toggle:checked+.menu__btn>span {
   transform: rotate(45deg);
 }
 
-#menu__toggle:checked + .menu__btn > span::before {
+#menu__toggle:checked+.menu__btn>span::before {
   top: 0;
   transform: rotate(0deg);
 }
 
-#menu__toggle:checked + .menu__btn > span::after {
+#menu__toggle:checked+.menu__btn>span::after {
   top: 0;
   transform: rotate(90deg);
 }
 
-#menu__toggle:checked ~ .menu__box {
+#menu__toggle:checked~.menu__box {
   right: 0;
   z-index: 1000;
 }
@@ -1193,9 +1193,9 @@ h2 {
   display: none;
 }
 
-.menu__btn > span,
-.menu__btn > span::before,
-.menu__btn > span::after {
+.menu__btn>span,
+.menu__btn>span::before,
+.menu__btn>span::after {
   display: block;
   position: absolute;
   width: 100%;
@@ -1204,12 +1204,12 @@ h2 {
   transition-duration: .25s;
 }
 
-.menu__btn > span::before {
+.menu__btn>span::before {
   content: '';
   top: -8px;
 }
 
-.menu__btn > span::after {
+.menu__btn>span::after {
   content: '';
   top: 8px;
 }
@@ -1244,23 +1244,29 @@ h2 {
 .menu__item:hover {
   background-color: #CFD8DC;
 }
-.pzero{
+
+.pzero {
   padding: 0 !important;
 }
-.logoimg-width{
+
+.logoimg-width {
   width: 120px;
 }
-.review-sec{
-  width:400px;
-  padding:15px 10px;
+
+.review-sec {
+  width: 400px;
+  padding: 15px 10px;
 }
+
 @media screen and (max-width: 768px) {
-  .mactive{
+  .mactive {
     background-color: #CFD8DC;
   }
-  .disappear{
+
+  .disappear {
     display: none;
   }
+
   .mcard-container {
     flex-wrap: wrap;
   }
@@ -1269,33 +1275,42 @@ h2 {
     flex-basis: 100%;
     margin-left: 0px !important;
   }
-  .mpadding{
+
+  .mpadding {
     padding: 10px 15px;
   }
+
   .grid-cols-2 {
     grid-template-columns: 1fr;
     gap: 4px;
     padding: 10px 15px;
   }
-  .w-half{
+
+  .w-half {
     width: 100%;
   }
-  .about-us-info p{
+
+  .about-us-info p {
     font-size: 20px;
   }
-  .menu__btn{
+
+  .menu__btn {
     display: block;
   }
-  .logoimg-width{
+
+  .logoimg-width {
     width: 50px;
   }
-  .home-nav{
+
+  .home-nav {
     height: 45px;
   }
-  .nav{
+
+  .nav {
     height: 45px;
   }
-  .nav .logo h1{
+
+  .nav .logo h1 {
     font-size: 15px;
   }
 }
