@@ -19,18 +19,18 @@ if (isset($_POST['btnlogin'])) {
     $txtemail = $_POST['txtcemail'];
     $txtpassword = $_POST['txtcpassword'];
 
-    $check = "SELECT * FROM ASSIGNMENT.CUSTOMER WHERE EMAIL = '$txtemail'";
+    $check = "SELECT * FROM gwsc_customer WHERE email = '$txtemail'";
     $query = mysqli_query($connect, $check);
     $count = mysqli_num_rows($query);
 
     if ($count > 0) {
         $data = mysqli_fetch_array($query);
-        if (password_verify($txtpassword, $data['PASSWORD'])) {
+        if (password_verify($txtpassword, $data['customer_password'])) {
             $txtpassword = $data['PASSWORD'];
-            $update = "UPDATE ASSIGNMENT.CUSTOMER AS C SET C.VIEW_COUNT = C.VIEW_COUNT + 1 WHERE C.EMAIL = '$txtemail'";
+            $update = "UPDATE gwsc_customer AS C SET C.view_count = C.view_count + 1 WHERE C.email = '$txtemail'";
             mysqli_query($connect, $update);
-            $cid = $data['CUSTOMER_ID'];
-            $cname = $data['FIRST_NAME'];
+            $cid = $data['customer_id'];
+            $cname = $data['first_name'];
             $_SESSION['cid'] = $cid;
             $_SESSION['cname'] = $cname;
             header('Location: /');
@@ -87,20 +87,19 @@ if (isset($_POST['btnlogin'])) {
             <h2 style="font-size:20px;font-weight:bold;">Global Wildlife Swimming & Camping</h2>
         </div>
         <?php if ($isSuccess) { ?>
-        <div class="alert alert-success">
-            <p>Customer registered SUCCESSFULLY!</p>
-        </div>
+            <div class="alert alert-success">
+                <p>Customer registered SUCCESSFULLY!</p>
+            </div>
         <?php } ?>
         <?php if ($isError) { ?>
-        <div class="alert alert-error">
-            <p><?php echo $errorMessage; ?></p>
-        </div>
+            <div class="alert alert-error">
+                <p><?php echo $errorMessage; ?></p>
+            </div>
         <?php } ?>
         <form action="/login" method="POST">
             <div class="pb-15">
                 <label class="block">Email</label>
-                <input class="w-full" type="email" name="txtcemail" placeholder="Enter valid email"
-                    value="<?php echo $_POST['txtcemail'] ?? ''; ?>" required>
+                <input class="w-full" type="email" name="txtcemail" placeholder="Enter valid email" value="<?php echo $_POST['txtcemail'] ?? ''; ?>" required>
             </div>
             <div class="pb-15">
                 <label class="block">Password</label>

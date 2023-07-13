@@ -1,11 +1,19 @@
 <?php
 
+$isSuccess = false;
+$isError = false;
+$errorMessage;
 if (!isset($_SESSION['cid'])) {
     header('Location: /login');
     return;
 }
 
-$reviewSql = "SELECT * FROM ASSIGNMENT.REVIEW ORDER BY REVIEW_ID";
+if (isset($_SESSION['SUCCESS_REGISTER'])) {
+    unset($_SESSION['SUCCESS_REGISTER']);
+    $isSuccess = true;
+}
+
+$reviewSql = "SELECT * FROM gwsc_review ORDER BY review_id";
 $reviewQuery = mysqli_query($connect, $reviewSql);
 $reviewCount = mysqli_num_rows($reviewQuery);
 if ($reviewCount > 0) {
@@ -18,7 +26,7 @@ if ($reviewCount > 0) {
     //
 }
 if ($_POST) {
-    $reviewId = AutoID('REVIEW', 'REVIEW_ID', 'REVIEW', 4);
+    $reviewId = AutoID('gwsc_review', 'review_id', 'REVIEW', 4);
     $customerId = $_SESSION['cid'];
     $content = $_POST['content'];
     $stars = $_POST['rating'];
@@ -28,24 +36,25 @@ if ($_POST) {
         echo "<script>window.alert('Content cannot be empty!')</script>";
     } else {
         $date = date("Y-m-d");
-        $insertReviewSql = "INSERT INTO ASSIGNMENT.REVIEW(REVIEW_ID, CUSTOMER_ID, CONTENT, STARS, DATE_TIME) 
+        $insertReviewSql = "INSERT INTO gwsc_review(review_id, customer_id, content, stars, date_time) 
             VALUES ('$reviewId','$customerId','$content','$stars','$date')";
         $run = mysqli_query($connect, $insertReviewSql);
         if ($run) {
-            echo "<script>window.alert('Review Added!')</script>";
-            header('Location: /reviews');
+            $_SESSION['SUCCESS_REGISTER'] = true;
         } else {
-            echo "<script>window.alert('Something went wrong!')</script>";
+            $_SESSION['FAIL'] = true;
+            $_SESSION['error'] = "Fail to add a new review";
         }
+        header('Location: /reviews');
     }
 }
 
 function getCustomerName($cid, $connect)
 {
-    $pquery = "SELECT * FROM ASSIGNMENT.CUSTOMER WHERE CUSTOMER_ID = '$cid'";
+    $pquery = "SELECT * FROM gwsc_customer WHERE customer_id = '$cid'";
     $result = mysqli_query($connect, $pquery);
     $resultData = mysqli_fetch_assoc($result);
-    return $resultData['FIRST_NAME'];
+    return $resultData['first_name'];
 }
 
 ?>
@@ -111,6 +120,16 @@ function getCustomerName($cid, $connect)
             </div>
 
 
+            <?php if ($isSuccess) { ?>
+            <div class="alert alert-success">
+                <p>Package added SUCCESSFULLY!</p>
+            </div>
+            <?php } ?>
+            <?php if ($isError) { ?>
+            <div class="alert alert-error">
+                <p><?= $errorMessage ?></p>
+            </div>
+            <?php } ?>
             <div class="container mx-auto grid sm-grid-cols-2">
                 <div>
                     <object data="images/reviews.png" class="w-full"></object>
@@ -159,17 +178,17 @@ function getCustomerName($cid, $connect)
                 <div class="review-card">
                     <div class="rating">
                         <?php for ($i = 0; $i < 5; $i++) {
-                                if ($i < $review['STARS']) { ?>
+                                if ($i < $review['stars']) { ?>
                         <span class="star active"></span>
                         <?php } else { ?>
                         <span class="star"></span>
                         <?php }
                             } ?>
                     </div>
-                    <p class="review-name"><?php echo getCustomerName($review['CUSTOMER_ID'], $connect) ?>
-                        <span class="review-date"><?php echo $review['DATE_TIME'] ?></span>
+                    <p class="review-name"><?php echo getCustomerName($review['customer_id'], $connect) ?>
+                        <span class="review-date"><?php echo $review['date_time'] ?></span>
                     </p>
-                    <p><?php echo $review['CONTENT'] ?></p>
+                    <p><?php echo $review['content'] ?></p>
                 </div>
                 <?php } ?>
         </main>

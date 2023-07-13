@@ -1,5 +1,8 @@
 <?php
 
+$isSuccess = false;
+$isError = false;
+$errorMessage;
 if (!isset($_SESSION['aid'])) {
     header('Location: /admin-login');
     return;
@@ -13,19 +16,21 @@ if (isset($_SESSION['cid'])) {
 if (isset($_POST['btnsave'])) {
     $ptid = $_POST['txtptid'];
     $ptname = $_POST['txtptname'];
-    $check = "SELECT * FROM ASSIGNMENT.PITCH_TYPE WHERE PITCH_TYPE = '$ptname'";
+    $check = "SELECT * FROM gwsc_pitch_type WHERE pitch_type = '$ptname'";
     $count = mysqli_num_rows(mysqli_query($connect, $check));
     if ($count > 0) {
         echo "<script>window.alert('Pitch Type Already exists!')</script>";
     } else {
-        $insert = "INSERT INTO PITCH_TYPE(PITCH_TYPE_ID, PITCH_TYPE)
+        $insert = "INSERT INTO gwsc_pitch_type(pitch_type_id, pitch_type)
         VALUES ('$ptid','$ptname')";
         $run = mysqli_query($connect, $insert);
         if ($run) {
-            echo "<script>window.alert('New Pitch Type Added!')</script>";
+            $_SESSION['SUCCESS_REGISTER'] = true;
         } else {
-            echo "<script>window.alert('Something went wrong!')</script>";
+            $_SESSION['FAIL'] = true;
+            $_SESSION['error'] = "Fail to add a new pitch type";
         }
+        header('Location: /admin-pitch-type');
     }
 }
 
@@ -37,13 +42,23 @@ if (isset($_POST['btnsave'])) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ADM-Pitch</title>
+    <title>ADM-Pitch-Type</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 
 <body>
     <div class="flex justify-between flex-col min-h-screen">
         <main>
+            <?php if ($isSuccess) { ?>
+                <div class="alert alert-success">
+                    <p>Pitch added SUCCESSFULLY!</p>
+                </div>
+            <?php } ?>
+            <?php if ($isError) { ?>
+                <div class="alert alert-error">
+                    <p><?= $errorMessage ?></p>
+                </div>
+            <?php } ?>
             <div>
                 <div class="nav">
                     <div class="logo">
@@ -86,14 +101,14 @@ if (isset($_POST['btnsave'])) {
                 <tbody>
                     <?php
 
-                    $query = "SELECT * FROM ASSIGNMENT.PITCH_TYPE";
+                    $query = "SELECT * FROM gwsc_pitch_type";
                     $result = mysqli_query($connect, $query);
 
                     // Loop through each row and display the data
                     while ($row = mysqli_fetch_assoc($result)) {
                         echo "<tr>";
-                        echo "<td>" . $row['PITCH_TYPE_ID'] . "</td>";
-                        echo "<td>" . $row['PITCH_TYPE'] . "</td>";
+                        echo "<td>" . $row['pitch_type_id'] . "</td>";
+                        echo "<td>" . $row['pitch_type'] . "</td>";
                         echo "</tr>";
                     }
                     ?>
@@ -107,7 +122,7 @@ if (isset($_POST['btnsave'])) {
                 <form class="form-card justify-center items-center" action="/admin-pitch-type" method="POST">
                     <div class="pb-15">
                         <label class="block">Pitch Type Id</label>
-                        <input class="w-full" type="text" name="txtptid" value="<?php echo AutoID('PITCH_TYPE', 'PITCH_TYPE_ID', 'PITCHTY', 4); ?>" readonly>
+                        <input class="w-full" type="text" name="txtptid" value="<?php echo AutoID('gwsc_pitch_type', 'pitch_type_id', 'PITYP', 4); ?>" readonly>
                     </div>
                     <div class="pb-15">
                         <label class="block">Pitch Type Name</label>
@@ -129,7 +144,7 @@ if (isset($_POST['btnsave'])) {
 
         <footer class="social-footer items-center">
             <div class="social-footer-left">
-                <p class="social-footer-left-text">Pitch</p>
+                <p class="social-footer-left-text">Pitch Type</p>
             </div>
             <div>
                 <p class="text-center copyright">© 2023, MibO.<br>All Rights Reserved.</p>

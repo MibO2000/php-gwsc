@@ -10,7 +10,7 @@ if (isset($_GET['pack'])) {
     exit;
 }
 
-$packageSql = "SELECT * FROM ASSIGNMENT.PACKAGE ORDER BY PACKAGE_ID";
+$packageSql = "SELECT * FROM gwsc_package ORDER BY package_id";
 $packageQuery = mysqli_query($connect, $packageSql);
 $packageCount = mysqli_num_rows($packageQuery);
 if ($packageCount > 0) {
@@ -20,12 +20,12 @@ if ($packageCount > 0) {
 }
 
 
-$pitchSql = "SELECT * FROM ASSIGNMENT.PITCH ORDER BY RAND() LIMIT 1";
+$pitchSql = "SELECT * FROM gwsc_pitch ORDER BY RAND() LIMIT 1";
 $pitchQuery = mysqli_query($connect, $pitchSql);
 $pitchCount = mysqli_num_rows($pitchQuery);
 
 
-$localSql = "SELECT * FROM ASSIGNMENT.LOCATION ORDER BY RAND() LIMIT 1";
+$localSql = "SELECT * FROM gwsc_location ORDER BY RAND() LIMIT 1";
 $localQuery = mysqli_query($connect, $localSql);
 $localCount = mysqli_num_rows($localQuery);
 
@@ -117,7 +117,7 @@ $localCount = mysqli_num_rows($localQuery);
                                     <?php
                                     if ($pitchCount == 1) {
                                         $row = mysqli_fetch_assoc($pitchQuery);
-                                        $img = $row['PITCH_IMAGE_1'];
+                                        $img = $row['pitch_image'];
                                         echo '<img src="images/' . $img . '">';
                                     } else {
                                         echo '<img src="https://images.unsplash.com/photo-1682685797507-d44d838b0ac7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2970&q=80">';
@@ -158,7 +158,7 @@ $localCount = mysqli_num_rows($localQuery);
                                     <?php
                                     if ($localCount == 1) {
                                         $row = mysqli_fetch_assoc($localQuery);
-                                        $img = $row['PICTURE'];
+                                        $img = $row['location_picture'];
                                         echo '<img src="images/' . $img . '">';
                                     } else {
                                         echo '<img src="https://images.unsplash.com/photo-1682685797507-d44d838b0ac7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2970&q=80">';

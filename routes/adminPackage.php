@@ -1,5 +1,8 @@
 <?php
 
+$isSuccess = false;
+$isError = false;
+$errorMessage;
 if (!isset($_SESSION['aid'])) {
     header('Location: /admin-login');
     return;
@@ -10,57 +13,50 @@ if (isset($_SESSION['cid'])) {
     return;
 }
 
+if (isset($_SESSION['SUCCESS_REGISTER'])) {
+    unset($_SESSION['SUCCESS_REGISTER']);
+    $isSuccess = true;
+}
+
 if (isset($_POST['btnsave'])) {
     $pid = $_POST['txtpid'];
     $pname = $_POST['txtpname'];
     $packType = $_POST['txtpactype'];
-    $pitType = $_POST['txtpitchtype'];
+    $pitch = $_POST['txtpitchtype'];
     $location = $_POST['txtlocationtype'];
     $pduration = $_POST['txtpduration'];
     $pprice = $_POST['txtpprice'];
-    $pdes1 = $_POST['txtpdescription1'];
-    $pdes2 = $_POST['txtpdescription2'];
+    $pdes = $_POST['txtpdescription'];
 
-    $pimg1 = "images/" . $_FILES['image1']['name'];
-    $imageType = pathinfo($pimg1, PATHINFO_EXTENSION);
+    $pimg = "images/" . $_FILES['image']['name'];
+    $imageType = pathinfo($pimg, PATHINFO_EXTENSION);
     if ($imageType != 'jpg' && $imageType != 'jpeg' && $imageType != 'png') {
         $isError = true;
         $errorMessage = "Image Type is incorrect!";
     } else {
         $isSuccess = true;
-        $image1 = uniqid() . "-" . $_FILES['image1']['name'];
+        $image = uniqid() . "-" . $_FILES['image']['name'];
 
-        move_uploaded_file($_FILES['image1']['tmp_name'], "images/" . $image1);
-    }
-
-    $pimg2 = "images/" . $_FILES['image2']['name'];
-    $imageType = pathinfo($pimg2, PATHINFO_EXTENSION);
-    if ($imageType != 'jpg' && $imageType != 'jpeg' && $imageType != 'png') {
-        $isError = true;
-        $errorMessage = "Image Type is incorrect!";
-    } else {
-        $isSuccess = true;
-        $image2 = uniqid() . "-" . $_FILES['image2']['name'];
-
-        move_uploaded_file($_FILES['image2']['tmp_name'], "images/" . $image2);
+        move_uploaded_file($_FILES['image']['tmp_name'], "images/" . $image);
     }
 
     $pdiscount = $_POST['txtpdiscount'];
-    $pstatus = $_POST['txtpstatus'];
 
-    $check = "SELECT * FROM ASSIGNMENT.PACKAGE WHERE PACKAGE_NAME = '$pname'";
+    $check = "SELECT * FROM gwsc_package WHERE package_name = '$pname'";
     $count = mysqli_num_rows(mysqli_query($connect, $check));
     if ($count > 0) {
         echo "<script>window.alert('Pitch Already exists!')</script>";
     } else {
-        $insert = "INSERT INTO ASSIGNMENT.PACKAGE(PACKAGE_ID, PACKAGE_NAME, PACKAGE_TYPE_ID, PITCH_TYPE_ID, LOCATION_ID, DURATION, PRICE, DESCRIPTION1, DESCRIPTION2, PICTURE1, PICTURE2, DISCOUNT, STATUS, VIEW_COUNT) 
-        VALUES ('$pid','$pname', '$packType', '$pitType', '$location', '$pduration', '$pprice', '$pdes1', '$pdes2', '$image1', '$image2', '$pdiscount', '$pstatus', 0)";
+        $insert = "INSERT INTO gwsc_package (package_id, package_name, package_type_id, pitch_id, location_id, duration, price, pitch_description, package_image, discount) 
+        VALUES ('$pid','$pname', '$packType', '$pitch', '$location', '$pduration', '$pprice', '$pdes', '$image', '$pdiscount')";
         $run = mysqli_query($connect, $insert);
         if ($run) {
-            echo "<script>window.alert('New Package Added!')</script>";
+            $_SESSION['SUCCESS_REGISTER'] = true;
         } else {
-            echo "<script>window.alert('Something went wrong!')</script>";
+            $_SESSION['FAIL'] = true;
+            $_SESSION['error'] = "Fail to add a new package";
         }
+        header('Location: /admin-package');
     }
 }
 
@@ -79,6 +75,16 @@ if (isset($_POST['btnsave'])) {
 <body>
     <div class="flex justify-between flex-col min-h-screen">
         <main>
+            <?php if ($isSuccess) { ?>
+                <div class="alert alert-success">
+                    <p>Package added SUCCESSFULLY!</p>
+                </div>
+            <?php } ?>
+            <?php if ($isError) { ?>
+                <div class="alert alert-error">
+                    <p><?= $errorMessage ?></p>
+                </div>
+            <?php } ?>
             <div>
                 <div class="nav">
                     <div class="logo">
@@ -87,14 +93,10 @@ if (isset($_POST['btnsave'])) {
                     </div>
 
                     <div class="flex">
-                        <div class="flex items-center cursor-pointer" id="profile-bar"
-                            onmouseenter="toggleProfileMenu()">
+                        <div class="flex items-center cursor-pointer" id="profile-bar" onmouseenter="toggleProfileMenu()">
                             <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor"
-                                    style="padding-left:20px;height:50px;width:50px;">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="padding-left:20px;height:50px;width:50px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
                             </div>
                             <p style="padding-left:7px"><?php echo $_SESSION['aname']; ?></p>
@@ -122,64 +124,56 @@ if (isset($_POST['btnsave'])) {
                         <th>PACKAGE_NAME</th>
                         <th>DURATION</th>
                         <th>PRICE</th>
-                        <th>DESCRIPTION1</th>
-                        <th>DESCRIPTION2</th>
-                        <th>PICTURE1</th>
-                        <th>PICTURE2</th>
+                        <th>DESCRIPTION</th>
+                        <th>PICTURE</th>
                         <th>DISCOUNT</th>
-                        <th>STATUS</th>
-                        <th>VIEW_COUNT</th>
                         <th>PACKAGE_TYPE</th>
-                        <th>PITCH_TYPE</th>
+                        <th>PITCH</th>
                         <th>LOCATION</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
 
-                    $query = "SELECT * FROM ASSIGNMENT.PACKAGE";
+                    $query = "SELECT * FROM gwsc_package";
                     $result = mysqli_query($connect, $query);
 
                     // Loop through each row and display the data
                     while ($row = mysqli_fetch_assoc($result)) {
-                        $pkid = $row['PACKAGE_TYPE_ID'];
-                        $pkquery = "SELECT * FROM ASSIGNMENT.PACKAGE_TYPE WHERE PACKAGE_TYPE_ID = '$pkid'";
+                        $pkid = $row['package_type_id'];
+                        $pkquery = "SELECT * FROM gwsc_package_type WHERE package_type_id = '$pkid'";
                         $pkresult = mysqli_query($connect, $pkquery);
 
-                        $ptid = $row['PITCH_TYPE_ID'];
-                        $ptquery = "SELECT * FROM ASSIGNMENT.PITCH WHERE PITCH_ID = '$ptid'";
+                        $ptid = $row['pitch_id'];
+                        $ptquery = "SELECT * FROM gwsc_pitch WHERE pitch_id = '$ptid'";
                         $ptresult = mysqli_query($connect, $ptquery);
-                        $lid = $row['LOCATION_ID'];
-                        $lquery = "SELECT * FROM ASSIGNMENT.LOCATION WHERE LOCATION_ID = '$lid'";
+                        $lid = $row['location_id'];
+                        $lquery = "SELECT * FROM gwsc_location WHERE location_id = '$lid'";
                         $lresult = mysqli_query($connect, $lquery);
 
                         echo "<tr>";
-                        echo "<td>" . $row['PACKAGE_ID'] . "</td>";
-                        echo "<td>" . $row['PACKAGE_NAME'] . "</td>";
-                        echo "<td>" . $row['DURATION'] . "</td>";
-                        echo "<td>" . $row['PRICE'] . "</td>";
-                        echo "<td>" . $row['DESCRIPTION1'] . "</td>";
-                        echo "<td>" . $row['DESCRIPTION2'] . "</td>";
-                        echo "<td>" . $row['PICTURE1'] . "</td>";
-                        echo "<td>" . $row['PICTURE1'] . "</td>";
-                        echo "<td>" . $row['DISCOUNT'] . "</td>";
-                        echo "<td>" . $row['STATUS'] . "</td>";
-                        echo "<td>" . $row['VIEW_COUNT'] . "</td>";
+                        echo "<td>" . $row['package_id'] . "</td>";
+                        echo "<td>" . $row['package_name'] . "</td>";
+                        echo "<td>" . $row['duration'] . "</td>";
+                        echo "<td>" . $row['price'] . "</td>";
+                        echo "<td>" . $row['pitch_description'] . "</td>";
+                        echo "<td>" . $row['package_image'] . "</td>";
+                        echo "<td>" . $row['discount'] . "</td>";
                         if ($pkresult && mysqli_num_rows($pkresult) > 0) {
                             $row = mysqli_fetch_assoc($pkresult);
-                            $packageType = $row['PACKAGE_TYPE_NAME'];
+                            $packageType = $row['package_type_name'];
                             echo "<td>" . $packageType . "</td>";
                         }
 
                         if ($ptresult && mysqli_num_rows($ptresult) > 0) {
                             $row = mysqli_fetch_assoc($ptresult);
-                            $pitchType = $row['PITCH_NAME'];
+                            $pitchType = $row['pitch_name'];
                             echo "<td>" . $pitchType . "</td>";
                         }
 
                         if ($lresult && mysqli_num_rows($lresult) > 0) {
                             $row = mysqli_fetch_assoc($lresult);
-                            $location = $row['LOCATION_NAME'];
+                            $location = $row['location_name'];
                             echo "<td>" . $location . "</td>";
                         }
                         echo "</tr>";
@@ -191,12 +185,10 @@ if (isset($_POST['btnsave'])) {
 
             <h2>Add Package</h2>
             <div class="form-container">
-                <form class="form-card justify-center items-center" action="/admin-package" method="POST"
-                    enctype="multipart/form-data">
+                <form class="form-card justify-center items-center" action="/admin-package" method="POST" enctype="multipart/form-data">
                     <div class="pb-15">
                         <label class="block">PACKAGE_ID</label>
-                        <input class="w-full" type="text" name="txtpid"
-                            value="<?php echo AutoID('PACKAGE', 'PACKAGE_ID', 'PACK', 4); ?>" readonly>
+                        <input class="w-full" type="text" name="txtpid" value="<?php echo AutoID('gwsc_package', 'package_id', 'packa', 4); ?>" readonly>
                     </div>
                     <div class="pb-15">
                         <label class="block">PACKAGE_NAME</label>
@@ -208,10 +200,10 @@ if (isset($_POST['btnsave'])) {
                             <select name="txtpactype" id="txtpactype">
                                 <!-- <option value="">Select an option</option> -->
                                 <?php
-                                $pquery = "SELECT * FROM PACKAGE_TYPE";
+                                $pquery = "SELECT * FROM gwsc_package_type";
                                 $presult = mysqli_query($connect, $pquery);
                                 while ($prow = mysqli_fetch_assoc($presult)) {
-                                    echo "<option value=" . $prow['PACKAGE_TYPE_ID'] . ">" . $prow['PACKAGE_TYPE_NAME'] . "</option>";
+                                    echo "<option value=" . $prow['package_type_id'] . ">" . $prow['package_type_name'] . "</option>";
                                 }
                                 ?>
                             </select>
@@ -223,10 +215,10 @@ if (isset($_POST['btnsave'])) {
                             <select name="txtpitchtype" id="txtpitchtype">
                                 <!-- <option value="">Select an option</option> -->
                                 <?php
-                                $ptquery = "SELECT * FROM PITCH";
+                                $ptquery = "SELECT * FROM gwsc_pitch";
                                 $ptresult = mysqli_query($connect, $ptquery);
                                 while ($ptrow = mysqli_fetch_assoc($ptresult)) {
-                                    echo "<option value=" . $ptrow['PITCH_ID'] . ">" . $ptrow['PITCH_NAME'] . "</option>";
+                                    echo "<option value=" . $ptrow['pitch_id'] . ">" . $ptrow['pitch_name'] . "</option>";
                                 }
                                 ?>
                             </select>
@@ -238,10 +230,10 @@ if (isset($_POST['btnsave'])) {
                             <select name="txtlocationtype" id="txtlocationtype">
                                 <!-- <option value="">Select an option</option> -->
                                 <?php
-                                $lquery = "SELECT * FROM ASSIGNMENT.LOCATION";
+                                $lquery = "SELECT * FROM gwsc_location";
                                 $lresult = mysqli_query($connect, $lquery);
                                 while ($lrow = mysqli_fetch_assoc($lresult)) {
-                                    echo "<option value=" . $lrow['LOCATION_ID'] . ">" . $lrow['LOCATION_NAME'] . "</option>";
+                                    echo "<option value=" . $lrow['location_id'] . ">" . $lrow['location_name'] . "</option>";
                                 }
                                 ?>
                             </select>
@@ -249,8 +241,7 @@ if (isset($_POST['btnsave'])) {
                     </div>
                     <div class="pb-15">
                         <label class="block">Duration (hr)</label>
-                        <input class="w-full" type="number" name="txtpduration" placeholder="Enter Package Duration"
-                            required>
+                        <input class="w-full" type="number" name="txtpduration" placeholder="Enter Package Duration" required>
 
                     </div>
                     <div class="pb-15">
@@ -258,38 +249,22 @@ if (isset($_POST['btnsave'])) {
                         <input class="w-full" type="number" name="txtpprice" placeholder="Enter Package Price" required>
                     </div>
                     <div class="pb-15">
-                        <label class="block">Description 1</label>
-                        <input class="w-full" type="text" name="txtpdescription1"
-                            placeholder="Enter Package Description 1" required>
+                        <label class="block">Description</label>
+                        <input class="w-full" type="text" name="txtpdescription" placeholder="Enter Package Description 1" required>
                     </div>
                     <div class="pb-15">
-                        <label class="block">Description 2</label>
-                        <input class="w-full" type="text" name="txtpdescription2"
-                            placeholder="Enter Package Description 2" required>
-                    </div>
-                    <div class="pb-15">
-                        <label class="block">Package Image 1</label>
-                        <input class="w-full" type="file" name="image1" placeholder="Enter Package Image 1" required>
-                    </div>
-                    <div class="pb-15">
-                        <label class="block">Package Image 2</label>
-                        <input class="w-full" type="file" name="image2" placeholder="Enter Package Image 2" required>
+                        <label class="block">Package Image</label>
+                        <input class="w-full" type="file" name="image" placeholder="Enter Package Image 1" required>
                     </div>
                     <div class="pb-15">
                         <label class="block">Package Discount</label>
-                        <input class="w-full" type="number" name="txtpdiscount" placeholder="Enter Package Discount"
-                            required>
-                    </div>
-                    <div class="pb-15">
-                        <label class="block">Package Status</label>
-                        <input class="w-full" type="text" name="txtpstatus" placeholder="Enter Package Status" required>
+                        <input class="w-full" type="number" name="txtpdiscount" placeholder="Enter Package Discount" required>
                     </div>
 
                     <!-- Dropdown List -->
 
                     <div class="w-full">
-                        <input class="w-full font-bold bg-primary text-white mb-5" type="submit" name="btnsave"
-                            value="Save">
+                        <input class="w-full font-bold bg-primary text-white mb-5" type="submit" name="btnsave" value="Save">
                         <a href="/admin-package">
                             <input class="w-full font-bold bg-secondary text-white" type="button" value="Cancel">
                         </a>
@@ -336,42 +311,42 @@ if (isset($_POST['btnsave'])) {
     <div id="overlay-profile" onmouseenter="toggleProfileMenu()" class="overlay display-none"></div>
 
     <script>
-    var isMenuOpen = false;
-    var menuBar = document.getElementById('menu-bar');
-    var overlay = document.getElementById('overlay');
+        var isMenuOpen = false;
+        var menuBar = document.getElementById('menu-bar');
+        var overlay = document.getElementById('overlay');
 
-    function myFunction() {
-        if (isMenuOpen) {
-            isMenuOpen = false;
-            menuBar.classList.remove("change");
-            document.getElementById("myDropdown").classList.remove("show");
-            overlay.classList.add('display-none');
-        } else {
-            isMenuOpen = true;
-            menuBar.classList.add("change");
-            document.getElementById("myDropdown").classList.add("show");
-            overlay.classList.remove('display-none');
+        function myFunction() {
+            if (isMenuOpen) {
+                isMenuOpen = false;
+                menuBar.classList.remove("change");
+                document.getElementById("myDropdown").classList.remove("show");
+                overlay.classList.add('display-none');
+            } else {
+                isMenuOpen = true;
+                menuBar.classList.add("change");
+                document.getElementById("myDropdown").classList.add("show");
+                overlay.classList.remove('display-none');
+            }
         }
-    }
 
-    // profile menu
-    var isProfileMenuOpen = false;
-    var profileMenuBar = document.getElementById('profile-bar');
-    var profileOverlay = document.getElementById('overlay-profile');
+        // profile menu
+        var isProfileMenuOpen = false;
+        var profileMenuBar = document.getElementById('profile-bar');
+        var profileOverlay = document.getElementById('overlay-profile');
 
-    function toggleProfileMenu() {
-        if (isProfileMenuOpen) {
-            isProfileMenuOpen = false;
-            profileMenuBar.classList.remove("change");
-            document.getElementById("myDropdown2").classList.remove("show");
-            profileOverlay.classList.add('display-none');
-        } else {
-            isProfileMenuOpen = true;
-            profileMenuBar.classList.add("change");
-            document.getElementById("myDropdown2").classList.add("show");
-            profileOverlay.classList.remove('display-none');
+        function toggleProfileMenu() {
+            if (isProfileMenuOpen) {
+                isProfileMenuOpen = false;
+                profileMenuBar.classList.remove("change");
+                document.getElementById("myDropdown2").classList.remove("show");
+                profileOverlay.classList.add('display-none');
+            } else {
+                isProfileMenuOpen = true;
+                profileMenuBar.classList.add("change");
+                document.getElementById("myDropdown2").classList.add("show");
+                profileOverlay.classList.remove('display-none');
+            }
         }
-    }
     </script>
 </body>
 

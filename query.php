@@ -1,163 +1,185 @@
 <?php
 include "connect.php";
 
-$createPitchType = "CREATE TABLE PITCH_TYPE
+$createPitchType = "CREATE TABLE gwsc_pitch_type
 (
-    PITCH_TYPE_ID VARCHAR(30) NOT NULL PRIMARY KEY,
-    PITCH_TYPE VARCHAR(30)
+    pitch_type_id VARCHAR(30) NOT NULL PRIMARY KEY,
+    pitch_type VARCHAR(30),
+    CONSTRAINT pt_id_type UNIQUE (pitch_type_id,pitch_type)
 )";
 $query = mysqli_query($connect, $createPitchType);
 if ($query) {
-    echo "<p>Pitch Type Table Successfully created!</p>";
+    echo "<p>Pitch Type Table Successfully created!</p><br>";
 } else {
-    echo "<p>Pitch Type Table Creation Unsuccessful!</p>";
+    echo "<p>Pitch Type Table Creation Unsuccessful!</p><br>";
 }
 
-$createCustomer = "CREATE TABLE CUSTOMER
+$createCustomer = "CREATE TABLE gwsc_customer
 (
-    CUSTOMER_ID VARCHAR(20) NOT NULL PRIMARY KEY,
-    FIRST_NAME VARCHAR(20),
-    SURNAME VARCHAR(20),
-    EMAIL VARCHAR(20),
-    PASSWORD VARCHAR(20),
-    PHONE_NUMBER VARCHAR(20),
-    ADDRESS VARCHAR(50),
-    VIEW_COUNT INT,
-    CONSTRAINT UC_email UNIQUE (CUSTOMER_ID,EMAIL)
+    customer_id VARCHAR(20) NOT NULL PRIMARY KEY,
+    first_name VARCHAR(20),
+    surname VARCHAR(20),
+    email VARCHAR(20),
+    customer_password VARCHAR(100),
+    phone VARCHAR(20),
+    customer_address VARCHAR(50),
+    view_count INT,
+    CONSTRAINT c_id_email UNIQUE (customer_id,email)
 )";
 $query = mysqli_query($connect, $createCustomer);
 if ($query) {
-    echo "<p>Customer Table Successfully created!</p>";
+    echo "<p>Customer Table Successfully created!</p><br>";
 } else {
-    echo "<p>Customer Table Creation Unsuccessful!</p>";
+    echo "<p>Customer Table Creation Unsuccessful!</p><br>";
 }
 
-$createAdmin = "CREATE TABLE ADMIN
+$createAdmin = "CREATE TABLE gwsc_admin
 (
-    ADMIN_ID VARCHAR(20) NOT NULL PRIMARY KEY,
-    ADDRESS VARCHAR(255),
-    EMAIL VARCHAR(20),
-    PASSWORD VARCHAR(20),
-    PHONE VARCHAR(20),
-    CONSTRAINT UC_email UNIQUE (ADMIN_ID,EMAIL)
+    admin_id VARCHAR(20) NOT NULL PRIMARY KEY,
+    admin_name VARCHAR(20),
+    admin_address VARCHAR(255),
+    email VARCHAR(20),
+    admin_password VARCHAR(100),
+    phone VARCHAR(20),
+    CONSTRAINT a_id_email UNIQUE (admin_id,email)
 )";
 $query = mysqli_query($connect, $createAdmin);
 if ($query) {
-    echo "<p>Admin Table Successfully created!</p>";
+    echo "<p>Admin Table Successfully created!</p><br>";
 } else {
-    echo "<p>Admin Table Creation Unsuccessful!</p>";
+    echo "<p>Admin Table Creation Unsuccessful!</p><br>";
 }
 
-$createPitch = "CREATE TABLE PITCH (
-    PITCH_ID VARCHAR(30) NOT NULL PRIMARY KEY ,
-    PITCH_NAME VARCHAR(20),
-    DURATION INT,
-    PRICE INT,
-    DESCRIPTION_PITCH VARCHAR(100),
-    PITCH_IMAGE_1 VARCHAR(255),
-    PITCH_IMAGE_2 VARCHAR(255),
-    PITCH_TYPE_ID VARCHAR(30),
-    FOREIGN KEY (PITCH_TYPE_ID) REFERENCES PITCH_TYPE (PITCH_TYPE_ID)
+$createPitch = "CREATE TABLE gwsc_pitch (
+    pitch_id VARCHAR(30) NOT NULL PRIMARY KEY ,
+    pitch_name VARCHAR(20),
+    duration INT,
+    price INT,
+    pitch_description VARCHAR(100),
+    pitch_image VARCHAR(255),
+    pitch_type_id VARCHAR(30),
+    FOREIGN KEY (pitch_type_id) REFERENCES gwsc_pitch_type (pitch_type_id),
+    CONSTRAINT p_id_name UNIQUE (pitch_id,pitch_name)
 )";
 $query = mysqli_query($connect, $createPitch);
 if ($query) {
-    echo "<p>Pitch Table Successfully created!</p>";
+    echo "<p>Pitch Table Successfully created!</p><br>";
 } else {
-    echo "<p>Pitch Table Creation Unsuccessful!</p>";
+    echo "<p>Pitch Table Creation Unsuccessful!</p><br>";
 }
 
-$createLocationType = "CREATE TABLE `LOCATION_TYPE` (
-    `LOCATION_TYPE_ID` VARCHAR(30) NOT NULL PRIMARY KEY ,
-    `LOCATION_TYPE_NAME` VARCHAR(20),
-    `DESCRIPTION` VARCHAR(255)
+$createLocationType = "CREATE TABLE gwsc_location_type (
+    location_type_id VARCHAR(30) NOT NULL PRIMARY KEY ,
+    location_type_name VARCHAR(20),
+    location_description VARCHAR(255),
+    CONSTRAINT l_id_name UNIQUE (location_type_id,location_type_name)
   )";
 $query = mysqli_query($connect, $createLocationType);
 if ($query) {
-    echo "<p>LocationType Table Successfully created!</p>";
+    echo "<p>LocationType Table Successfully created!</p><br>";
 } else {
-    echo "<p>LocationType Table Creation Unsuccessful!</p>";
+    echo "<p>LocationType Table Creation Unsuccessful!</p><br>";
 }
 
-$createPackageType = "CREATE TABLE `PACKAGE_TYPE` (
-    `PACKAGE_TYPE_ID` VARCHAR(30) NOT NULL PRIMARY KEY,
-    `PACKAGE_TYPE_NAME` VARCHAR(20),
-    `DESCRIPTION` VARCHAR(255),
-    `PICTURE1` VARCHAR(255),
-    `PICTURE2` VARCHAR(255)
+$createPackageType = "CREATE TABLE gwsc_package_type (
+    package_type_id VARCHAR(30) NOT NULL PRIMARY KEY,
+    package_type_name VARCHAR(20),
+    package_description VARCHAR(255),
+    picture VARCHAR(255),
+    CONSTRAINT pt_id_name UNIQUE (package_type_id,package_type_name)
   )";
 $query = mysqli_query($connect, $createPackageType);
 if ($query) {
-    echo "<p>PackageType Table Successfully created!</p>";
+    echo "<p>PackageType Table Successfully created!</p><br>";
 } else {
-    echo "<p>PackageType Table Creation Unsuccessful!</p>";
+    echo "<p>PackageType Table Creation Unsuccessful!</p><br>";
 }
 
-$createPackage = "CREATE TABLE `PACKAGE` (
-    `PACKAGE_ID` VARCHAR(30) NOT NULL PRIMARY KEY ,
-    `PACKAGE_NAME` VARCHAR(20),
-    `PACKAGE_TYPE_ID` INT,
-    `PITCH_TYPE_ID` INT,
-    `LOCATION_ID` VARCHAR(20),
-    `DURATION` INT,
-    `PRICE` INT,
-    `DESCRIPTION1` VARCHAR(255),
-    `DESCRIPTION2` VARCHAR(255),
-    `PICTURE1` VARCHAR(255),
-    `PICTURE2` VARCHAR(255),
-    `DISCOUNT` VARCHAR(10),
-    `STATUS` VARCHAR(10),
-    `VIEW_COUNT` INT
-  )";
-$query = mysqli_query($connect, $createPackage);
-if ($query) {
-    echo "<p>Package Table Successfully created!</p>";
-} else {
-    echo "<p>Package Table Creation Unsuccessful!</p>";
-}
-
-$createLocation = "CREATE TABLE `LOCATION` (
-    `LOCATION_ID` VARCHAR(30) NOT NULL PRIMARY KEY ,
-    `LOCATION_TYPE_ID` INT,
-    `LOCATION_NAME` VARCHAR(20),
-    `FULL_LOCATION` VARCHAR(255),
-    `PICTURE` VARCHAR(255),
-    `DESCRIPTION` VARCHAR(255)
+$createLocation = "CREATE TABLE gwsc_location (
+    location_id VARCHAR(30) NOT NULL PRIMARY KEY ,
+    location_type_id VARCHAR(30),
+    location_name VARCHAR(20),
+    full_location VARCHAR(255),
+    location_picture VARCHAR(255),
+    location_description VARCHAR(255),
+    FOREIGN KEY (location_type_id) REFERENCES gwsc_location_type (location_type_id),
+    CONSTRAINT lt_id_name UNIQUE (location_id,location_name)
   )";
 $query = mysqli_query($connect, $createLocation);
 if ($query) {
-    echo "<p>Location Table Successfully created!</p>";
+    echo "<p>Location Table Successfully created!</p><br>";
 } else {
-    echo "<p>Location Table Creation Unsuccessful!</p>";
+    echo "<p>Location Table Creation Unsuccessful!</p><br>";
 }
 
-$createBooking = "CREATE TABLE `BOOKING` (
-    `BOOKING_ID` VARCHAR(30) NOT NULL PRIMARY KEY,
-    `CUSTOMER_ID` VARCHAR(20),
-    `PACKAGE_ID` VARCHAR(20),
-    `QUANTITY` INT,
-    `TAX` INT,
-    `PRICE` INT,
-    `TOTAL_AMOUNT` INT,
-    `BOOKING_DATE` DATETIME,
-    `BOOKING_STATUS` VARCHAR(20)
+$createPackage = "CREATE TABLE gwsc_package (
+    package_id VARCHAR(30) NOT NULL PRIMARY KEY ,
+    package_name VARCHAR(20),
+    package_type_id VARCHAR(30),
+    pitch_id VARCHAR(30),
+    location_id VARCHAR(30),
+    duration INT,
+    price INT,
+    pitch_description VARCHAR(255),
+    package_image VARCHAR(255),
+    discount VARCHAR(10),
+    FOREIGN KEY (pitch_id) REFERENCES gwsc_pitch (pitch_id),
+    FOREIGN KEY (location_id) REFERENCES gwsc_location (location_id),
+    CONSTRAINT p_id_name UNIQUE (package_id,package_name)
   )";
-$query = mysqli_query($connect, $createBooking);
+$query = mysqli_query($connect, $createPackage);
 if ($query) {
-    echo "<p>Booking Table Successfully created!</p>";
+    echo "<p>Package Table Successfully created!</p><br>";
 } else {
-    echo "<p>Booking Table Creation Unsuccessful!</p>";
+    echo "<p>Package Table Creation Unsuccessful!</p><br>";
 }
 
-$createReview = "CREATE TABLE `REVIEW` (
-    `REVIEW_ID` VARCHAR(30) NOT NULL PRIMARY KEY,
-    `CUSTOMER_ID` VARCHAR(20),
-    `CONTENT` VARCHAR(255),
-    `STARS` INT,
-    `DATE_TIME` DATE
+$createReview = "CREATE TABLE gwsc_review (
+    review_id VARCHAR(30) NOT NULL PRIMARY KEY,
+    customer_id VARCHAR(30),
+    content VARCHAR(255),
+    stars INT,
+    date_time DATE,
+    FOREIGN KEY (customer_id) REFERENCES gwsc_customer (customer_id),
+    CONSTRAINT r_id UNIQUE (review_id)
   )";
 $query = mysqli_query($connect, $createReview);
 if ($query) {
-    echo "<p>Review Table Successfully created!</p>";
+    echo "<p>Review Table Successfully created!</p><br>";
 } else {
-    echo "<p>Review Table Creation Unsuccessful!</p>";
+    echo "<p>Review Table Creation Unsuccessful!</p><br>";
+}
+
+$createBooking = "CREATE TABLE gwsc_booking (
+    booking_id VARCHAR(30) NOT NULL PRIMARY KEY,
+    customer_id VARCHAR(30),
+    order_time TIMESTAMP(6),
+    booking_status VARCHAR(20),
+    FOREIGN KEY (customer_id) REFERENCES gwsc_customer (customer_id),
+    CONSTRAINT b_id UNIQUE (booking_id)
+  )";
+$query = mysqli_query($connect, $createBooking);
+if ($query) {
+    echo "<p>Booking Table Successfully created!</p><br>";
+} else {
+    echo "<p>Booking Table Creation Unsuccessful!</p><br>";
+}
+
+$createBookingDetail = "CREATE TABLE gwsc_booking_detail (
+    booking_detail_id VARCHAR(30) NOT NULL PRIMARY KEY,
+    booking_id VARCHAR(30) NOT NULL,
+    package_id VARCHAR(30) NOT NULL,
+    quantity INT,
+    tax INT,
+    price INT,
+    total_price INT,
+    booking_date DATETIME,
+    FOREIGN KEY (booking_id) REFERENCES gwsc_booking (booking_id),
+    CONSTRAINT bd_id UNIQUE (booking_detail_id)
+  )";
+$query = mysqli_query($connect, $createBookingDetail);
+if ($query) {
+    echo "<p>Booking Table Successfully created!</p><br>";
+} else {
+    echo "<p>Booking Table Creation Unsuccessful!</p><br>";
 }

@@ -5,7 +5,7 @@ if (!isset($_SESSION['cid'])) {
     return;
 }
 
-$pitchSql = "SELECT * FROM ASSIGNMENT.PITCH ORDER BY PITCH_ID";
+$pitchSql = "SELECT * FROM gwsc_pitch ORDER BY pitch_id";
 $pitchQuery = mysqli_query($connect, $pitchSql);
 $pitches = array(); // Initialize an empty array to hold the rows
 while ($row = $pitchQuery->fetch_array()) {
@@ -82,16 +82,16 @@ while ($row = $pitchQuery->fetch_array()) {
                 <div class="grid grid-cols-2 gap-5" style="gap:20px">
                     <div>
                         <?php foreach ($pitches as $pitch) { ?>
-                        <a href="/packages?pitch=<?= $pitch['PITCH_NAME'] ?>">
+                        <a href="/packages?pitch=<?= $pitch['pitch_name'] ?>">
                             <div class="info">
                                 <div class="info-overlay">
                                     <div>
-                                        <h2><?= $pitch['PITCH_NAME'] ?></h2>
-                                        <p><?= $pitch['DESCRIPTION_PITCH'] ?></p>
+                                        <h2><?= $pitch['pitch_name'] ?></h2>
+                                        <p><?= $pitch['pitch_description'] ?></p>
                                     </div>
                                 </div>
-                                <img class="w-full h-full" src="images/<?= $pitch['PITCH_IMAGE_1'] ?>"
-                                    alt="<?= $pitch['PITCH_NAME'] ?>">
+                                <img class="w-full h-full" src="images/<?= $pitch['pitch_image'] ?>"
+                                    alt="<?= $pitch['pitch_name'] ?>">
                             </div>
                         </a>
                         <?php } ?>

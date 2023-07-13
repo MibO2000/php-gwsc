@@ -6,11 +6,11 @@ if (!isset($_SESSION['cid'])) {
 }
 
 
-$packageSql = "SELECT * FROM ASSIGNMENT.PACKAGE ORDER BY PACKAGE_ID";
+$packageSql = "SELECT * FROM gwsc_package ORDER BY package_id";
 $packageQuery = mysqli_query($connect, $packageSql);
 $packageCount = mysqli_num_rows($packageQuery);
 
-$cusSql = "SELECT * FROM ASSIGNMENT.CUSTOMER ORDER BY CUSTOMER_ID";
+$cusSql = "SELECT * FROM gwsc_customer ORDER BY customer_id";
 $cusQuery = mysqli_query($connect, $cusSql);
 $cusCount = mysqli_num_rows($cusQuery);
 if ($cusCount > 0) {

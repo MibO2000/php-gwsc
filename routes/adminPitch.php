@@ -12,6 +12,11 @@ if (isset($_SESSION['cid'])) {
     return;
 }
 
+if (isset($_SESSION['SUCCESS_REGISTER'])) {
+    unset($_SESSION['SUCCESS_REGISTER']);
+    $isSuccess = true;
+}
+
 if (isset($_POST['btnsave'])) {
     $pid = $_POST['txtpid'];
     $pname = $_POST['txtpname'];
@@ -32,19 +37,21 @@ if (isset($_POST['btnsave'])) {
     }
     $ptype = $_POST['txtpitchtype'];
 
-    $check = "SELECT * FROM ASSIGNMENT.PITCH WHERE PITCH_NAME = '$pname'";
+    $check = "SELECT * FROM gwsc_pitch WHERE pitch_name = '$pname'";
     $count = mysqli_num_rows(mysqli_query($connect, $check));
     if ($count > 0) {
         echo "<script>window.alert('Pitch Already exists!')</script>";
     } else {
-        $insert = "INSERT INTO PITCH(PITCH_ID, PITCH_NAME, DURATION, PRICE, DESCRIPTION_PITCH, PITCH_IMAGE_1, PITCH_TYPE_ID)
+        $insert = "INSERT INTO PITCH(pitch_id, pitch_name, duration, price, pitch_description, pitch_image, pitch_type_id)
         VALUES ('$pid','$pname', '$pduration', '$pprice', '$pdes', '$image', '$ptype')";
         $run = mysqli_query($connect, $insert);
         if ($run) {
-            echo "<script>window.alert('New Pitch Type Added!')</script>";
+            $_SESSION['SUCCESS_REGISTER'] = true;
         } else {
-            echo "<script>window.alert('Something went wrong!')</script>";
+            $_SESSION['FAIL'] = true;
+            $_SESSION['error'] = "Fail to add a new pitch";
         }
+        header('Location: /admin-pitch');
     }
 }
 
@@ -62,7 +69,7 @@ if (isset($_POST['btnsave'])) {
 <body>
     <?php if ($isSuccess) { ?>
         <div class="alert alert-success">
-            <p>Admin registered SUCCESSFULLY!</p>
+            <p>Pitch added SUCCESSFULLY!</p>
         </div>
     <?php } ?>
     <?php if ($isError) { ?>
@@ -112,33 +119,33 @@ if (isset($_POST['btnsave'])) {
                         <th>DURATION</th>
                         <th>PRICE</th>
                         <th>DESCRIPTION</th>
-                        <th>PITCH_IMAGE_1</th>
-                        <th>PITCH_TYPE_ID</th>
+                        <th>PITCH_IMAGE</th>
+                        <th>PITCH_TYPE</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
 
-                    $query = "SELECT * FROM ASSIGNMENT.PITCH";
+                    $query = "SELECT * FROM gwsc_pitch";
                     $result = mysqli_query($connect, $query);
 
                     // Loop through each row and display the data
                     while ($row = mysqli_fetch_assoc($result)) {
-                        $ptid = $row['PITCH_TYPE_ID'];
-                        $ptquery = "SELECT * FROM PITCH_TYPE WHERE PITCH_TYPE_ID = '$ptid'";
+                        $ptid = $row['pitch_type_id'];
+                        $ptquery = "SELECT * FROM gwsc_pitch_type WHERE pitch_type_id = '$ptid'";
                         $ptresult = mysqli_query($connect, $ptquery);
 
 
                         echo "<tr>";
-                        echo "<td>" . $row['PITCH_ID'] . "</td>";
-                        echo "<td>" . $row['PITCH_NAME'] . "</td>";
-                        echo "<td>" . $row['DURATION'] . "</td>";
-                        echo "<td>" . $row['PRICE'] . "</td>";
-                        echo "<td>" . $row['DESCRIPTION_PITCH'] . "</td>";
-                        echo "<td>" . $row['PITCH_IMAGE_1'] . "</td>";
+                        echo "<td>" . $row['pitch_id'] . "</td>";
+                        echo "<td>" . $row['pitch_name'] . "</td>";
+                        echo "<td>" . $row['duration'] . "</td>";
+                        echo "<td>" . $row['price'] . "</td>";
+                        echo "<td>" . $row['pitch_description'] . "</td>";
+                        echo "<td>" . $row['pitch_image'] . "</td>";
                         if ($ptresult && mysqli_num_rows($ptresult) > 0) {
                             $row = mysqli_fetch_assoc($ptresult);
-                            $pitchType = $row['PITCH_TYPE'];
+                            $pitchType = $row['pitch_type'];
                             echo "<td>" . $pitchType . "</td>";
                         }
                         echo "</tr>";
@@ -153,7 +160,7 @@ if (isset($_POST['btnsave'])) {
                 <form class="form-card justify-center items-center" action="/admin-pitch" method="POST" enctype="multipart/form-data">
                     <div class="pb-15">
                         <label class="block">PitchId</label>
-                        <input class="w-full" type="text" name="txtpid" value="<?php echo AutoID('PITCH', 'PITCH_ID', 'PITCH', 4); ?>" readonly>
+                        <input class="w-full" type="text" name="txtpid" value="<?php echo AutoID('gwsc_pitch', 'pitch_id', 'pitch', 4); ?>" readonly>
                     </div>
                     <div class="pb-15">
                         <label class="block">Pitch Name</label>
@@ -183,10 +190,10 @@ if (isset($_POST['btnsave'])) {
                             <select name="txtpitchtype" id="txtpitchtype">
                                 <!-- <option value="">Select an option</option> -->
                                 <?php
-                                $ptquery = "SELECT * FROM PITCH_TYPE";
+                                $ptquery = "SELECT * FROM gwsc_pitch_type";
                                 $ptresult = mysqli_query($connect, $ptquery);
                                 while ($ptrow = mysqli_fetch_assoc($ptresult)) {
-                                    echo "<option value=" . $ptrow['PITCH_TYPE_ID'] . ">" . $ptrow['PITCH_TYPE'] . "</option>";
+                                    echo "<option value=" . $ptrow['pitch_type_id'] . ">" . $ptrow['pitch_type'] . "</option>";
                                 }
                                 ?>
                             </select>

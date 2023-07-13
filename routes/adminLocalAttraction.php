@@ -1,5 +1,8 @@
 <?php
 
+$isSuccess = false;
+$isError = false;
+$errorMessage;
 if (!isset($_SESSION['aid'])) {
     header('Location: /admin-login');
     return;
@@ -8,6 +11,17 @@ if (!isset($_SESSION['aid'])) {
 if (isset($_SESSION['cid'])) {
     header('Location: /');
     return;
+}
+
+if (isset($_SESSION['SUCCESS_REGISTER'])) {
+    unset($_SESSION['SUCCESS_REGISTER']);
+    $isSuccess = true;
+}
+if (isset($_SESSION['FAIL'])) {
+    unset($_SESSION['FAIL']);
+    $isError = true;
+    $errorMessage = $_SESSION['error'];
+    unset($_SESSION['error']);
 }
 
 if (isset($_POST['btnsave'])) {
@@ -28,19 +42,21 @@ if (isset($_POST['btnsave'])) {
     }
     $ldes = $_POST['txtldescription'];
     echo $lid, $ltype, $lname, $lfull, $image, $ldes;
-    $check = "SELECT * FROM ASSIGNMENT.LOCATION WHERE LOCATION_NAME = '$lname'";
+    $check = "SELECT * FROM gwsc_location WHERE location_name = '$lname'";
     $count = mysqli_num_rows(mysqli_query($connect, $check));
     if ($count > 0) {
         echo "<script>window.alert('Location Already exists!')</script>";
     } else {
-        $insert = "INSERT INTO ASSIGNMENT.LOCATION(LOCATION_ID, LOCATION_TYPE_ID, LOCATION_NAME, FULL_LOCATION, PICTURE, DESCRIPTION)
+        $insert = "INSERT INTO gwsc_location(location_id, location_type_id, location_name, full_location, location_picture, location_description)
         VALUES ('$lid','$ltype', '$lname', '$lfull', '$image', '$ldes')";
         $run = mysqli_query($connect, $insert);
         if ($run) {
-            echo "<script>window.alert('New Location Added!')</script>";
+            $_SESSION['SUCCESS_REGISTER'] = true;
         } else {
-            echo "<script>window.alert('Something went wrong!')</script>";
+            $_SESSION['FAIL'] = true;
+            $_SESSION['error'] = "Fail to add a new local attraction";
         }
+        header('Location: /admin-local');
     }
 }
 
@@ -58,6 +74,16 @@ if (isset($_POST['btnsave'])) {
 <body>
     <div class="flex justify-center flex-col min-h-screen">
         <main>
+            <?php if ($isSuccess) { ?>
+                <div class="alert alert-success">
+                    <p>Local Attraction added SUCCESSFULLY!</p>
+                </div>
+            <?php } ?>
+            <?php if ($isError) { ?>
+                <div class="alert alert-error">
+                    <p><?= $errorMessage ?></p>
+                </div>
+            <?php } ?>
             <div>
                 <div class="nav">
                     <div class="logo">
@@ -66,14 +92,10 @@ if (isset($_POST['btnsave'])) {
                     </div>
 
                     <div class="flex">
-                        <div class="flex items-center cursor-pointer" id="profile-bar"
-                            onmouseenter="toggleProfileMenu()">
+                        <div class="flex items-center cursor-pointer" id="profile-bar" onmouseenter="toggleProfileMenu()">
                             <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor"
-                                    style="padding-left:20px;height:50px;width:50px;">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="padding-left:20px;height:50px;width:50px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
                             </div>
                             <p style="padding-left:7px"><?php echo $_SESSION['aname']; ?></p>
@@ -110,23 +132,23 @@ if (isset($_POST['btnsave'])) {
                 <tbody>
                     <?php
 
-                    $query = "SELECT * FROM ASSIGNMENT.LOCATION";
+                    $query = "SELECT * FROM gwsc_location";
                     $result = mysqli_query($connect, $query);
 
                     // Loop through each row and display the data
                     while ($row = mysqli_fetch_assoc($result)) {
-                        $ltid = $row['LOCATION_TYPE_ID'];
-                        $ltquery = "SELECT * FROM LOCATION_TYPE WHERE LOCATION_TYPE_ID = '$ltid'";
+                        $ltid = $row['location_type_id'];
+                        $ltquery = "SELECT * FROM gwsc_location_type WHERE location_type_id = '$ltid'";
                         $locationTypeResult = mysqli_query($connect, $ltquery);
                         echo "<tr>";
-                        echo "<td>" . $row['LOCATION_ID'] . "</td>";
-                        echo "<td>" . $row['LOCATION_NAME'] . "</td>";
-                        echo "<td>" . $row['FULL_LOCATION'] . "</td>";
-                        echo "<td>" . $row['PICTURE'] . "</td>";
-                        echo "<td>" . $row['DESCRIPTION'] . "</td>";
+                        echo "<td>" . $row['location_id'] . "</td>";
+                        echo "<td>" . $row['location_name'] . "</td>";
+                        echo "<td>" . $row['full_location'] . "</td>";
+                        echo "<td>" . $row['location_picture'] . "</td>";
+                        echo "<td>" . $row['location_description'] . "</td>";
                         if ($locationTypeResult && mysqli_num_rows($locationTypeResult) > 0) {
                             $row = mysqli_fetch_assoc($locationTypeResult);
-                            $locationType = $row['LOCATION_TYPE_NAME'];
+                            $locationType = $row['location_type_name'];
                             echo "<td>" . $locationType . "</td>";
                         }
                         echo "</tr>";
@@ -139,12 +161,10 @@ if (isset($_POST['btnsave'])) {
             <h2>Add Local Attraction</h2>
 
             <div class="form-container">
-                <form class="form-card justify-center items-center" action="/admin-local" method="POST"
-                    enctype="multipart/form-data">
+                <form class="form-card justify-center items-center" action="/admin-local" method="POST" enctype="multipart/form-data">
                     <div class="pb-15">
                         <label class="block">Location Id</label>
-                        <input class="w-full" type="text" name="txtlid"
-                            value="<?php echo AutoID('LOCATION', 'LOCATION_ID', 'LOCAL', 4); ?>" readonly>
+                        <input class="w-full" type="text" name="txtlid" value="<?php echo AutoID('gwsc_location', 'location_id', 'local', 4); ?>" readonly>
                     </div>
 
                     <div class="pb-15">
@@ -153,10 +173,10 @@ if (isset($_POST['btnsave'])) {
                             <select name="txtltype" id="txtltype">
                                 <!-- <option value="">Select an option</option> -->
                                 <?php
-                                $ltquery = "SELECT * FROM LOCATION_TYPE";
+                                $ltquery = "SELECT * FROM gwsc_location_type";
                                 $ltresult = mysqli_query($connect, $ltquery);
                                 while ($ltrow = mysqli_fetch_assoc($ltresult)) {
-                                    echo "<option value=" . $ltrow['LOCATION_TYPE_ID'] . ">" . $ltrow['LOCATION_TYPE_NAME'] . "</option>";
+                                    echo "<option value=" . $ltrow['location_type_id'] . ">" . $ltrow['location_type_name'] . "</option>";
                                 }
                                 ?>
                             </select>
@@ -170,8 +190,7 @@ if (isset($_POST['btnsave'])) {
                     </div>
                     <div class="pb-15">
                         <label class="block">Full Location</label>
-                        <input class="w-full" type="text" name="txtlfulllocation" placeholder="Enter Full Location"
-                            required>
+                        <input class="w-full" type="text" name="txtlfulllocation" placeholder="Enter Full Location" required>
 
                     </div>
                     <div class="pb-15">
@@ -180,13 +199,11 @@ if (isset($_POST['btnsave'])) {
                     </div>
                     <div class="pb-15">
                         <label class="block">Description</label>
-                        <input class="w-full" type="text" name="txtldescription"
-                            placeholder="Enter Location Description" required>
+                        <input class="w-full" type="text" name="txtldescription" placeholder="Enter Location Description" required>
                     </div>
 
                     <div class="w-full">
-                        <input class="w-full font-bold bg-primary text-white mb-5" type="submit" name="btnsave"
-                            value="Save">
+                        <input class="w-full font-bold bg-primary text-white mb-5" type="submit" name="btnsave" value="Save">
                         <a href="/admin-local">
                             <input class="w-full font-bold bg-secondary text-white" type="button" value="Cancel">
                         </a>
@@ -235,42 +252,42 @@ if (isset($_POST['btnsave'])) {
     <div id="overlay-profile" onmouseenter="toggleProfileMenu()" class="overlay display-none"></div>
 
     <script>
-    var isMenuOpen = false;
-    var menuBar = document.getElementById('menu-bar');
-    var overlay = document.getElementById('overlay');
+        var isMenuOpen = false;
+        var menuBar = document.getElementById('menu-bar');
+        var overlay = document.getElementById('overlay');
 
-    function myFunction() {
-        if (isMenuOpen) {
-            isMenuOpen = false;
-            menuBar.classList.remove("change");
-            document.getElementById("myDropdown").classList.remove("show");
-            overlay.classList.add('display-none');
-        } else {
-            isMenuOpen = true;
-            menuBar.classList.add("change");
-            document.getElementById("myDropdown").classList.add("show");
-            overlay.classList.remove('display-none');
+        function myFunction() {
+            if (isMenuOpen) {
+                isMenuOpen = false;
+                menuBar.classList.remove("change");
+                document.getElementById("myDropdown").classList.remove("show");
+                overlay.classList.add('display-none');
+            } else {
+                isMenuOpen = true;
+                menuBar.classList.add("change");
+                document.getElementById("myDropdown").classList.add("show");
+                overlay.classList.remove('display-none');
+            }
         }
-    }
 
-    // profile menu
-    var isProfileMenuOpen = false;
-    var profileMenuBar = document.getElementById('profile-bar');
-    var profileOverlay = document.getElementById('overlay-profile');
+        // profile menu
+        var isProfileMenuOpen = false;
+        var profileMenuBar = document.getElementById('profile-bar');
+        var profileOverlay = document.getElementById('overlay-profile');
 
-    function toggleProfileMenu() {
-        if (isProfileMenuOpen) {
-            isProfileMenuOpen = false;
-            profileMenuBar.classList.remove("change");
-            document.getElementById("myDropdown2").classList.remove("show");
-            profileOverlay.classList.add('display-none');
-        } else {
-            isProfileMenuOpen = true;
-            profileMenuBar.classList.add("change");
-            document.getElementById("myDropdown2").classList.add("show");
-            profileOverlay.classList.remove('display-none');
+        function toggleProfileMenu() {
+            if (isProfileMenuOpen) {
+                isProfileMenuOpen = false;
+                profileMenuBar.classList.remove("change");
+                document.getElementById("myDropdown2").classList.remove("show");
+                profileOverlay.classList.add('display-none');
+            } else {
+                isProfileMenuOpen = true;
+                profileMenuBar.classList.add("change");
+                document.getElementById("myDropdown2").classList.add("show");
+                profileOverlay.classList.remove('display-none');
+            }
         }
-    }
     </script>
 </body>
 

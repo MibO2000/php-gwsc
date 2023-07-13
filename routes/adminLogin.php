@@ -22,16 +22,16 @@ if (isset($_POST['btnlogin'])) {
     $txtemail = $_POST['txtaemail'];
     $txtpassword = $_POST['txtapassword'];
 
-    $check = "SELECT * FROM ASSIGNMENT.ADMIN WHERE EMAIL = '$txtemail'";
+    $check = "SELECT * FROM gwsc_admin WHERE email = '$txtemail'";
     $query = mysqli_query($connect, $check);
     $count = mysqli_num_rows($query);
 
     if ($count > 0) {
         $data = mysqli_fetch_array($query);
-        if (password_verify($txtpassword, $data['PASSWORD'])) {
-            $txtpassword = $data['PASSWORD'];
-            $aid = $data['ADMIN_ID'];
-            $aname = $data['NAME'];
+        if (password_verify($txtpassword, $data['admin_password'])) {
+            $txtpassword = $data['admin_password'];
+            $aid = $data['admin_id'];
+            $aname = $data['admin_name'];
             $_SESSION['aid'] = $aid;
             $_SESSION['aname'] = $aname;
             header('Location: /admin-pitch');
@@ -88,20 +88,19 @@ if (isset($_POST['btnlogin'])) {
             <h2 style="font-size:20px;font-weight:bold;">GWSC Admin Portal</h2>
         </div>
         <?php if ($isSuccess) { ?>
-        <div class="alert alert-success">
-            <p>Admin registered SUCCESSFULLY!</p>
-        </div>
+            <div class="alert alert-success">
+                <p>Admin registered SUCCESSFULLY!</p>
+            </div>
         <?php } ?>
         <?php if ($isError) { ?>
-        <div class="alert alert-error">
-            <p><?php echo $errorMessage; ?></p>
-        </div>
+            <div class="alert alert-error">
+                <p><?php echo $errorMessage; ?></p>
+            </div>
         <?php } ?>
         <form action="/admin-login" method="POST">
             <div class="pb-15">
                 <label class="block">Email</label>
-                <input class="w-full" type="email" name="txtaemail" placeholder="Enter valid email"
-                    value="<?php echo $_POST['txtaemail'] ?? ''; ?>" required>
+                <input class="w-full" type="email" name="txtaemail" placeholder="Enter valid email" value="<?php echo $_POST['txtaemail'] ?? ''; ?>" required>
             </div>
             <div class="pb-15">
                 <label class="block">Password</label>

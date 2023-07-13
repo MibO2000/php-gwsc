@@ -1,5 +1,8 @@
 <?php
 
+$isSuccess = false;
+$isError = false;
+$errorMessage;
 if (!isset($_SESSION['aid'])) {
     header('Location: /admin-login');
     return;
@@ -14,21 +17,34 @@ if (isset($_POST['btnsave'])) {
     $ptid = $_POST['txtptid'];
     $ptname = $_POST['txtptname'];
     $ptdes = $_POST['txtptdes'];
-    $ptimg1 = $_POST['imgpackType1'];
-    $ptimg2 = $_POST['imgpackType2'];
-    $check = "SELECT * FROM ASSIGNMENT.PACKAGE_TYPE WHERE PACKAGE_TYPE_NAME = '$ptname'";
+
+    $pimg = "images/" . $_FILES['image']['name'];
+    $imageType = pathinfo($pimg, PATHINFO_EXTENSION);
+    if ($imageType != 'jpg' && $imageType != 'jpeg' && $imageType != 'png') {
+        $isError = true;
+        $errorMessage = "Image Type is incorrect!";
+    } else {
+        $isSuccess = true;
+        $image = uniqid() . "-" . $_FILES['image']['name'];
+
+        move_uploaded_file($_FILES['image']['tmp_name'], "images/" . $image);
+    }
+
+    $check = "SELECT * FROM gwsc_package_type WHERE package_type_name = '$ptname'";
     $count = mysqli_num_rows(mysqli_query($connect, $check));
     if ($count > 0) {
         echo "<script>window.alert('Package Type Already exists!')</script>";
     } else {
-        $insert = "INSERT INTO PACKAGE_TYPE (PACKAGE_TYPE_ID, PACKAGE_TYPE_NAME, DESCRIPTION, PICTURE1, PICTURE2)
-        VALUES ('$ptid','$ptname', '$ptdes','$ptimg1','$ptimg2')";
+        $insert = "INSERT INTO gwsc_package_type (package_type_id, package_type_name, package_description, picture)
+        VALUES ('$ptid','$ptname', '$ptdes','$image')";
         $run = mysqli_query($connect, $insert);
         if ($run) {
-            echo "<script>window.alert('New Package Type Added!')</script>";
+            $_SESSION['SUCCESS_REGISTER'] = true;
         } else {
-            echo "<script>window.alert('Something went wrong!')</script>";
+            $_SESSION['FAIL'] = true;
+            $_SESSION['error'] = "Fail to add a new package type";
         }
+        header('Location: /admin-package-type');
     }
 }
 
@@ -47,6 +63,16 @@ if (isset($_POST['btnsave'])) {
 <body>
     <div class="flex justify-between flex-col min-h-screen">
         <main>
+            <?php if ($isSuccess) { ?>
+                <div class="alert alert-success">
+                    <p>Package Type added SUCCESSFULLY!</p>
+                </div>
+            <?php } ?>
+            <?php if ($isError) { ?>
+                <div class="alert alert-error">
+                    <p><?= $errorMessage ?></p>
+                </div>
+            <?php } ?>
             <div>
                 <div class="nav">
                     <div class="logo">
@@ -86,7 +112,6 @@ if (isset($_POST['btnsave'])) {
                         <th>PACKAGE_TYPE_NAME</th>
                         <th>PACKAGE_TYPE_DESCRIPTION</th>
                         <th>PACKAGE_TYPE_IMAGE_1</th>
-                        <th>PACKAGE_TYPE_IMAGE_2</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -98,11 +123,10 @@ if (isset($_POST['btnsave'])) {
                     // Loop through each row and display the data
                     while ($row = mysqli_fetch_assoc($result)) {
                         echo "<tr>";
-                        echo "<td>" . $row['PACKAGE_TYPE_ID'] . "</td>";
-                        echo "<td>" . $row['PACKAGE_TYPE_NAME'] . "</td>";
-                        echo "<td>" . $row['DESCRIPTION'] . "</td>";
-                        echo "<td>" . $row['PICTURE1'] . "</td>";
-                        echo "<td>" . $row['PICTURE2'] . "</td>";
+                        echo "<td>" . $row['package_type_id'] . "</td>";
+                        echo "<td>" . $row['package_type_name'] . "</td>";
+                        echo "<td>" . $row['package_description'] . "</td>";
+                        echo "<td>" . $row['picture'] . "</td>";
                         echo "</tr>";
                     }
                     ?>
@@ -112,10 +136,10 @@ if (isset($_POST['btnsave'])) {
 
             <h2>Add Package Type</h2>
             <div class="form-container">
-                <form class="form-card justify-center items-center" action="/admin-package-type" method="POST">
+                <form class="form-card justify-center items-center" action="/admin-package-type" method="POST" enctype="multipart/form-data">
                     <div class="pb-15">
                         <label class="block">Package Type Id</label>
-                        <input class="w-full" type="text" name="txtptid" value="<?php echo AutoID('PACKAGE_TYPE', 'PACKAGE_TYPE_ID', 'PACKTY', 4); ?>" readonly>
+                        <input class="w-full" type="text" name="txtptid" value="<?php echo AutoID('gwsc_package_type', 'package_type_id', 'pacty', 4); ?>" readonly>
                     </div>
                     <div class="pb-15">
                         <label class="block">Package Type Name</label>
@@ -126,14 +150,9 @@ if (isset($_POST['btnsave'])) {
                         <input class="w-full" type="text" name="txtptdes" placeholder="Enter Package Type Description" required>
                     </div>
                     <div class="pb-15">
-                        <label class="block">Package Type Image 1</label>
-                        <input class="w-full" type="file" name="imgpackType1" placeholder="Enter Package Type Image 1" required>
+                        <label class="block">Package Type Image </label>
+                        <input class="w-full" type="file" name="image" placeholder="Enter Package Type Image" required>
                     </div>
-                    <div class="pb-15">
-                        <label class="block">Package Type Image 2</label>
-                        <input class="w-full" type="file" name="imgpackType2" placeholder="Enter Package Type Image 2" required>
-                    </div>
-
                     <div class="w-full">
                         <input class="w-full font-bold bg-primary text-white mb-5" type="submit" name="btnsave" value="Save">
                         <a href="/admin-package-type">
@@ -148,7 +167,7 @@ if (isset($_POST['btnsave'])) {
 
         <footer class="social-footer items-center">
             <div class="social-footer-left">
-                <p class="social-footer-left-text">Pitch</p>
+                <p class="social-footer-left-text">Package Type</p>
             </div>
             <div>
                 <p class="text-center copyright">© 2023, MibO.<br>All Rights Reserved.</p>

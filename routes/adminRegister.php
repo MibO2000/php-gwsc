@@ -1,5 +1,8 @@
 <?php
 
+$isSuccess = false;
+$isError = false;
+$errorMessage;
 if (isset($_SESSION['cid'])) {
     header('Location: /');
     return;
@@ -16,14 +19,14 @@ if (isset($_POST['btnregister'])) {
     $txtemail = $_POST['txtemail'];
     $txtpassword = password_hash($_POST['txtpassword'], PASSWORD_BCRYPT);
     $txtphone = $_POST['txtphone'];
-    $txtaddress = $_POST['txtcaddress'];
-    $checkemail = "SELECT * FROM ASSIGNMENT.ADMIN WHERE EMAIL = '$txtemail'";
+    $txtaddress = $_POST['txtaddress'];
+    $checkemail = "SELECT * FROM gwsc_admin WHERE email = '$txtemail'";
     $result = mysqli_query($connect, $checkemail);
     $count = mysqli_num_rows($result);
     if ($count > 0) {
         echo "<script>window.alert('Admin Email Already exists!')</script>";
     } else {
-        $insert = "INSERT INTO ASSIGNMENT.ADMIN (ADMIN_ID, NAME, EMAIL, PASSWORD, PHONE, ADDRESS) 
+        $insert = "INSERT INTO gwsc_admin (admin_id, admin_name, email, admin_password, phone, admin_address) 
     VALUES ('$id','$txtname','$txtemail','$txtpassword','$txtphone','$txtaddress')";
         $run = mysqli_query($connect, $insert);
         if ($run) {
@@ -59,7 +62,7 @@ if (isset($_POST['btnregister'])) {
         <form action="/admin-register" method="POST">
             <div class="pb-15">
                 <label class="block">AdminId</label>
-                <input class="w-full" type="text" name="txtcid" value="<?php echo AutoID('ADMIN', 'ADMIN_ID', 'ADM', 4); ?>" readonly>
+                <input class="w-full" type="text" name="txtcid" value="<?php echo AutoID('gwsc_admin', 'admin_id', 'ADMIN', 4); ?>" readonly>
             </div>
             <div class="pb-15">
                 <label class="block">Admin Name</label>
@@ -81,7 +84,7 @@ if (isset($_POST['btnregister'])) {
             </div>
             <div class="pb-15">
                 <label class="block">Admin Address</label>
-                <input class="w-full" type="text" name="txtcaddress" placeholder="Enter customer address" required>
+                <input class="w-full" type="text" name="txtaddress" placeholder="Enter customer address" required>
                 <br>
             </div>
             <div class="w-full">

@@ -13,13 +13,13 @@ if (isset($_POST['btnregister'])) {
     $txtpassword = password_hash($_POST['txtcpassword'], PASSWORD_BCRYPT);
     $txtphone = $_POST['txtcphone'];
     $txtaddress = $_POST['txtcaddress'];
-    $checkemail = "SELECT * FROM CUSTOMER WHERE EMAIL = '$txtemail'";
+    $checkemail = "SELECT * FROM gwsc_customer WHERE email = '$txtemail'";
     $result = mysqli_query($connect, $checkemail);
     $count = mysqli_num_rows($result);
     if ($count > 0) {
         echo "<script>window.alert('Staff Email Already exists!')</script>";
     } else {
-        $insert = "INSERT INTO CUSTOMER(CUSTOMER_ID,FIRST_NAME,SURNAME,EMAIL,PASSWORD,PHONE_NUMBER,ADDRESS,VIEW_COUNT) 
+        $insert = "INSERT INTO gwsc_customer(customer_id,first_name,surname,email,customer_password,phone,customer_address,view_count) 
     VALUES ('$cid','$txtfname','$txtsname','$txtemail','$txtpassword','$txtphone','$txtaddress',1)";
         $run = mysqli_query($connect, $insert);
         if ($run) {

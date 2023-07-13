@@ -1,5 +1,8 @@
 <?php
 
+$isSuccess = false;
+$isError = false;
+$errorMessage;
 if (!isset($_SESSION['aid'])) {
     header('Location: /admin-login');
     return;
@@ -10,23 +13,36 @@ if (isset($_SESSION['cid'])) {
     return;
 }
 
+if (isset($_SESSION['SUCCESS_REGISTER'])) {
+    unset($_SESSION['SUCCESS_REGISTER']);
+    $isSuccess = true;
+}
+if (isset($_SESSION['FAIL'])) {
+    unset($_SESSION['FAIL']);
+    $isError = true;
+    $errorMessage = $_SESSION['error'];
+    unset($_SESSION['error']);
+}
+
 if (isset($_POST['btnsave'])) {
     $ptid = $_POST['txtptid'];
     $ptname = $_POST['txtptname'];
     $ptdes = $_POST['txtptdes'];
-    $check = "SELECT * FROM ASSIGNMENT.LOCATION_TYPE WHERE LOCATION_TYPE_NAME = '$ptname'";
+    $check = "SELECT * FROM gwsc_location_type WHERE location_type_name = '$ptname'";
     $count = mysqli_num_rows(mysqli_query($connect, $check));
     if ($count > 0) {
         echo "<script>window.alert('Location Type Already exists!')</script>";
     } else {
-        $insert = "INSERT INTO LOCATION_TYPE (LOCATION_TYPE_ID, LOCATION_TYPE_NAME, DESCRIPTION)
+        $insert = "INSERT INTO gwsc_location_type (location_type_id, location_type_name, location_description)
         VALUES ('$ptid','$ptname', '$ptdes')";
         $run = mysqli_query($connect, $insert);
         if ($run) {
-            echo "<script>window.alert('New Location Type Added!')</script>";
+            $_SESSION['SUCCESS_REGISTER'] = true;
         } else {
-            echo "<script>window.alert('Something went wrong!')</script>";
+            $_SESSION['FAIL'] = true;
+            $_SESSION['error'] = "Fail to add a new location type";
         }
+        header('Location: /admin-location-type');
     }
 }
 
@@ -45,6 +61,16 @@ if (isset($_POST['btnsave'])) {
 <body>
     <div class="flex justify-between flex-col min-h-screen">
         <main>
+            <?php if ($isSuccess) { ?>
+                <div class="alert alert-success">
+                    <p>Local Attraction added SUCCESSFULLY!</p>
+                </div>
+            <?php } ?>
+            <?php if ($isError) { ?>
+                <div class="alert alert-error">
+                    <p><?= $errorMessage ?></p>
+                </div>
+            <?php } ?>
             <div>
                 <div class="nav">
                     <div class="logo">
@@ -88,15 +114,15 @@ if (isset($_POST['btnsave'])) {
                 <tbody>
                     <?php
 
-                    $query = "SELECT * FROM ASSIGNMENT.LOCATION_TYPE";
+                    $query = "SELECT * FROM gwsc_location_type";
                     $result = mysqli_query($connect, $query);
 
                     // Loop through each row and display the data
                     while ($row = mysqli_fetch_assoc($result)) {
                         echo "<tr>";
-                        echo "<td>" . $row['LOCATION_TYPE_ID'] . "</td>";
-                        echo "<td>" . $row['LOCATION_TYPE_NAME'] . "</td>";
-                        echo "<td>" . $row['DESCRIPTION'] . "</td>";
+                        echo "<td>" . $row['location_type_id'] . "</td>";
+                        echo "<td>" . $row['location_type_name'] . "</td>";
+                        echo "<td>" . $row['location_description'] . "</td>";
                         echo "</tr>";
                     }
                     ?>
@@ -110,7 +136,7 @@ if (isset($_POST['btnsave'])) {
                     <div>
                         <div class="pb-15">
                             <label class="block">Location Type Id</label>
-                            <input class="w-full" type="text" name="txtptid" value="<?php echo AutoID('LOCATION_TYPE', 'LOCATION_TYPE_ID', 'LOCTYP', 4); ?>" readonly>
+                            <input class="w-full" type="text" name="txtptid" value="<?php echo AutoID('gwsc_location_type', 'location_type_id', 'locty', 4); ?>" readonly>
                         </div>
                         <div class="pb-15">
                             <label class="block">Package Type Name</label>
@@ -135,7 +161,7 @@ if (isset($_POST['btnsave'])) {
 
         <footer class="social-footer items-center">
             <div class="social-footer-left">
-                <p class="social-footer-left-text">Pitch</p>
+                <p class="social-footer-left-text">Location Type</p>
             </div>
             <div>
                 <p class="text-center copyright">© 2023, MibO.<br>All Rights Reserved.</p>
