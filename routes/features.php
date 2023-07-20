@@ -5,6 +5,9 @@ if (!isset($_SESSION['cid'])) {
     return;
 }
 
+$wearUrl = "https://55gadgets.com/wearable-technology/feed/";
+$wearArr = simplexml_load_file($wearUrl);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,6 +17,7 @@ if (!isset($_SESSION['cid'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Features</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="icon" href="images/logo.png">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.css" rel="stylesheet">
 </head>
@@ -148,9 +152,23 @@ if (!isset($_SESSION['cid'])) {
                     </div>
                     <div style="width:25%;padding-left:15px;">
                         <div class="rss-feed">
-                            <h2 style="font-size:large;font-weight:bold">
-                                RSS Feed
-                            </h2>
+                            <?php
+
+                            if (isset($wearArr->channel)) {
+                                $wearCha = $wearArr->channel;
+                                echo "<h2 style='font-size:large;font-weight:bold'" . $wearCha->title . "</h2>";
+                                echo "<p>" . $wearCha->description . "</p>";
+                                foreach ($wearCha->item as $item) {
+                                    echo '<div>';
+                                    echo '<h3><a href="' . $item->link . '" target="_blank">' . $item->title . '</a></h3>';
+                                    echo '<p>' . $item->description . '</p>';
+                                    echo '</div>';
+                                }
+                            } else {
+                                print_r("invalid channel");
+                            }
+
+                            ?>
                         </div>
                     </div>
                 </div>

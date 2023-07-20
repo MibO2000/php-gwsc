@@ -69,6 +69,7 @@ if (isset($_POST['btnsave'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ADM-Local-Attraction</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="icon" href="images/logo.png">
 </head>
 
 <body>
@@ -164,7 +165,7 @@ if (isset($_POST['btnsave'])) {
                 <form class="form-card justify-center items-center" action="/admin-local" method="POST" enctype="multipart/form-data">
                     <div class="pb-15">
                         <label class="block">Location Id</label>
-                        <input class="w-full" type="text" name="txtlid" value="<?php echo AutoID('gwsc_location', 'location_id', 'local', 4); ?>" readonly>
+                        <input class="w-full" type="text" name="txtlid" value="<?php echo AutoID('gwsc_location', 'location_id', 'LOCAL', 4); ?>" readonly>
                     </div>
 
                     <div class="pb-15">

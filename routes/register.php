@@ -42,6 +42,7 @@ if (isset($_POST['btnregister'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Travel & Tour</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="icon" href="images/logo.png">
 </head>
 
 <body class="min-h-screen min-w-screen flex justify-center items-center bg-gray login-screen">
@@ -57,7 +58,7 @@ if (isset($_POST['btnregister'])) {
         <form action="/register" method="POST">
             <div class="pb-15">
                 <label class="block">CustomerId</label>
-                <input class="w-full" type="text" name="txtcid" value="<?php echo AutoID('CUSTOMER', 'CUSTOMER_ID', 'CUS', 4); ?>" readonly>
+                <input class="w-full" type="text" name="txtcid" value="<?php echo AutoID('gwsc_customer', 'customer_id', 'CUS', 4); ?>" readonly>
             </div>
             <div class="pb-15">
                 <label class="block">CustomerFirstName</label>

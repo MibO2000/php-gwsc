@@ -26,7 +26,7 @@ if (isset($_POST['btnlogin'])) {
     if ($count > 0) {
         $data = mysqli_fetch_array($query);
         if (password_verify($txtpassword, $data['customer_password'])) {
-            $txtpassword = $data['PASSWORD'];
+            $txtpassword = $data['customer_password'];
             $update = "UPDATE gwsc_customer AS C SET C.view_count = C.view_count + 1 WHERE C.email = '$txtemail'";
             mysqli_query($connect, $update);
             $cid = $data['customer_id'];
@@ -74,6 +74,7 @@ if (isset($_POST['btnlogin'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Travel and Tour</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="icon" href="images/logo.png">
 </head>
 
 <body class="min-h-screen min-w-screen flex justify-center items-center bg-gray login-screen">

@@ -70,6 +70,7 @@ if (isset($_POST['btnsave'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ADM-Package</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="icon" href="images/logo.png">
 </head>
 
 <body>
@@ -188,7 +189,7 @@ if (isset($_POST['btnsave'])) {
                 <form class="form-card justify-center items-center" action="/admin-package" method="POST" enctype="multipart/form-data">
                     <div class="pb-15">
                         <label class="block">PACKAGE_ID</label>
-                        <input class="w-full" type="text" name="txtpid" value="<?php echo AutoID('gwsc_package', 'package_id', 'packa', 4); ?>" readonly>
+                        <input class="w-full" type="text" name="txtpid" value="<?php echo AutoID('gwsc_package', 'package_id', 'PACK', 4); ?>" readonly>
                     </div>
                     <div class="pb-15">
                         <label class="block">PACKAGE_NAME</label>

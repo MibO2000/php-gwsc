@@ -81,6 +81,7 @@ if (isset($_POST['btncart'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Package Detail</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="icon" href="images/logo.png">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.css" rel="stylesheet">
 </head>

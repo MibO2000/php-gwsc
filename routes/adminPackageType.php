@@ -58,6 +58,7 @@ if (isset($_POST['btnsave'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ADM-Package-Type</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="icon" href="images/logo.png">
 </head>
 
 <body>
@@ -117,7 +118,7 @@ if (isset($_POST['btnsave'])) {
                 <tbody>
                     <?php
 
-                    $query = "SELECT * FROM ASSIGNMENT.PACKAGE_TYPE";
+                    $query = "SELECT * FROM ASSIGNMENT.gwsc_package_type";
                     $result = mysqli_query($connect, $query);
 
                     // Loop through each row and display the data
@@ -139,7 +140,7 @@ if (isset($_POST['btnsave'])) {
                 <form class="form-card justify-center items-center" action="/admin-package-type" method="POST" enctype="multipart/form-data">
                     <div class="pb-15">
                         <label class="block">Package Type Id</label>
-                        <input class="w-full" type="text" name="txtptid" value="<?php echo AutoID('gwsc_package_type', 'package_type_id', 'pacty', 4); ?>" readonly>
+                        <input class="w-full" type="text" name="txtptid" value="<?php echo AutoID('gwsc_package_type', 'package_type_id', 'PACTYP', 4); ?>" readonly>
                     </div>
                     <div class="pb-15">
                         <label class="block">Package Type Name</label>

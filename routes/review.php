@@ -66,6 +66,7 @@ function getCustomerName($cid, $connect)
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Reviews</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="icon" href="images/logo.png">
 </head>
 
 <body>
@@ -81,11 +82,8 @@ function getCustomerName($cid, $connect)
                     <li>
                         <a class="menu__item pzero" href="#">
                             <div class="flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor"
-                                    style="padding-left:20px;height:50px;width:50px;">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="padding-left:20px;height:50px;width:50px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
                                 <span style="padding-right:7px"><?php echo $_SESSION['cname']; ?></span>
                             </div>
@@ -99,11 +97,8 @@ function getCustomerName($cid, $connect)
                     <li><a class="menu__item mactive" href="/reviews">Reviews</a></li>
                     <li><a class="menu__item flex items-center cursor-pointer pzero" href="/cart">
                             <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor"
-                                    style="padding-left:20px;height:50px;width:50px;">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="padding-left:20px;height:50px;width:50px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
                                 </svg>
                             </div>
                         </a>
@@ -118,25 +113,18 @@ function getCustomerName($cid, $connect)
                     </div>
 
                     <div class="flex disappear">
-                        <div class="flex items-center cursor-pointer" id="profile-bar"
-                            onmouseenter="toggleProfileMenu()">
+                        <div class="flex items-center cursor-pointer" id="profile-bar" onmouseenter="toggleProfileMenu()">
                             <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor"
-                                    style="padding-left:20px;height:50px;width:50px;">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="padding-left:20px;height:50px;width:50px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
                             </div>
                             <p style="padding-left:7px"><?php echo $_SESSION['cname']; ?></p>
                         </div>
                         <a class="flex items-center cursor-pointer" href="/cart">
                             <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor"
-                                    style="padding-left:20px;height:50px;width:50px;">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="padding-left:20px;height:50px;width:50px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
                                 </svg>
                             </div>
                         </a>
@@ -160,14 +148,14 @@ function getCustomerName($cid, $connect)
 
 
             <?php if ($isSuccess) { ?>
-            <div class="alert alert-success">
-                <p>Package added SUCCESSFULLY!</p>
-            </div>
+                <div class="alert alert-success">
+                    <p>Package added SUCCESSFULLY!</p>
+                </div>
             <?php } ?>
             <?php if ($isError) { ?>
-            <div class="alert alert-error">
-                <p><?= $errorMessage ?></p>
-            </div>
+                <div class="alert alert-error">
+                    <p><?= $errorMessage ?></p>
+                </div>
             <?php } ?>
             <div class="container mx-auto grid sm-grid-cols-2">
                 <div>
@@ -190,8 +178,7 @@ function getCustomerName($cid, $connect)
                             </div>
 
                             <div class="w-full">
-                                <textarea class="w-full" name="content" placeholder="Enter your comment"
-                                    rows="5"></textarea>
+                                <textarea class="w-full" name="content" placeholder="Enter your comment" rows="5"></textarea>
                             </div>
                         </div>
                         <div class="review-sec">
@@ -213,23 +200,28 @@ function getCustomerName($cid, $connect)
                 Reviews
             </h2>
             <div>
-                <?php foreach ($reviews as $review) { ?>
-                <div class="review-card">
-                    <div class="rating">
-                        <?php for ($i = 0; $i < 5; $i++) {
-                                if ($i < $review['stars']) { ?>
-                        <span class="star active"></span>
-                        <?php } else { ?>
-                        <span class="star"></span>
-                        <?php }
-                            } ?>
-                    </div>
-                    <p class="review-name"><?php echo getCustomerName($review['customer_id'], $connect) ?>
-                        <span class="review-date"><?php echo $review['date_time'] ?></span>
-                    </p>
-                    <p><?php echo $review['content'] ?></p>
-                </div>
-                <?php } ?>
+                <?php
+                if (empty($reviews)) {
+                    echo "<p> Review List is empty! </p>";
+                } else {
+                    foreach ($reviews as $review) { ?>
+                        <div class="review-card">
+                            <div class="rating">
+                                <?php for ($i = 0; $i < 5; $i++) {
+                                    if ($i < $review['stars']) { ?>
+                                        <span class="star active"></span>
+                                    <?php } else { ?>
+                                        <span class="star"></span>
+                                <?php }
+                                } ?>
+                            </div>
+                            <p class="review-name"><?php echo getCustomerName($review['customer_id'], $connect) ?>
+                                <span class="review-date"><?php echo $review['date_time'] ?></span>
+                            </p>
+                            <p><?php echo $review['content'] ?></p>
+                        </div>
+                <?php }
+                } ?>
         </main>
 
         <footer class="social-footer items-center">
@@ -269,42 +261,42 @@ function getCustomerName($cid, $connect)
     <div id="overlay-profile" onmouseenter="toggleProfileMenu()" class="overlay display-none"></div>
 
     <script>
-    var isMenuOpen = false;
-    var menuBar = document.getElementById('menu-bar');
-    var overlay = document.getElementById('overlay');
+        var isMenuOpen = false;
+        var menuBar = document.getElementById('menu-bar');
+        var overlay = document.getElementById('overlay');
 
-    function myFunction() {
-        if (isMenuOpen) {
-            isMenuOpen = false;
-            menuBar.classList.remove("change");
-            document.getElementById("myDropdown").classList.remove("show");
-            overlay.classList.add('display-none');
-        } else {
-            isMenuOpen = true;
-            menuBar.classList.add("change");
-            document.getElementById("myDropdown").classList.add("show");
-            overlay.classList.remove('display-none');
+        function myFunction() {
+            if (isMenuOpen) {
+                isMenuOpen = false;
+                menuBar.classList.remove("change");
+                document.getElementById("myDropdown").classList.remove("show");
+                overlay.classList.add('display-none');
+            } else {
+                isMenuOpen = true;
+                menuBar.classList.add("change");
+                document.getElementById("myDropdown").classList.add("show");
+                overlay.classList.remove('display-none');
+            }
         }
-    }
 
-    // profile menu
-    var isProfileMenuOpen = false;
-    var profileMenuBar = document.getElementById('profile-bar');
-    var profileOverlay = document.getElementById('overlay-profile');
+        // profile menu
+        var isProfileMenuOpen = false;
+        var profileMenuBar = document.getElementById('profile-bar');
+        var profileOverlay = document.getElementById('overlay-profile');
 
-    function toggleProfileMenu() {
-        if (isProfileMenuOpen) {
-            isProfileMenuOpen = false;
-            profileMenuBar.classList.remove("change");
-            document.getElementById("myDropdown2").classList.remove("show");
-            profileOverlay.classList.add('display-none');
-        } else {
-            isProfileMenuOpen = true;
-            profileMenuBar.classList.add("change");
-            document.getElementById("myDropdown2").classList.add("show");
-            profileOverlay.classList.remove('display-none');
+        function toggleProfileMenu() {
+            if (isProfileMenuOpen) {
+                isProfileMenuOpen = false;
+                profileMenuBar.classList.remove("change");
+                document.getElementById("myDropdown2").classList.remove("show");
+                profileOverlay.classList.add('display-none');
+            } else {
+                isProfileMenuOpen = true;
+                profileMenuBar.classList.add("change");
+                document.getElementById("myDropdown2").classList.add("show");
+                profileOverlay.classList.remove('display-none');
+            }
         }
-    }
     </script>
 </body>
 

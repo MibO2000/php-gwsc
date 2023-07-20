@@ -44,6 +44,7 @@ if (isset($_POST['btnsave'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ADM-Pitch-Type</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="icon" href="images/logo.png">
 </head>
 
 <body>

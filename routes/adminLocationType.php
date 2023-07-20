@@ -56,6 +56,7 @@ if (isset($_POST['btnsave'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ADM-Location-Type</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="icon" href="images/logo.png">
 </head>
 
 <body>
@@ -136,7 +137,7 @@ if (isset($_POST['btnsave'])) {
                     <div>
                         <div class="pb-15">
                             <label class="block">Location Type Id</label>
-                            <input class="w-full" type="text" name="txtptid" value="<?php echo AutoID('gwsc_location_type', 'location_type_id', 'locty', 4); ?>" readonly>
+                            <input class="w-full" type="text" name="txtptid" value="<?php echo AutoID('gwsc_location_type', 'location_type_id', 'LOCTYP', 4); ?>" readonly>
                         </div>
                         <div class="pb-15">
                             <label class="block">Package Type Name</label>

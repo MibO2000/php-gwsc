@@ -75,6 +75,7 @@ if (isset($_POST['btnlogin'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Travel and Tour</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="icon" href="images/logo.png">
 </head>
 
 <body class="min-h-screen min-w-screen flex justify-center items-center bg-gray login-screen">

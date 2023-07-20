@@ -81,7 +81,9 @@ switch ($path) {
     case '/cart':
         require __DIR__ . '/routes/cart.php';
         break;
-
+    case '/test';
+        require __DIR__ . '/routes/test.php';
+        break;
     default:
         http_response_code(404);
         require __DIR__ . '/routes/404.php';

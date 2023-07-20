@@ -1047,6 +1047,7 @@ h2 {
   border: solid 0.5px #000;
   height: 100%;
   padding: 20px 10px;
+  overflow: hidden;
 }
 
 .ads {

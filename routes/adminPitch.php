@@ -64,6 +64,7 @@ if (isset($_POST['btnsave'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ADM-Pitch</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="icon" href="images/logo.png">
 </head>
 
 <body>
@@ -160,7 +161,7 @@ if (isset($_POST['btnsave'])) {
                 <form class="form-card justify-center items-center" action="/admin-pitch" method="POST" enctype="multipart/form-data">
                     <div class="pb-15">
                         <label class="block">PitchId</label>
-                        <input class="w-full" type="text" name="txtpid" value="<?php echo AutoID('gwsc_pitch', 'pitch_id', 'pitch', 4); ?>" readonly>
+                        <input class="w-full" type="text" name="txtpid" value="<?php echo AutoID('gwsc_pitch', 'pitch_id', 'PITCH', 4); ?>" readonly>
                     </div>
                     <div class="pb-15">
                         <label class="block">Pitch Name</label>
