@@ -3,6 +3,7 @@
 $isSuccess = false;
 $isError = false;
 $errorMessage;
+
 if (!isset($_SESSION['cid'])) {
     header('Location: /login');
     return;
@@ -24,10 +25,11 @@ if (isset($_SESSION['FAIL'])) {
     $errorMessage = $_SESSION['error'];
     unset($_SESSION['error']);
 }
-$pid = $_GET['id'];
-$packageSql = "SELECT * FROM ASSIGNMENT.PACKAGE WHERE PACKAGE_ID = '$pid'";
-$packageQuery = mysqli_query($connect, $packageSql);
 
+$pid = $_GET['id'];
+$pid = trim($pid, "'");
+$packageSql = "SELECT * FROM gwsc_package WHERE package_id = '$pid'";
+$packageQuery = mysqli_query($connect, $packageSql);
 $package = mysqli_fetch_assoc($packageQuery);
 if ($package) {
 } else {
@@ -35,32 +37,67 @@ if ($package) {
     require __DIR__ . '/404.php';
     return;
 }
-$pid = $package['PITCH_TYPE_ID'];
-$lid = $package['LOCATION_ID'];
-$pquery = "SELECT * FROM ASSIGNMENT.PITCH WHERE PITCH_ID = '$pid'";
+$pitchId = $package['pitch_id'];
+$lid = $package['location_id'];
+$ptid = $package['package_type_id'];
+$quantity = $package['quantity'];
+
+$pquery = "SELECT * FROM gwsc_pitch WHERE pitch_id = '$pitchId'";
 $pitchQ = mysqli_query($connect, $pquery);
 $pitch = mysqli_fetch_assoc($pitchQ);
 
-
-$lquery = "SELECT * FROM ASSIGNMENT.LOCATION WHERE LOCATION_ID = '$lid'";
+$lquery = "SELECT * FROM gwsc_location WHERE location_id = '$lid'";
 $locationQ = mysqli_query($connect, $lquery);
 $local = mysqli_fetch_assoc($locationQ);
 
+$ptquery = "SELECT * FROM gwsc_package_type WHERE package_type_id = '$ptid'";
+$ptQ = mysqli_query($connect, $ptquery);
+$ptype = mysqli_fetch_assoc($ptQ);
 
 if (isset($_POST['btncart'])) {
-    $bid = AutoID('BOOKING', 'BOOKING_ID', 'BOOK', 4);
-    $quantity = $_POST['quantity'];
-    $price = $package['PRICE'];
-    $date = $_POST['date'];
-    $id = $_POST['id'];
     $cid = $_SESSION['cid'];
+    $bdid = AutoID('gwsc_booking_detail', 'booking_detail_id', 'BOOKDE', 4);
+    $quantity = $_POST['quantity'];
+    $price = $package['price'];
+    $date = $_POST['date'];
+    $checkDate = new DateTime($date);
     $tax = 0.1 * $price * $quantity;
     $total = $price * $quantity;
     $cash = $tax + $total;
     $status = 'INIT';
-    print_r($bid . ' | ' . $quantity . ' | ' . $price . ' | ' . $date . ' | ' . $id . ' | ' . $cid . ' | ' . $tax . ' | ' . $cash . ' | ' . $status);
-    $insert = "INSERT INTO ASSIGNMENT.BOOKING (BOOKING_ID, CUSTOMER_ID, PACKAGE_ID, QUANTITY, TAX, PRICE, TOTAL_AMOUNT, BOOKING_DATE, BOOKING_STATUS) 
-    VALUES ('$bid','$cid','$id','$quantity', '$tax', '$price', '$cash', '$date', '$status')";
+    $currentDateTime = new DateTime();
+    $orderTime = $currentDateTime->format('Y-m-d H:i:s.u');
+    $bid = AutoID('gwsc_booking', 'booking_id', 'BOOK', 4);
+
+    $checkQuery = "SELECT * FROM gwsc_booking_detail WHERE booking_date = '$date' and package_id = '$pid'";
+    $checkSql = mysqli_query($connect, $checkQuery);
+    if ($quantity - mysqli_num_rows($checkSql) <= 0) {
+        $_SESSION['FAIL'] = true;
+        $_SESSION['error'] = "Date Already Booked";
+        header("Location: /package-detail?id='$pid'");
+        return;
+    }
+    if ($checkDate < $currentDateTime) {
+        $_SESSION['FAIL'] = true;
+        $_SESSION['error'] = "Date is Wrong";
+        header("Location: /package-detail?id='$pid'");
+        return;
+    }
+
+
+    $bookQuery = "SELECT * FROM gwsc_booking WHERE customer_id = '$cid' and booking_status = '$status'";
+    $bkQ = mysqli_query($connect, $bookQuery);
+    if (mysqli_num_rows($bkQ) > 0) {
+        $booking = mysqli_fetch_assoc($bkQ);
+        $bid = $booking['booking_id'];
+    } else {
+        $insert = "INSERT INTO gwsc_booking (booking_id, customer_id, order_time, booking_status) 
+VALUES ('$bid', '$cid', '$orderTime', '$status')";
+        $run = mysqli_query($connect, $insert);
+    }
+
+    $insert = "INSERT INTO gwsc_booking_detail (booking_detail_id, booking_id, package_id, quantity, tax, price, total_price, booking_date) 
+    VALUES ('$bdid','$bid','$pid','$quantity', '$tax', '$price', '$cash', '$date')";
     $run = mysqli_query($connect, $insert);
     if ($run) {
         $_SESSION['SUCCESS_REGISTER'] = true;
@@ -143,17 +180,17 @@ if (isset($_POST['btncart'])) {
             <div class="container mx-auto" style="padding-top:54px;padding-bottom:50px;">
                 <form method="POST">
                     <div class="flex" style="gap:20px">
-                        <img class="w-full object-cover object-center detail-thumbnail" src="images/<?= $package['PICTURE1'] ?>">
+                        <img class="w-full object-cover object-center detail-thumbnail" src="images/<?= $package['package_image'] ?>">
 
                         <div class="flex flex-col w-full justify-between" style="padding:20px 10px;">
                             <div>
                                 <h2 style="font-size:xx-large;font-weight:bold;text-align:left">
-                                    <?= $package['PACKAGE_NAME'] ?>
+                                    <?= $package['package_name'] ?>
                                 </h2>
                                 <div class="py-5 flex">
-                                    <div class="chip"><?= $pitch['PITCH_NAME'] ?>
+                                    <div class="chip"><?= $pitch['pitch_name'] ?>
                                     </div>
-                                    <div class="chip"><?= $local['LOCATION_NAME'] ?>
+                                    <div class="chip"><?= $local['location_name'] ?>
                                     </div>
                                 </div>
                                 <div class="padding-top:20px">
@@ -163,7 +200,7 @@ if (isset($_POST['btncart'])) {
                                 </div>
                             </div>
                             <div class='w-full flex justify-between items-center'>
-                                <p class="price"><?= $package['PRICE'] ?></p>
+                                <p class="price"><?= $package['price'] ?></p>
                                 <div class="flex" id="item-count">
                                     <button type="button" id="decrease">-</button>
                                     <input name="quantity" value=1 class="text-center" style="width:50px" type="number">
@@ -189,7 +226,7 @@ if (isset($_POST['btncart'])) {
                     </div>
                     <div class="w-full">
                         <p>
-                            <?= $package['DESCRIPTION1'] ?>
+                            <?= $package['pitch_description'] ?>
                         </p>
                     </div>
                 </div>
@@ -200,7 +237,7 @@ if (isset($_POST['btncart'])) {
                     <div class="w-full">
                         <p>
                         <p>
-                            <?= $pitch['DESCRIPTION_PITCH'] ?>
+                            <?= $pitch['pitch_description'] ?>
                         </p>
                         </p>
                     </div>
@@ -221,7 +258,7 @@ if (isset($_POST['btncart'])) {
                     </div>
                     <div class="w-full">
                         <p>
-                            <?= $local['DESCRIPTION'] ?>
+                            <?= $local['location_description'] ?>
                         </p>
                     </div>
                 </div>
@@ -231,10 +268,10 @@ if (isset($_POST['btncart'])) {
                 <div class="grid grid-cols-2" style="gap:20px;padding:50px 10px;">
                     <div class="flex justify-center items-center h-full flex-col">
                         <h2 style="font-size:large;font-weight:bold;padding-bottom:15px;">
-                            <?= $local['FULL_LOCATION'] ?>
+                            <?= $local['full_location'] ?>
                         </h2>
                         <p>
-                            <?= $package['DESCRIPTION2'] ?>
+                            <?= $ptype['package_description'] ?>
                         </p>
                     </div>
                     <div>

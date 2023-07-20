@@ -22,13 +22,32 @@ if (isset($_SESSION['FAIL'])) {
 }
 if (isset($_POST['btndelete'])) {
     $bid = $_POST['id'];
-    $deleteQuery = "DELETE FROM ASSIGNMENT.BOOKING WHERE BOOKING_ID = '$bid'";
+    $bookDetailSql = "SELECT * FROM gwsc_booking_detail WHERE booking_detail_id = '$bid'";
+    $bookDetailquery = mysqli_query($connect, $bookDetailSql);
+    $book = mysqli_fetch_assoc($bookDetailquery);
+    $bookid = $book['booking_id'];
+
+    $bookSql = "SELECT * FROM gwsc_booking_detail WHERE booking_id = '$bookid'";
+    $bookquery = mysqli_query($connect, $bookSql);
+
+
+
+    $deleteQuery1 = "DELETE FROM gwsc_booking_detail WHERE booking_detail_id = '$bid'";
+    $deleteQuery2 = "DELETE FROM gwsc_booking WHERE booking_id = '$bookid'";
 
     // Execute the DELETE query
-    if (mysqli_query($connect, $deleteQuery)) {
-        $_SESSION['SUCCESS_REGISTER'] = true;
-        $_SESSION['message'] = 'Booking removed SUCCESSFULLY!';
-        header('Location: /cart');
+    if (mysqli_query($connect, $deleteQuery1)) {
+        if (mysqli_num_rows($bookquery) == 1) {
+            if (mysqli_query($connect, $deleteQuery2)) {
+                $_SESSION['SUCCESS_REGISTER'] = true;
+                $_SESSION['message'] = 'Booking removed SUCCESSFULLY!';
+                header('Location: /cart');
+            } else {
+                $_SESSION['FAIL'] = true;
+                $_SESSION['error'] = "Error deleting record: " . mysqli_error($connect);
+                header('Location: /cart');
+            }
+        }
     } else {
         $_SESSION['FAIL'] = true;
         $_SESSION['error'] = "Error deleting record: " . mysqli_error($connect);
@@ -36,7 +55,7 @@ if (isset($_POST['btndelete'])) {
     }
 }
 if (isset($_POST['btncheckout'])) {
-    $updateQuery = "UPDATE ASSIGNMENT.BOOKING SET BOOKING_STATUS = 'SUCCESS' WHERE CUSTOMER_ID = '$cid'";
+    $updateQuery = "UPDATE gwsc_booking SET booking_status = 'SUCCESS', order_time = NOW() WHERE customer_id = '$cid'";
 
     if (mysqli_query($connect, $updateQuery)) {
         $_SESSION['SUCCESS_REGISTER'] = true;
@@ -51,57 +70,41 @@ if (isset($_POST['btncheckout'])) {
 
 function getPitchName($pid, $connect)
 {
-    $pquery = "SELECT * FROM ASSIGNMENT.PITCH WHERE PITCH_ID = '$pid'";
+    $pquery = "SELECT * FROM gwsc_pitch WHERE pitch_id = '$pid'";
     $result = mysqli_query($connect, $pquery);
     $resultData = mysqli_fetch_assoc($result);
-    return $resultData['PITCH_NAME'];
+    return $resultData['pitch_name'];
 }
 
 function getLocName($lid, $connect)
 {
-    $lquery = "SELECT * FROM ASSIGNMENT.LOCATION WHERE LOCATION_ID = '$lid'";
+    $lquery = "SELECT * FROM gwsc_location WHERE location_id = '$lid'";
     $result = mysqli_query($connect, $lquery);
     $resultData = mysqli_fetch_assoc($result);
-    return $resultData['LOCATION_NAME'];
+    return $resultData['location_name'];
 }
 function getPack($packId, $connect)
 {
-    $packageSql = "SELECT * FROM ASSIGNMENT.PACKAGE WHERE PACKAGE_ID = '$packId'";
+    $packageSql = "SELECT * FROM gwsc_package WHERE package_id = '$packId'";
     $packageQuery = mysqli_query($connect, $packageSql);
     $package = mysqli_fetch_assoc($packageQuery);
     return $package;
 }
 
 
-$bookingsql = "SELECT * FROM ASSIGNMENT.BOOKING WHERE CUSTOMER_ID = '$cid' AND BOOKING_STATUS = 'INIT'";
+$bookingsql = "SELECT * FROM gwsc_booking WHERE customer_id = '$cid' AND booking_status = 'INIT'";
 $bookingquery = mysqli_query($connect, $bookingsql);
+$book = mysqli_fetch_assoc($bookingquery);
 $bookings = array(); // Initialize an empty array to hold the rows
-while ($row = $bookingquery->fetch_array()) {
-    $bookings[] = $row; // Append each row to the array
+if (empty($book)) {
+} else {
+    $bookId = $book['booking_id'];
+    $bookDetailSql = "SELECT * FROM gwsc_booking_detail WHERE booking_id = '$bookId'";
+    $bookDetailquery = mysqli_query($connect, $bookDetailSql);
+    while ($row = $bookDetailquery->fetch_array()) {
+        $bookings[] = $row; // Append each row to the array
+    }
 }
-
-
-$items = [
-    [
-        'id' => 1,
-        'title' => 'Léonard Cotte',
-        'image' => 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2970&q=80',
-        'tags' => ['Location', 'Pitch'],
-        'price' => 80,
-        'quantity' => 2,
-        'date' => '2023-07-22',
-    ],
-    [
-        'id' => 2,
-        'title' => 'Alesia Kazantceva',
-        'image' => 'https://plus.unsplash.com/premium_photo-1666283181610-b95ee7e55465?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2970&q=80',
-        'tags' => ['Pitch'],
-        'price' => 120,
-        'quantity' => 1,
-        'date' => '2023-07-25',
-    ],
-];
-
 $total = 0;
 
 ?>
@@ -208,43 +211,47 @@ $total = 0;
 
             <form method="POST">
                 <div class="container mx-auto" style="padding-top:54px;padding-bottom:50px;">
-                    <?php foreach ($bookings as $booking) : ?>
-                        <?php $pack = getPack($booking['PACKAGE_ID'], $connect) ?>
-                        <form method="POST">
-                            <div class="package-card">
-                                <img class="thumbnail" src="images/<?= $pack['PICTURE1'] ?>">
-                                <div class="detail">
-                                    <div>
-                                        <h2><?= $pack['PACKAGE_NAME'] ?></h2>
-                                        <div class="py-5 flex">
-                                            <div class="chip"><?= getPitchName($pack['PITCH_TYPE_ID'], $connect) ?></div>
-                                            <div class="chip"><?= getLocName($pack['LOCATION_ID'], $connect) ?></div>
-                                        </div>
-                                        <div>
-                                            <label style="font-size:small;padding-bottom:5px;display:block;">Date</label>
-                                            <input type="date" value="<?= date("Y-m-d", strtotime(($booking['BOOKING_DATE']))) ?>" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center w-full justify-between">
-                                        <div>
-                                            <p class="price"><?= $booking['TOTAL_AMOUNT'] ?></p>
-                                        </div>
-                                        <div>
-                                            <input type="hidden" name="id" value="<?= $booking['BOOKING_ID'] ?>">
-                                            <div class="flex" id="item-count">
-                                                <input name="quantity" value="<?= $booking['QUANTITY'] ?>" class="text-center" style="width:50px" type="number">
-                                            </div>
+                    <?php
+                    if (!empty($bookings)) {
 
-                                            <div style="padding-top:5px">
-                                                <button class="w-full bg-error text-white" name="btndelete">Remove</button>
+                        foreach ($bookings as $booking) : ?>
+                            <?php $pack = getPack($booking['package_id'], $connect) ?>
+                            <form method="POST">
+                                <div class="package-card">
+                                    <img class="thumbnail" src="images/<?= $pack['package_image'] ?>">
+                                    <div class="detail">
+                                        <div>
+                                            <h2><?= $pack['package_name'] ?></h2>
+                                            <div class="py-5 flex">
+                                                <div class="chip"><?= getPitchName($pack['pitch_id'], $connect) ?></div>
+                                                <div class="chip"><?= getLocName($pack['location_id'], $connect) ?></div>
+                                            </div>
+                                            <div>
+                                                <label style="font-size:small;padding-bottom:5px;display:block;">Date</label>
+                                                <input type="date" value="<?= date("Y-m-d", strtotime(($booking['booking_date']))) ?>" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center w-full justify-between">
+                                            <div>
+                                                <p class="price"><?= $booking['total_price'] ?></p>
+                                            </div>
+                                            <div>
+                                                <input type="hidden" name="id" value="<?= $booking['booking_detail_id'] ?>">
+                                                <div class="flex" id="item-count">
+                                                    <input name="quantity" value="<?= $booking['quantity'] ?>" class="text-center" style="width:50px" type="number">
+                                                </div>
+
+                                                <div style="padding-top:5px">
+                                                    <button class="w-full bg-error text-white" name="btndelete">Remove</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </form>
-                        <?php $total += $booking['TOTAL_AMOUNT']; ?>
-                    <?php endforeach; ?>
+                            </form>
+                            <?php $total += $booking['total_price']; ?>
+                    <?php endforeach;
+                    } ?>
 
 
                     <div style="padding-top:40px;float:right;padding-right:40px;padding-bottom:40px;" class="flex space-x-5 items-center">

@@ -40,15 +40,15 @@ if (isset($_POST['btnsave'])) {
         move_uploaded_file($_FILES['image']['tmp_name'], "images/" . $image);
     }
 
-    $pdiscount = $_POST['txtpdiscount'];
+    $pquantity = $_POST['txtpquantity'];
 
     $check = "SELECT * FROM gwsc_package WHERE package_name = '$pname'";
     $count = mysqli_num_rows(mysqli_query($connect, $check));
     if ($count > 0) {
         echo "<script>window.alert('Pitch Already exists!')</script>";
     } else {
-        $insert = "INSERT INTO gwsc_package (package_id, package_name, package_type_id, pitch_id, location_id, duration, price, pitch_description, package_image, discount) 
-        VALUES ('$pid','$pname', '$packType', '$pitch', '$location', '$pduration', '$pprice', '$pdes', '$image', '$pdiscount')";
+        $insert = "INSERT INTO gwsc_package (package_id, package_name, package_type_id, pitch_id, location_id, duration, price, pitch_description, package_image, quantity) 
+        VALUES ('$pid','$pname', '$packType', '$pitch', '$location', '$pduration', '$pprice', '$pdes', '$image', '$pquantity')";
         $run = mysqli_query($connect, $insert);
         if ($run) {
             $_SESSION['SUCCESS_REGISTER'] = true;
@@ -127,7 +127,7 @@ if (isset($_POST['btnsave'])) {
                         <th>PRICE</th>
                         <th>DESCRIPTION</th>
                         <th>PICTURE</th>
-                        <th>DISCOUNT</th>
+                        <th>QUANTITY</th>
                         <th>PACKAGE_TYPE</th>
                         <th>PITCH</th>
                         <th>LOCATION</th>
@@ -159,7 +159,7 @@ if (isset($_POST['btnsave'])) {
                         echo "<td>" . $row['price'] . "</td>";
                         echo "<td>" . $row['pitch_description'] . "</td>";
                         echo "<td>" . $row['package_image'] . "</td>";
-                        echo "<td>" . $row['discount'] . "</td>";
+                        echo "<td>" . $row['quantity'] . "</td>";
                         if ($pkresult && mysqli_num_rows($pkresult) > 0) {
                             $row = mysqli_fetch_assoc($pkresult);
                             $packageType = $row['package_type_name'];
@@ -258,8 +258,8 @@ if (isset($_POST['btnsave'])) {
                         <input class="w-full" type="file" name="image" placeholder="Enter Package Image 1" required>
                     </div>
                     <div class="pb-15">
-                        <label class="block">Package Discount</label>
-                        <input class="w-full" type="number" name="txtpdiscount" placeholder="Enter Package Discount" required>
+                        <label class="block">Package Quantity</label>
+                        <input class="w-full" type="number" name="txtpquantity" placeholder="Enter Package Quantity" required>
                     </div>
 
                     <!-- Dropdown List -->

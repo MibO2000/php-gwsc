@@ -55,7 +55,7 @@ $createPitch = "CREATE TABLE gwsc_pitch (
     pitch_name VARCHAR(20),
     duration INT,
     price INT,
-    pitch_description VARCHAR(100),
+    pitch_description TEXT,
     pitch_image VARCHAR(255),
     pitch_type_id VARCHAR(30),
     FOREIGN KEY (pitch_type_id) REFERENCES gwsc_pitch_type (pitch_type_id),
@@ -71,7 +71,7 @@ if ($query) {
 $createLocationType = "CREATE TABLE gwsc_location_type (
     location_type_id VARCHAR(30) NOT NULL PRIMARY KEY ,
     location_type_name VARCHAR(20),
-    location_description VARCHAR(255),
+    location_description TEXT,
     CONSTRAINT l_id_name UNIQUE (location_type_id,location_type_name)
   )";
 $query = mysqli_query($connect, $createLocationType);
@@ -84,7 +84,7 @@ if ($query) {
 $createPackageType = "CREATE TABLE gwsc_package_type (
     package_type_id VARCHAR(30) NOT NULL PRIMARY KEY,
     package_type_name VARCHAR(20),
-    package_description VARCHAR(255),
+    package_description TEXT,
     picture VARCHAR(255),
     CONSTRAINT pt_id_name UNIQUE (package_type_id,package_type_name)
   )";
@@ -101,7 +101,7 @@ $createLocation = "CREATE TABLE gwsc_location (
     location_name VARCHAR(20),
     full_location VARCHAR(255),
     location_picture VARCHAR(255),
-    location_description VARCHAR(255),
+    location_description TEXT,
     FOREIGN KEY (location_type_id) REFERENCES gwsc_location_type (location_type_id),
     CONSTRAINT lt_id_name UNIQUE (location_id,location_name)
   )";
@@ -120,9 +120,9 @@ $createPackage = "CREATE TABLE gwsc_package (
     location_id VARCHAR(30),
     duration INT,
     price INT,
-    pitch_description VARCHAR(255),
+    pitch_description TEXT,
     package_image VARCHAR(255),
-    discount VARCHAR(10),
+    quantity INT,
     FOREIGN KEY (pitch_id) REFERENCES gwsc_pitch (pitch_id),
     FOREIGN KEY (location_id) REFERENCES gwsc_location (location_id),
     CONSTRAINT p_id_name UNIQUE (package_id,package_name)
@@ -137,7 +137,7 @@ if ($query) {
 $createReview = "CREATE TABLE gwsc_review (
     review_id VARCHAR(30) NOT NULL PRIMARY KEY,
     customer_id VARCHAR(30),
-    content VARCHAR(255),
+    content TEXT,
     stars INT,
     date_time DATE,
     FOREIGN KEY (customer_id) REFERENCES gwsc_customer (customer_id),

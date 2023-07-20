@@ -42,7 +42,7 @@ if (isset($_POST['btnsave'])) {
     if ($count > 0) {
         echo "<script>window.alert('Pitch Already exists!')</script>";
     } else {
-        $insert = "INSERT INTO PITCH(pitch_id, pitch_name, duration, price, pitch_description, pitch_image, pitch_type_id)
+        $insert = "INSERT INTO gwsc_pitch(pitch_id, pitch_name, duration, price, pitch_description, pitch_image, pitch_type_id)
         VALUES ('$pid','$pname', '$pduration', '$pprice', '$pdes', '$image', '$ptype')";
         $run = mysqli_query($connect, $insert);
         if ($run) {

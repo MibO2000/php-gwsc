@@ -35,8 +35,8 @@ if (isset($_POST['btnsave'])) {
     if ($count > 0) {
         echo "<script>window.alert('Package Type Already exists!')</script>";
     } else {
-        $insert = "INSERT INTO gwsc_package_type (package_type_id, package_type_name, package_description, picture)
-        VALUES ('$ptid','$ptname', '$ptdes','$image')";
+        $insert = `INSERT INTO gwsc_package_type (package_type_id, package_type_name, package_description, picture)
+        VALUES ('$ptid','$ptname', '$ptdes','$image')`;
         $run = mysqli_query($connect, $insert);
         if ($run) {
             $_SESSION['SUCCESS_REGISTER'] = true;

@@ -6,8 +6,17 @@ if (!isset($_SESSION['cid'])) {
     header('Location: /login');
     return;
 }
+$packName = null;
+$pitchName = null;
+$locationName = null;
 if (isset($_GET['pack'])) {
-    $searchQuery = $_GET['pack'];
+    $packName = $_GET['pack'];
+}
+if (isset($_GET['pitch'])) {
+    $pitchName = $_GET['pitch'];
+}
+if (isset($_GET['location'])) {
+    $locationName = $_GET['location'];
 }
 
 if (isset($_SESSION['SUCCESS_REGISTER'])) {
@@ -21,7 +30,11 @@ if (isset($_SESSION['FAIL'])) {
     $errorMessage = $_SESSION['error'];
     unset($_SESSION['error']);
 }
-
+function isBlank($str)
+{
+    if (is_null($str)) return true;
+    return trim($str) === '';
+}
 function getPitchName($pid, $connect)
 {
     $pquery = "SELECT * FROM gwsc_pitch WHERE pitch_id = '$pid'";
@@ -53,12 +66,45 @@ $localLists = array();
 while ($row = $localQuery->fetch_array()) {
     $localLists[] = $row; // Append each row to the array
 }
-$packageSql = "SELECT * FROM gwsc_package ORDER BY package_id";
+$pitchId = null;
+$localId = null;
+
+
+$packageSql = "SELECT * FROM gwsc_package ";
+$where = false;
+if (!isBlank($packName)) {
+    $packageSql = $packageSql . " where UPPER(package_name) LIKE CONCAT('%', UPPER('$packName'), '%') ";
+    $where = true;
+}
+if (!isBlank($pitchName)) {
+    $pquery = "SELECT * FROM gwsc_pitch WHERE pitch_name = '$pitchName'";
+    $pitchQ = mysqli_query($connect, $pquery);
+    $pitch = mysqli_fetch_assoc($pitchQ);
+    $pitchId = $pitch['pitch_id'];
+    if ($where) {
+        $packageSql = $packageSql . " AND pitch_id = '$pitchId' ";
+    } else {
+        $packageSql = $packageSql . " WHERE pitch_id = '$pitchId' ";
+    }
+}
+if (!isBlank($locationName)) {
+    $lquery = "SELECT * FROM gwsc_location WHERE location_name = '$locationName'";
+    $locationQ = mysqli_query($connect, $lquery);
+    $local = mysqli_fetch_assoc($locationQ);
+    $localId = $local['location_id'];
+    if ($where) {
+        $packageSql = $packageSql . " AND location_id = '$localId' ";
+    } else {
+        $packageSql = $packageSql . " WHERE location_id = '$localId' ";
+    }
+}
+$packageSql = $packageSql . " order by package_id";
 $packageQuery = mysqli_query($connect, $packageSql);
 $packages = array(); // Initialize an empty array to hold the rows
 while ($row = $packageQuery->fetch_array()) {
     $packages[] = $row; // Append each row to the array
 }
+
 
 // $packages = [
 //     [
@@ -158,8 +204,8 @@ while ($row = $packageQuery->fetch_array()) {
                                 <select class="w-full" name="pitch" id="pitch" style="padding:10px 20px;">
 
 
-                                    <option value="" disabled <?php echo isset($_GET['pitch']) ? '' : 'selected'; ?>>-
-                                        All -</option>
+                                    <option value="" <?php echo isset($_GET['pitch']) ? '' : 'selected'; ?>>
+                                        - All -</option>
                                     <?php foreach ($pitchLists as $pitch) { ?>
                                         <option value="<?php echo $pitch['pitch_name'] ?>" <?php echo ($_GET['pitch'] ?? '') === $pitch['pitch_name'] ? 'selected' : ''; ?>>
                                             <?php echo $pitch['pitch_name'] ?>
@@ -171,7 +217,7 @@ while ($row = $packageQuery->fetch_array()) {
                             <div>
                                 <label for="location">Location</label>
                                 <select class="w-full" name="location" id="location" style="padding:10px 20px;">
-                                    <option value="" disabled <?php echo isset($_GET['location']) ? '' : 'selected'; ?>>
+                                    <option value="" <?php echo isset($_GET['location']) ? '' : 'selected'; ?>>
                                         - All -</option>
                                     <?php foreach ($localLists as $local) { ?>
                                         <option value="<?php echo $local['location_name'] ?>" <?php echo ($_GET['location'] ?? '') === $local['location_name'] ? 'selected' : ''; ?>>

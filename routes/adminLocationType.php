@@ -140,11 +140,11 @@ if (isset($_POST['btnsave'])) {
                             <input class="w-full" type="text" name="txtptid" value="<?php echo AutoID('gwsc_location_type', 'location_type_id', 'LOCTYP', 4); ?>" readonly>
                         </div>
                         <div class="pb-15">
-                            <label class="block">Package Type Name</label>
+                            <label class="block">Location Type Name</label>
                             <input class="w-full" type="text" name="txtptname" placeholder="Enter Location Type name" required>
                         </div>
                         <div class="pb-15">
-                            <label class="block">Package Type Description</label>
+                            <label class="block">Location Type Description</label>
                             <input class="w-full" type="text" name="txtptdes" placeholder="Enter Location Type Description" required>
                         </div>
 
