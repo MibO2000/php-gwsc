@@ -1033,8 +1033,7 @@ h2 {
 }
 
 .review-card {
-  border: solid 0.5px #5a5a5a8d;
-  border-radius: 4px;
+  border-radius: 5px;
   width: 100%;
   background: #fff;
   box-shadow: 1px 1px 1px rgba(122, 122, 122, 0.225);
@@ -1044,10 +1043,10 @@ h2 {
 }
 
 .rss-feed {
-  border: solid 0.5px #000;
-  height: 100%;
+  height: 70vh;
   padding: 20px 10px;
-  overflow: hidden;
+  overflow-y: scroll;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .ads {
@@ -1258,6 +1257,85 @@ h2 {
   width: 400px;
   padding: 15px 10px;
 }
+/* width */
+.rss-scroll::-webkit-scrollbar {
+  width: 3px;
+}
+
+/* Track */
+.rss-scroll::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+.rss-scroll::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+.rss-scroll::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: unset; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  border-radius: 5px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto; /* 10% from the top and centered */
+  padding: 10px;
+  border: 1px solid #888;
+  width: 60%; /* Set a smaller width for the box */
+  max-height: 80%; /* Set a maximum height if needed */
+  overflow: auto; /* Enable scroll if the content overflows vertically */
+}
+
+/* The Close Button */
+.close {
+  float: right;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.font-25{
+  font-size: 25px;
+  margin-bottom: 8px;
+}
+
+.term-ul{
+  list-style-type: disc !important;
+}
+
+.rss-scroll a{
+  text-decoration: underline;
+  text-align: center;
+  color: #0a59cb;
+}
+.rss-scroll p{
+  font-size: 15px;
+  font-weight: lighter;
+}
+.rss-parent{
+  width:25%;
+  padding-left:15px;
+}
 
 @media screen and (max-width: 768px) {
   .mactive {
@@ -1314,4 +1392,16 @@ h2 {
   .nav .logo h1 {
     font-size: 15px;
   }
+  .modal-content {
+    width: 90%; /* Set a smaller width for the box */
+    margin: 10% auto;
+  }
+  .rss-parent{
+    width: 100%;
+    padding: 10px 15px !important;
+  }
+  .flex-column{
+    flex-direction: column;
+  }
 }
+
