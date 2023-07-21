@@ -150,14 +150,15 @@ while ($row = $packageQuery->fetch_array()) {
                     <p><?= $errorMessage ?></p>
                 </div>
             <?php } ?>
+            <?php include('mobilemenu.php') ?>
             <div>
                 <div class="nav">
                     <div class="logo">
-                        <img src="images/logo.png" style="width:120px;">
+                        <img src="images/logo.png" class="logoimg-width">
                         <h1>Global Wild Swimming & Camping</h1>
                     </div>
 
-                    <div class="flex">
+                    <div class="flex disappear">
                         <div class="flex items-center cursor-pointer" id="profile-bar" onmouseenter="toggleProfileMenu()">
                             <div>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="padding-left:20px;height:50px;width:50px;">
@@ -176,7 +177,7 @@ while ($row = $packageQuery->fetch_array()) {
                     </div>
                 </div>
 
-                <div class="nav-bar">
+                <div class="nav-bar disappear">
                     <a href="/">Home</a>
                     <a href="/about-us">Information</a>
                     <a href="/pitch">Pitch Types</a>
@@ -193,7 +194,7 @@ while ($row = $packageQuery->fetch_array()) {
 
             <div class="container mx-auto" style="padding-top:54px;padding-bottom:50px;">
                 <div class="pb-5">
-                    <form class="form-field">
+                    <form class="form-field mpadding">
                         <div class="pb-5">
                             <input class="w-full" type="search" name="pack" placeholder="Search" style="padding:15px 20px;font-size:larger" value="<?php echo $_GET['pack'] ?? '' ?>">
                         </div>
