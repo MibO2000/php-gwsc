@@ -53,10 +53,10 @@ function getLocName($lid, $connect)
 
 $pitchSql = "SELECT * FROM gwsc_pitch ORDER BY pitch_id";
 $pitchQuery = mysqli_query($connect, $pitchSql);
-$pitchLists = array(); // Initialize an empty array to hold the rows
+$pitchLists = array();
 
 while ($row = $pitchQuery->fetch_array()) {
-    $pitchLists[] = $row; // Append each row to the array
+    $pitchLists[] = $row;
 }
 
 $localSql = "SELECT * FROM gwsc_location ORDER BY location_id";
@@ -64,7 +64,7 @@ $localQuery = mysqli_query($connect, $localSql);
 $localLists = array();
 
 while ($row = $localQuery->fetch_array()) {
-    $localLists[] = $row; // Append each row to the array
+    $localLists[] = $row;
 }
 $pitchId = null;
 $localId = null;
@@ -100,28 +100,11 @@ if (!isBlank($locationName)) {
 }
 $packageSql = $packageSql . " order by package_id";
 $packageQuery = mysqli_query($connect, $packageSql);
-$packages = array(); // Initialize an empty array to hold the rows
+$packages = array();
 while ($row = $packageQuery->fetch_array()) {
-    $packages[] = $row; // Append each row to the array
+    $packages[] = $row;
 }
 
-
-// $packages = [
-//     [
-//         'id' => 1,
-//         'title' => 'Léonard Cotte',
-//         'image' => 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2970&q=80',
-//         'tags' => ['Location', 'Pitch'],
-//         'price' => 80
-//     ],
-//     [
-//         'id' => 2,
-//         'title' => 'Alesia Kazantceva',
-//         'image' => 'https://plus.unsplash.com/premium_photo-1666283181610-b95ee7e55465?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2970&q=80',
-//         'tags' => ['Pitch'],
-//         'price' => 120
-//     ],
-// ];
 
 ?>
 <!DOCTYPE html>
@@ -239,8 +222,8 @@ while ($row = $packageQuery->fetch_array()) {
 
                 <div class="py-5">
                     <?php foreach ($packages as $package) : ?>
-                        <div class="package-card">
-                            <img class="thumbnail" src="images/<?= $package['package_image'] ?>">
+                        <div class="grid grid-cols-2 package-card">
+                            <img class="thumbnail w-full" src="images/<?= $package['package_image'] ?>">
 
                             <div class="detail">
                                 <div>
@@ -269,7 +252,7 @@ while ($row = $packageQuery->fetch_array()) {
                 <a href="/contact-us" class="social-footer-left-text">Contact Info</a>
             </div>
             <div>
-                <p class="text-center copyright">© 2023, MibO.<br>All Rights Reserved.</p>
+                <p class="text-center copyright">Availability<br>© 2023, MibO.<br>All Rights Reserved.</p>
             </div>
             <div class="social-footer-icons">
                 <div class="flex">

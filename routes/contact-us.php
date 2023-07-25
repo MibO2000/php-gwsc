@@ -12,7 +12,7 @@ if (!isset($_SESSION['cid'])) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Information</title>
+    <title>Contact Us</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="icon" href="images/logo.png">
 </head>
@@ -123,7 +123,7 @@ if (!isset($_SESSION['cid'])) {
             <a href="/contact-us" class="social-footer-left-text">Contact Info</a>
         </div>
         <div>
-            <p class="text-center copyright">© 2023, MibO.<br>All Rights Reserved.</p>
+            <p class="text-center copyright">Contact Us<br>© 2023, MibO.<br>All Rights Reserved.</p>
         </div>
         <div class="social-footer-icons">
             <div class="flex">

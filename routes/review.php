@@ -197,7 +197,7 @@ function getCustomerName($cid, $connect)
                 <a href="/contact-us" class="social-footer-left-text">Contact Info</a>
             </div>
             <div>
-                <p class="text-center copyright">© 2023, MibO.<br>All Rights Reserved.</p>
+                <p class="text-center copyright">Reviews<br>© 2023, MibO.<br>All Rights Reserved.</p>
             </div>
             <div class="social-footer-icons">
                 <div class="flex">

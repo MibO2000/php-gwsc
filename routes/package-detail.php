@@ -145,49 +145,47 @@ VALUES ('$bid', '$cid', '$orderTime', '$status')";
 <body>
     <div class="flex justify-between flex-col min-h-screen">
         <main>
-            <?php if ($isSuccess) { ?>
-                <div class="alert alert-success">
-                    <p>Booking added SUCCESSFULLY!</p>
-                </div>
-            <?php } ?>
-            <?php if ($isError) { ?>
-                <div class="alert alert-error">
-                    <p><?= $errorMessage ?></p>
-                </div>
-            <?php } ?>
+            <?php include('mobilemenu.php') ?>
             <div>
                 <div class="nav">
                     <div class="logo">
-                        <img src="images/logo.png" style="width:120px;">
+                        <img src="images/logo.png" class="logoimg-width">
                         <h1>Global Wild Swimming & Camping</h1>
                     </div>
 
-                    <div class="flex">
-                        <div class="flex items-center cursor-pointer" id="profile-bar" onmouseenter="toggleProfileMenu()">
+                    <div class="flex disappear">
+                        <div class="flex items-center cursor-pointer" id="profile-bar"
+                            onmouseenter="toggleProfileMenu()">
                             <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="padding-left:20px;height:50px;width:50px;">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor"
+                                    style="padding-left:20px;height:50px;width:50px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
                             </div>
                             <p style="padding-left:7px"><?php echo $_SESSION['cname']; ?></p>
                         </div>
                         <a class="flex items-center cursor-pointer" href="/cart">
                             <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="padding-left:20px;height:50px;width:50px;">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor"
+                                    style="padding-left:20px;height:50px;width:50px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
                                 </svg>
                             </div>
                         </a>
                     </div>
                 </div>
 
-                <div class="nav-bar">
+                <div class="nav-bar disappear">
                     <a href="/">Home</a>
                     <a href="/about-us">Information</a>
                     <a href="/pitch">Pitch Types</a>
                     <a href="/features">Features</a>
                     <a href="/local-attraction">Local Attraction</a>
-                    <a class="active" href="/packages">Availability</a>
+                    <a href="/packages">Availability</a>
                     <a href="/reviews">Reviews</a>
                 </div>
             </div>
@@ -196,10 +194,21 @@ VALUES ('$bid', '$cid', '$orderTime', '$status')";
                 <a href="/logout">Log Out</a>
             </div>
 
+            <?php if ($isSuccess) { ?>
+            <div class="alert alert-success">
+                <p>Booking added SUCCESSFULLY!</p>
+            </div>
+            <?php } ?>
+            <?php if ($isError) { ?>
+            <div class="alert alert-error">
+                <p><?= $errorMessage ?></p>
+            </div>
+            <?php } ?>
             <div class="container mx-auto" style="padding-top:54px;padding-bottom:50px;">
                 <form method="POST">
-                    <div class="flex" style="gap:20px">
-                        <img class="w-full object-cover object-center detail-thumbnail" src="images/<?= $package['package_image'] ?>">
+                    <div class="grid grid-cols-2" style="gap:20px">
+                        <img class="w-full object-cover object-center detail-thumbnail"
+                            src="images/<?= $package['package_image'] ?>">
 
                         <div class="flex flex-col w-full justify-between" style="padding:20px 10px;">
                             <div>
@@ -236,9 +245,8 @@ VALUES ('$bid', '$cid', '$orderTime', '$status')";
                 </form>
 
                 <hr>
-
-                <div class="flex items-center w-full" style="padding:40px 10px;">
-                    <div style="width:400px">
+                <div class="grid grid-cols-2" style="gap:20px;padding:40px 10px;">
+                    <div class='w-full'>
                         <h2 style="font-size:large;font-weight:bold">
                             Package Detail
                         </h2>
@@ -246,38 +254,69 @@ VALUES ('$bid', '$cid', '$orderTime', '$status')";
                     <div class="w-full">
                         <p>
                             <?= $package['package_name'] ?>
-                            <br>
+                        </p>
+                    </div>
+                </div>
+
+                <hr>
+                <div class="grid grid-cols-2" style="gap:20px;padding:40px 10px;">
+                    <div class='w-full'>
+                        <img class="w-full object-cover object-center detail-thumbnail"
+                            src="images/<?= $ptype['picture'] ?>">
+                    </div>
+                    <div class="w-full">
+                        <p>
                             <?= $package['pitch_description'] ?>
                         </p>
                     </div>
                 </div>
 
                 <hr>
-
-                <div class="flex items-center w-full" style="padding:50px 10px;">
-                    <div class="w-full">
-                        <p>
-                            <?= $pitch['pitch_name'] ?>
-                            <br>
-                            <?= $pitch['pitch_description'] ?>
-                        </p>
-                    </div>
-                    <div style="width:400px">
+                <div class="grid grid-cols-2" style="gap:20px;padding:40px 10px;">
+                    <div class='w-full'>
                         <h2 style="font-size:large;font-weight:bold">
                             Pitch Detail
                         </h2>
                     </div>
+                    <div class="w-full">
+                        <p>
+                            <?= $pitch['pitch_name'] ?>
+                        </p>
+                    </div>
                 </div>
 
                 <hr>
+                <div class="grid grid-cols-2" style="gap:20px;padding:40px 10px;">
+                    <div class="w-full">
+                        <img class="w-full object-cover object-center detail-thumbnail"
+                            src="images/<?= $pitch['pitch_image'] ?>">
+                    </div>
+                    <div class='w-full'>
+                        <?= $pitch['pitch_description'] ?>
+                    </div>
+                </div>
 
-                <div class="flex items-center w-full" style="padding:40px 10px;">
-                    <div style="width:400px">
+                <hr>
+                <div class="grid grid-cols-2" style="gap:20px;padding:40px 10px;">
+                    <div class='w-full'>
                         <h2 style="font-size:large;font-weight:bold">
                             Local Attraction
                         </h2>
                     </div>
                     <div class="w-full">
+                        <p>
+                            <?= $local['location_name'] ?>
+                        </p>
+                    </div>
+                </div>
+
+                <hr>
+                <div class="grid grid-cols-2" style="gap:20px;padding:40px 10px;">
+                    <div class="w-full">
+                        <img class="w-full object-cover object-center detail-thumbnail"
+                            src="images/<?= $local['location_picture'] ?>">
+                    </div>
+                    <div>
                         <p>
                             <?= $local['location_description'] ?>
                         </p>
@@ -286,12 +325,12 @@ VALUES ('$bid', '$cid', '$orderTime', '$status')";
 
                 <hr>
 
-                <div class="grid grid-cols-2" style="gap:20px;padding:50px 10px;">
+                <div class="grid grid-cols-2" style="gap:20px;padding:40px 10px;">
                     <div class="flex justify-center items-center h-full flex-col">
                         <h2 style="font-size:large;font-weight:bold;padding-bottom:15px;">
                             <?= $local['full_location'] ?>
                         </h2>
-                        <p>
+                        <p class="w-full">
                             <?= $ptype['package_description'] ?>
                         </p>
                     </div>
@@ -309,7 +348,7 @@ VALUES ('$bid', '$cid', '$orderTime', '$status')";
                 <a href="/contact-us" class="social-footer-left-text">Contact Info</a>
             </div>
             <div>
-                <p class="text-center copyright">© 2023, MibO.<br>All Rights Reserved.</p>
+                <p class="text-center copyright">Package Detail<br>© 2023, MibO.<br>All Rights Reserved.</p>
             </div>
             <div class="social-footer-icons">
                 <div class="flex">
@@ -342,74 +381,75 @@ VALUES ('$bid', '$cid', '$orderTime', '$status')";
     <div id="overlay-profile" onmouseenter="toggleProfileMenu()" class="overlay display-none"></div>
 
     <script>
-        var isMenuOpen = false;
-        var menuBar = document.getElementById('menu-bar');
-        var overlay = document.getElementById('overlay');
+    var isMenuOpen = false;
+    var menuBar = document.getElementById('menu-bar');
+    var overlay = document.getElementById('overlay');
 
-        function myFunction() {
-            if (isMenuOpen) {
-                isMenuOpen = false;
-                menuBar.classList.remove("change");
-                document.getElementById("myDropdown").classList.remove("show");
-                overlay.classList.add('display-none');
-            } else {
-                isMenuOpen = true;
-                menuBar.classList.add("change");
-                document.getElementById("myDropdown").classList.add("show");
-                overlay.classList.remove('display-none');
-            }
+    function myFunction() {
+        if (isMenuOpen) {
+            isMenuOpen = false;
+            menuBar.classList.remove("change");
+            document.getElementById("myDropdown").classList.remove("show");
+            overlay.classList.add('display-none');
+        } else {
+            isMenuOpen = true;
+            menuBar.classList.add("change");
+            document.getElementById("myDropdown").classList.add("show");
+            overlay.classList.remove('display-none');
         }
+    }
 
-        // profile menu
-        var isProfileMenuOpen = false;
-        var profileMenuBar = document.getElementById('profile-bar');
-        var profileOverlay = document.getElementById('overlay-profile');
+    // profile menu
+    var isProfileMenuOpen = false;
+    var profileMenuBar = document.getElementById('profile-bar');
+    var profileOverlay = document.getElementById('overlay-profile');
 
-        function toggleProfileMenu() {
-            if (isProfileMenuOpen) {
-                isProfileMenuOpen = false;
-                profileMenuBar.classList.remove("change");
-                document.getElementById("myDropdown2").classList.remove("show");
-                profileOverlay.classList.add('display-none');
-            } else {
-                isProfileMenuOpen = true;
-                profileMenuBar.classList.add("change");
-                document.getElementById("myDropdown2").classList.add("show");
-                profileOverlay.classList.remove('display-none');
-            }
+    function toggleProfileMenu() {
+        if (isProfileMenuOpen) {
+            isProfileMenuOpen = false;
+            profileMenuBar.classList.remove("change");
+            document.getElementById("myDropdown2").classList.remove("show");
+            profileOverlay.classList.add('display-none');
+        } else {
+            isProfileMenuOpen = true;
+            profileMenuBar.classList.add("change");
+            document.getElementById("myDropdown2").classList.add("show");
+            profileOverlay.classList.remove('display-none');
         }
-        // Button to increase/decrease
-        let itemCounters = document.querySelectorAll('#item-count');
-        itemCounters.forEach(itemCounter => {
-            console.log(itemCounter);
-            let decreaseButton = itemCounter.querySelector('#decrease');
-            let increaseButton = itemCounter.querySelector('#increase');
-            let input = itemCounter.querySelector('input');
-            decreaseButton.addEventListener('click', () => {
-                let value = parseInt(input.value);
-                if (value <= 1) return;
-                input.value = value - 1;
-            });
-            increaseButton.addEventListener('click', () => {
-                let value = parseInt(input.value);
-                input.value = value + 1;
-            });
+    }
+    // Button to increase/decrease
+    let itemCounters = document.querySelectorAll('#item-count');
+    itemCounters.forEach(itemCounter => {
+        console.log(itemCounter);
+        let decreaseButton = itemCounter.querySelector('#decrease');
+        let increaseButton = itemCounter.querySelector('#increase');
+        let input = itemCounter.querySelector('input');
+        decreaseButton.addEventListener('click', () => {
+            let value = parseInt(input.value);
+            if (value <= 1) return;
+            input.value = value - 1;
         });
+        increaseButton.addEventListener('click', () => {
+            let value = parseInt(input.value);
+            input.value = value + 1;
+        });
+    });
 
-        // Map
-        mapboxgl.accessToken =
-            'pk.eyJ1IjoibXl0ZWwtc29mdHdhcmUiLCJhIjoiY2w5emg0MHoxMGE3djN2cjhhcGlwMXJwOSJ9.PjkQpWi6lDfuKDzTB7SFYw';
-        var map = new mapboxgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v11?optimize=true',
-            center: [<?= $package['longitude'] ?>, <?= $package['latitude'] ?>],
-            zoom: 14,
-        });
-        var marker = new mapboxgl.Marker()
-            .setLngLat([<?= $package['longitude'] ?>, <?= $package['latitude'] ?>])
-            .addTo(map)
-            .setPopup(new mapboxgl.Popup().setHTML('<b><?= $package['package_name'] ?></b>'))
-            .togglePopup();
+    // Map
+    mapboxgl.accessToken =
+        'pk.eyJ1IjoibXl0ZWwtc29mdHdhcmUiLCJhIjoiY2w5emg0MHoxMGE3djN2cjhhcGlwMXJwOSJ9.PjkQpWi6lDfuKDzTB7SFYw';
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11?optimize=true',
+        center: [<?= $package['longitude'] ?>, <?= $package['latitude'] ?>],
+        zoom: 7,
+    });
+    var marker = new mapboxgl.Marker()
+        .setLngLat([<?= $package['longitude'] ?>, <?= $package['latitude'] ?>])
+        .addTo(map)
+        .setPopup(new mapboxgl.Popup().setHTML('<b><?= $package['package_name'] ?></b>'))
+        .togglePopup();
+    window.scrollTo(0, 0);
     </script>
 </body>
 

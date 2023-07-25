@@ -125,15 +125,15 @@ $total = 0;
     <div class="flex justify-between flex-col min-h-screen">
         <main>
             <?php if ($isSuccess) { ?>
-                <div class="alert alert-success">
-                    <p><?= $message ?></p>
-                </div>
+            <div class="alert alert-success">
+                <p><?= $message ?></p>
+            </div>
             <?php } ?>
 
             <?php if ($isError) { ?>
-                <div class="alert alert-error">
-                    <p><?= $message ?></p>
-                </div>
+            <div class="alert alert-error">
+                <p><?= $message ?></p>
+            </div>
             <?php } ?>
             <?php include('mobilemenu.php') ?>
             <div>
@@ -144,18 +144,25 @@ $total = 0;
                     </div>
 
                     <div class="flex disappear">
-                        <div class="flex items-center cursor-pointer" id="profile-bar" onmouseenter="toggleProfileMenu()">
+                        <div class="flex items-center cursor-pointer" id="profile-bar"
+                            onmouseenter="toggleProfileMenu()">
                             <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="padding-left:20px;height:50px;width:50px;">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor"
+                                    style="padding-left:20px;height:50px;width:50px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
                             </div>
                             <p style="padding-left:7px"><?php echo $_SESSION['cname']; ?></p>
                         </div>
                         <a class="flex items-center cursor-pointer" href="/cart">
                             <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="padding-left:20px;height:50px;width:50px;">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor"
+                                    style="padding-left:20px;height:50px;width:50px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
                                 </svg>
                             </div>
                         </a>
@@ -183,46 +190,50 @@ $total = 0;
                     if (!empty($bookings)) {
 
                         foreach ($bookings as $booking) : ?>
-                            <?php $pack = getPack($booking['package_id'], $connect) ?>
-                            <form method="POST">
-                                <div class="package-card">
-                                    <img class="thumbnail" src="images/<?= $pack['package_image'] ?>">
-                                    <div class="detail">
-                                        <div>
-                                            <h2><?= $pack['package_name'] ?></h2>
-                                            <div class="py-5 flex">
-                                                <div class="chip"><?= getPitchName($pack['pitch_id'], $connect) ?></div>
-                                                <div class="chip"><?= getLocName($pack['location_id'], $connect) ?></div>
-                                            </div>
-                                            <div>
-                                                <label style="font-size:small;padding-bottom:5px;display:block;">Date</label>
-                                                <input type="date" value="<?= date("Y-m-d", strtotime(($booking['booking_date']))) ?>" readonly>
-                                            </div>
+                    <?php $pack = getPack($booking['package_id'], $connect) ?>
+                    <form method="POST">
+                        <div class="package-card">
+                            <img class="thumbnail" src="images/<?= $pack['package_image'] ?>">
+                            <div class="detail">
+                                <div>
+                                    <h2><?= $pack['package_name'] ?></h2>
+                                    <div class="py-5 flex">
+                                        <div class="chip"><?= getPitchName($pack['pitch_id'], $connect) ?></div>
+                                        <div class="chip"><?= getLocName($pack['location_id'], $connect) ?></div>
+                                    </div>
+                                    <div>
+                                        <label style="font-size:small;padding-bottom:5px;display:block;">Date</label>
+                                        <input type="date"
+                                            value="<?= date("Y-m-d", strtotime(($booking['booking_date']))) ?>"
+                                            readonly>
+                                    </div>
+                                </div>
+                                <div class="flex items-center w-full justify-between">
+                                    <div>
+                                        <p class="price"><?= $booking['total_price'] ?></p>
+                                    </div>
+                                    <div>
+                                        <input type="hidden" name="id" value="<?= $booking['booking_detail_id'] ?>">
+                                        <div class="flex" id="item-count">
+                                            <input name="quantity" value="<?= $booking['quantity'] ?>"
+                                                class="text-center" style="width:50px" type="number">
                                         </div>
-                                        <div class="flex items-center w-full justify-between">
-                                            <div>
-                                                <p class="price"><?= $booking['total_price'] ?></p>
-                                            </div>
-                                            <div>
-                                                <input type="hidden" name="id" value="<?= $booking['booking_detail_id'] ?>">
-                                                <div class="flex" id="item-count">
-                                                    <input name="quantity" value="<?= $booking['quantity'] ?>" class="text-center" style="width:50px" type="number">
-                                                </div>
 
-                                                <div style="padding-top:5px">
-                                                    <button class="w-full bg-error text-white" name="btndelete">Remove</button>
-                                                </div>
-                                            </div>
+                                        <div style="padding-top:5px">
+                                            <button class="w-full bg-error text-white" name="btndelete">Remove</button>
                                         </div>
                                     </div>
                                 </div>
-                            </form>
-                            <?php $total += $booking['total_price']; ?>
+                            </div>
+                        </div>
+                    </form>
+                    <?php $total += $booking['total_price']; ?>
                     <?php endforeach;
                     } ?>
 
 
-                    <div style="padding-top:40px;float:right;padding-right:40px;padding-bottom:40px;" class="flex space-x-5 items-center">
+                    <div style="padding-top:40px;float:right;padding-right:40px;padding-bottom:40px;"
+                        class="flex space-x-5 items-center">
                         <h2 style="font-size:large;font-weight:bold">Total:</h2>
                         <p class="price" style="font-size:xx-large;font-weight:bold;color:#0a59cb"><?= $total ?></p>
                     </div>
@@ -241,7 +252,7 @@ $total = 0;
                 <a href="/contact-us" class="social-footer-left-text">Contact Info</a>
             </div>
             <div>
-                <p class="text-center copyright">© 2023, MibO.<br>All Rights Reserved.</p>
+                <p class="text-center copyright">Cart<br>© 2023, MibO.<br>All Rights Reserved.</p>
             </div>
             <div class="social-footer-icons">
                 <div class="flex">
@@ -273,42 +284,42 @@ $total = 0;
     <div id="overlay-profile" onmouseenter="toggleProfileMenu()" class="overlay display-none"></div>
 
     <script>
-        var isMenuOpen = false;
-        var menuBar = document.getElementById('menu-bar');
-        var overlay = document.getElementById('overlay');
+    var isMenuOpen = false;
+    var menuBar = document.getElementById('menu-bar');
+    var overlay = document.getElementById('overlay');
 
-        function myFunction() {
-            if (isMenuOpen) {
-                isMenuOpen = false;
-                menuBar.classList.remove("change");
-                document.getElementById("myDropdown").classList.remove("show");
-                overlay.classList.add('display-none');
-            } else {
-                isMenuOpen = true;
-                menuBar.classList.add("change");
-                document.getElementById("myDropdown").classList.add("show");
-                overlay.classList.remove('display-none');
-            }
+    function myFunction() {
+        if (isMenuOpen) {
+            isMenuOpen = false;
+            menuBar.classList.remove("change");
+            document.getElementById("myDropdown").classList.remove("show");
+            overlay.classList.add('display-none');
+        } else {
+            isMenuOpen = true;
+            menuBar.classList.add("change");
+            document.getElementById("myDropdown").classList.add("show");
+            overlay.classList.remove('display-none');
         }
+    }
 
-        // profile menu
-        var isProfileMenuOpen = false;
-        var profileMenuBar = document.getElementById('profile-bar');
-        var profileOverlay = document.getElementById('overlay-profile');
+    // profile menu
+    var isProfileMenuOpen = false;
+    var profileMenuBar = document.getElementById('profile-bar');
+    var profileOverlay = document.getElementById('overlay-profile');
 
-        function toggleProfileMenu() {
-            if (isProfileMenuOpen) {
-                isProfileMenuOpen = false;
-                profileMenuBar.classList.remove("change");
-                document.getElementById("myDropdown2").classList.remove("show");
-                profileOverlay.classList.add('display-none');
-            } else {
-                isProfileMenuOpen = true;
-                profileMenuBar.classList.add("change");
-                document.getElementById("myDropdown2").classList.add("show");
-                profileOverlay.classList.remove('display-none');
-            }
+    function toggleProfileMenu() {
+        if (isProfileMenuOpen) {
+            isProfileMenuOpen = false;
+            profileMenuBar.classList.remove("change");
+            document.getElementById("myDropdown2").classList.remove("show");
+            profileOverlay.classList.add('display-none');
+        } else {
+            isProfileMenuOpen = true;
+            profileMenuBar.classList.add("change");
+            document.getElementById("myDropdown2").classList.add("show");
+            profileOverlay.classList.remove('display-none');
         }
+    }
     </script>
 </body>
 

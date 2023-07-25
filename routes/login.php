@@ -53,7 +53,7 @@ if (isset($_POST['btnlogin'])) {
                 $_SESSION['loginError'] = $countError = $_SESSION['loginError'] + 1;
                 $isError = true;
                 $errorMessage = "Login fail! Please try again. Attempt $countError!";
-                if ($countError >= 3) {
+                if ($countError > 2) {
                     $_SESSION['login-error'] = true;
                     header('Location: /login-error');
                     return;
