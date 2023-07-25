@@ -125,7 +125,7 @@ function getCustomerName($cid, $connect)
                     <p><?= $errorMessage ?></p>
                 </div>
             <?php } ?>
-            <div class="container mx-auto grid sm-grid-cols-2">
+            <div class="container mx-auto grid sm-grid-cols-2 prl">
                 <div>
                     <object data="images/reviews.png" class="w-full"></object>
                 </div>
@@ -167,7 +167,7 @@ function getCustomerName($cid, $connect)
             <h2 style="text-align:left;padding:20px 15px;font-size:large;font-weight:bold">
                 Reviews
             </h2>
-            <div>
+            <div class="pl-15 pr-15 prl">
                 <?php
                 if (empty($reviews)) {
                     echo "<p> Review List is empty! </p>";

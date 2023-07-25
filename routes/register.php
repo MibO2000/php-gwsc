@@ -178,7 +178,7 @@ if (isset($_POST['btnregister'])) {
                         </li>
                     </ul>
                 </div>
-                <button class="close ">
+                <button class="close" id="okBtn">
                     Ok
                 </button>
             </div>
@@ -196,10 +196,16 @@ var btn = document.getElementById("checkbox");
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
 
+var okBtn = document.getElementById("okBtn");
+
 // When the user clicks on the button, open the modal
-btn.onchange = function() {
+btn.onclick = function() {
     if (btn.checked) {
+        checkbox.checked = false;
         modal.style.display = "block";
+        okBtn.addEventListener('click', function() {
+            checkbox.checked = true;
+        });
     } else {
         modal.style.display = "none";
     }

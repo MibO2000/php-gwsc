@@ -27,7 +27,15 @@
         <li><a class="menu__item <?php echo $currentRoute == '/local-attraction' ? 'mactive' : '' ?>" href="/local-attraction">Local Attraction</a></li>
         <li><a class="menu__item <?php echo $currentRoute == '/reviews' ? 'mactive' : '' ?>" href="/reviews">Reviews</a></li>
         <li><a class="menu__item <?php echo $currentRoute == '/packages' ? 'mactive' : '' ?>" href="/packages">Avaliability</a></li>
-        <li><a class="menu__item <?php echo $currentRoute == '/cart' ? 'mactive' : '' ?>" href="/cart">Cart</a>
+        <li><a class="menu__item <?php echo $currentRoute == '/cart' ? 'mactive' : '' ?>
+        
+        
+        
+        
+        
+        
+        
+        " href="/cart">Cart</a>
         </li>
         <li><a class="menu__item" href="/logout">Log Out</a></li>
     </ul>

@@ -543,6 +543,9 @@ a {
 .pl-15 {
   padding-left: 15px;
 }
+.pr-15{
+  padding-right: 15px;
+}
 
 .social-footer-left-text {
   text-decoration: none;
@@ -1107,6 +1110,14 @@ h2 {
   font-size: 1.2rem;
 }
 
+.h-100{
+  height: 100% !important;
+}
+
+.p-5{
+  padding: 5px;
+}
+
 @media (min-width: 425px) {
   .heading a {
     font-size: xx-large;
@@ -1254,8 +1265,7 @@ h2 {
 }
 
 .review-sec {
-  width: 400px;
-  padding: 15px 10px;
+  width: 50%;
 }
 /* width */
 .rss-scroll::-webkit-scrollbar {
@@ -1337,7 +1347,16 @@ h2 {
   padding-left:15px;
 }
 
+
+
 @media screen and (max-width: 768px) {
+  .prl{
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .review-sec {
+    width: 100%;
+  }
   .mactive {
     background-color: #CFD8DC;
   }
