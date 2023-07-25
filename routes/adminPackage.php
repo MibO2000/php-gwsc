@@ -27,6 +27,9 @@ if (isset($_POST['btnsave'])) {
     $pduration = $_POST['txtpduration'];
     $pprice = $_POST['txtpprice'];
     $pdes = $_POST['txtpdescription'];
+    $latitude = $_POST['latitude'];
+    $longitude = $_POST['longitude'];
+
 
     $pimg = "images/" . $_FILES['image']['name'];
     $imageType = pathinfo($pimg, PATHINFO_EXTENSION);
@@ -47,8 +50,8 @@ if (isset($_POST['btnsave'])) {
     if ($count > 0) {
         echo "<script>window.alert('Pitch Already exists!')</script>";
     } else {
-        $insert = "INSERT INTO gwsc_package (package_id, package_name, package_type_id, pitch_id, location_id, duration, price, pitch_description, package_image, quantity) 
-        VALUES ('$pid','$pname', '$packType', '$pitch', '$location', '$pduration', '$pprice', '$pdes', '$image', '$pquantity')";
+        $insert = "INSERT INTO gwsc_package (package_id, package_name, package_type_id, pitch_id, location_id, duration, price, pitch_description, package_image, quantity, latitude, longitude) 
+        VALUES ('$pid','$pname', '$packType', '$pitch', '$location', '$pduration', '$pprice', '$pdes', '$image', '$pquantity', '$latitude', '$longitude')";
         $run = mysqli_query($connect, $insert);
         if ($run) {
             $_SESSION['SUCCESS_REGISTER'] = true;
@@ -77,14 +80,14 @@ if (isset($_POST['btnsave'])) {
     <div class="flex justify-between flex-col min-h-screen">
         <main>
             <?php if ($isSuccess) { ?>
-                <div class="alert alert-success">
-                    <p>Package added SUCCESSFULLY!</p>
-                </div>
+            <div class="alert alert-success">
+                <p>Package added SUCCESSFULLY!</p>
+            </div>
             <?php } ?>
             <?php if ($isError) { ?>
-                <div class="alert alert-error">
-                    <p><?= $errorMessage ?></p>
-                </div>
+            <div class="alert alert-error">
+                <p><?= $errorMessage ?></p>
+            </div>
             <?php } ?>
             <div>
                 <div class="nav">
@@ -94,10 +97,14 @@ if (isset($_POST['btnsave'])) {
                     </div>
 
                     <div class="flex">
-                        <div class="flex items-center cursor-pointer" id="profile-bar" onmouseenter="toggleProfileMenu()">
+                        <div class="flex items-center cursor-pointer" id="profile-bar"
+                            onmouseenter="toggleProfileMenu()">
                             <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="padding-left:20px;height:50px;width:50px;">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor"
+                                    style="padding-left:20px;height:50px;width:50px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
                             </div>
                             <p style="padding-left:7px"><?php echo $_SESSION['aname']; ?></p>
@@ -128,6 +135,8 @@ if (isset($_POST['btnsave'])) {
                         <th>DESCRIPTION</th>
                         <th>PICTURE</th>
                         <th>QUANTITY</th>
+                        <th>LATITUDE</th>
+                        <th>LONGITUDE</th>
                         <th>PACKAGE_TYPE</th>
                         <th>PITCH</th>
                         <th>LOCATION</th>
@@ -160,6 +169,8 @@ if (isset($_POST['btnsave'])) {
                         echo "<td>" . $row['pitch_description'] . "</td>";
                         echo "<td>" . $row['package_image'] . "</td>";
                         echo "<td>" . $row['quantity'] . "</td>";
+                        echo "<td>" . $row['latitude'] . "</td>";
+                        echo "<td>" . $row['longitude'] . "</td>";
                         if ($pkresult && mysqli_num_rows($pkresult) > 0) {
                             $row = mysqli_fetch_assoc($pkresult);
                             $packageType = $row['package_type_name'];
@@ -186,10 +197,12 @@ if (isset($_POST['btnsave'])) {
 
             <h2>Add Package</h2>
             <div class="form-container">
-                <form class="form-card justify-center items-center" action="/admin-package" method="POST" enctype="multipart/form-data">
+                <form class="form-card justify-center items-center" action="/admin-package" method="POST"
+                    enctype="multipart/form-data">
                     <div class="pb-15">
                         <label class="block">PACKAGE_ID</label>
-                        <input class="w-full" type="text" name="txtpid" value="<?php echo AutoID('gwsc_package', 'package_id', 'PACK', 4); ?>" readonly>
+                        <input class="w-full" type="text" name="txtpid"
+                            value="<?php echo AutoID('gwsc_package', 'package_id', 'PACK', 4); ?>" readonly>
                     </div>
                     <div class="pb-15">
                         <label class="block">PACKAGE_NAME</label>
@@ -242,7 +255,8 @@ if (isset($_POST['btnsave'])) {
                     </div>
                     <div class="pb-15">
                         <label class="block">Duration (hr)</label>
-                        <input class="w-full" type="number" name="txtpduration" placeholder="Enter Package Duration" required>
+                        <input class="w-full" type="number" name="txtpduration" placeholder="Enter Package Duration"
+                            required>
 
                     </div>
                     <div class="pb-15">
@@ -251,7 +265,8 @@ if (isset($_POST['btnsave'])) {
                     </div>
                     <div class="pb-15">
                         <label class="block">Description</label>
-                        <input class="w-full" type="text" name="txtpdescription" placeholder="Enter Package Description 1" required>
+                        <input class="w-full" type="text" name="txtpdescription"
+                            placeholder="Enter Package Description 1" required>
                     </div>
                     <div class="pb-15">
                         <label class="block">Package Image</label>
@@ -259,13 +274,25 @@ if (isset($_POST['btnsave'])) {
                     </div>
                     <div class="pb-15">
                         <label class="block">Package Quantity</label>
-                        <input class="w-full" type="number" name="txtpquantity" placeholder="Enter Package Quantity" required>
+                        <input class="w-full" type="number" name="txtpquantity" placeholder="Enter Package Quantity"
+                            required>
+                    </div>
+                    <div class="pb-15">
+                        <label class="block">Package Latitude</label>
+                        <input class="w-full" type="number" name="latitude" placeholder="Enter Package latitude"
+                            required>
+                    </div>
+                    <div class="pb-15">
+                        <label class="block">Package Longitude</label>
+                        <input class="w-full" type="number" name="longitude" placeholder="Enter Package longitude"
+                            required>
                     </div>
 
                     <!-- Dropdown List -->
 
                     <div class="w-full">
-                        <input class="w-full font-bold bg-primary text-white mb-5" type="submit" name="btnsave" value="Save">
+                        <input class="w-full font-bold bg-primary text-white mb-5" type="submit" name="btnsave"
+                            value="Save">
                         <a href="/admin-package">
                             <input class="w-full font-bold bg-secondary text-white" type="button" value="Cancel">
                         </a>
@@ -312,42 +339,42 @@ if (isset($_POST['btnsave'])) {
     <div id="overlay-profile" onmouseenter="toggleProfileMenu()" class="overlay display-none"></div>
 
     <script>
-        var isMenuOpen = false;
-        var menuBar = document.getElementById('menu-bar');
-        var overlay = document.getElementById('overlay');
+    var isMenuOpen = false;
+    var menuBar = document.getElementById('menu-bar');
+    var overlay = document.getElementById('overlay');
 
-        function myFunction() {
-            if (isMenuOpen) {
-                isMenuOpen = false;
-                menuBar.classList.remove("change");
-                document.getElementById("myDropdown").classList.remove("show");
-                overlay.classList.add('display-none');
-            } else {
-                isMenuOpen = true;
-                menuBar.classList.add("change");
-                document.getElementById("myDropdown").classList.add("show");
-                overlay.classList.remove('display-none');
-            }
+    function myFunction() {
+        if (isMenuOpen) {
+            isMenuOpen = false;
+            menuBar.classList.remove("change");
+            document.getElementById("myDropdown").classList.remove("show");
+            overlay.classList.add('display-none');
+        } else {
+            isMenuOpen = true;
+            menuBar.classList.add("change");
+            document.getElementById("myDropdown").classList.add("show");
+            overlay.classList.remove('display-none');
         }
+    }
 
-        // profile menu
-        var isProfileMenuOpen = false;
-        var profileMenuBar = document.getElementById('profile-bar');
-        var profileOverlay = document.getElementById('overlay-profile');
+    // profile menu
+    var isProfileMenuOpen = false;
+    var profileMenuBar = document.getElementById('profile-bar');
+    var profileOverlay = document.getElementById('overlay-profile');
 
-        function toggleProfileMenu() {
-            if (isProfileMenuOpen) {
-                isProfileMenuOpen = false;
-                profileMenuBar.classList.remove("change");
-                document.getElementById("myDropdown2").classList.remove("show");
-                profileOverlay.classList.add('display-none');
-            } else {
-                isProfileMenuOpen = true;
-                profileMenuBar.classList.add("change");
-                document.getElementById("myDropdown2").classList.add("show");
-                profileOverlay.classList.remove('display-none');
-            }
+    function toggleProfileMenu() {
+        if (isProfileMenuOpen) {
+            isProfileMenuOpen = false;
+            profileMenuBar.classList.remove("change");
+            document.getElementById("myDropdown2").classList.remove("show");
+            profileOverlay.classList.add('display-none');
+        } else {
+            isProfileMenuOpen = true;
+            profileMenuBar.classList.add("change");
+            document.getElementById("myDropdown2").classList.add("show");
+            profileOverlay.classList.remove('display-none');
         }
+    }
     </script>
 </body>
 

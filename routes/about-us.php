@@ -4,7 +4,16 @@ if (!isset($_SESSION['cid'])) {
     header('Location: /login');
     return;
 }
+$countPack = "SELECT count(*) as packcount FROM ASSIGNMENT.gwsc_package";
+$countQuery = mysqli_query($connect, $countPack);
+$countResult = mysqli_fetch_assoc($countQuery);
+$packCount = $countResult['packcount'];
 
+
+$countView = "SELECT SUM(view_count) AS viewCount FROM gwsc_customer";
+$viewQuery = mysqli_query($connect, $countView);
+$viewResult = mysqli_fetch_assoc($viewQuery);
+$viewCount = $viewResult['viewCount'];
 
 $packageSql = "SELECT * FROM gwsc_package ORDER BY package_id";
 $packageQuery = mysqli_query($connect, $packageSql);
@@ -93,13 +102,13 @@ if ($cusCount > 0) {
                 <div class="py-5 mpadding">
                     <div class="about-us-info">
                         <div class="text-center flex justify-center items-center">
-                            <p style="color: #4c88dc;">12 Packages</p>
+                            <p style="color: #4c88dc;"><?= $packCount ?> Packages</p>
                         </div>
                         <div class="text-center flex justify-center items-center">
                             <p style="color: #ef6e5d">12 Years</p>
                         </div>
                         <div class="text-center flex justify-center items-center">
-                            <p style="color: #3c9e87">12 Views</p>
+                            <p style="color: #3c9e87"><?= $viewCount ?> Views</p>
                         </div>
                     </div>
                 </div>

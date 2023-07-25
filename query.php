@@ -118,6 +118,8 @@ $createPackage = "CREATE TABLE gwsc_package (
     package_type_id VARCHAR(30),
     pitch_id VARCHAR(30),
     location_id VARCHAR(30),
+    latitude DECIMAL(8,7),
+    longitude DECIMAL(8,7),
     duration INT,
     price INT,
     pitch_description TEXT,

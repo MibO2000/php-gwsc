@@ -1,11 +1,21 @@
 <?php
+class Config
+{
 
+    const GOOGLE_RECAPTCHA_SITE_KEY = '6LetQkgnAAAAAOzjV82vKe2NwCk3g2_UX6TaR7D-';
+
+    const GOOGLE_RECAPTCHA_SECRET_KEY = '6LetQkgnAAAAAJYsCY7qH6fsCZON7F8qjLkFhjBG';
+}
 $isSuccess = false;
 $isError = false;
 $errorMessage;
 
 if (isset($_SESSION['cid'])) {
     header('Location: /');
+    return;
+}
+if (isset($_SESSION['login-error'])) {
+    header('Location: /login-error');
     return;
 }
 
@@ -41,24 +51,20 @@ if (isset($_POST['btnlogin'])) {
             $errorMessage = 'Fail to login!';
             if (isset($_SESSION['loginError'])) {
                 $_SESSION['loginError'] = $countError = $_SESSION['loginError'] + 1;
-                // echo "<script>window.alert('Login fail! Please try again. Attempt '$countError'!)</script>";
                 $isError = true;
                 $errorMessage = "Login fail! Please try again. Attempt $countError!";
                 if ($countError >= 3) {
-                    // echo "<script>window.location='loginTimer.php'</script>";
+                    $_SESSION['login-error'] = true;
+                    header('Location: /login-error');
+                    return;
                 }
-                // else {
-                //     $_SESSION['loginError'] = $countError;
-                // }
             } else {
                 $_SESSION['loginError'] = 1;
-                // echo "<script>window.alert('Login fail! Please try again. Attempt 1')</script>";
                 $isError = true;
                 $errorMessage = 'Login fail! Please try again. Attempt 1';
             }
         }
     } else {
-        // echo "<script>window.alert('Username does not exists!')</script>";
         $isError = true;
         $errorMessage = 'Username does not exists!';
     }
@@ -75,6 +81,8 @@ if (isset($_POST['btnlogin'])) {
     <title>Travel and Tour</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="icon" href="images/logo.png">
+    <script src="https://www.google.com/recaptcha/api.js?render=<?= Config::GOOGLE_RECAPTCHA_SITE_KEY ?>">
+    </script>
 </head>
 
 <body class="min-h-screen min-w-screen flex justify-center items-center bg-gray login-screen">

@@ -10,6 +10,11 @@ if (isset($_GET['pack'])) {
     exit;
 }
 
+$countView = "SELECT SUM(view_count) AS viewCount FROM gwsc_customer";
+$viewQuery = mysqli_query($connect, $countView);
+$viewResult = mysqli_fetch_assoc($viewQuery);
+$viewCount = $viewResult['viewCount'];
+
 $packageSql = "SELECT * FROM gwsc_package ORDER BY package_id";
 $packageQuery = mysqli_query($connect, $packageSql);
 $packageCount = mysqli_num_rows($packageQuery);
@@ -135,7 +140,7 @@ $localCount = mysqli_num_rows($localQuery);
                             </div>
                             <div class="w-full flex justify-center items-center mcard mpadding">
                                 <div class="pricing-card">
-                                    <img src="https://plus.unsplash.com/premium_photo-1682716827673-e6785b3e22e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2970&q=80">
+                                    <img src="/images/home-bg.jpg">
                                     <div class="content">
                                         <h2>Features</h2>
                                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus earum
@@ -193,7 +198,7 @@ $localCount = mysqli_num_rows($localQuery);
                             <div>
                                 <div class="view-count-info">
                                     <div class="text-center flex justify-center items-center">
-                                        <p>12 Views</p>
+                                        <p><?= $viewCount ?> Views</p>
                                     </div>
                                 </div>
                             </div>

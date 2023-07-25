@@ -12,6 +12,9 @@ switch ($path) {
     case '/':
         require __DIR__ . '/routes/homepage.php';
         break;
+    case '/login-error':
+        require __DIR__ . '/routes/login-error.php';
+        break;
     case '/admin-login':
         require __DIR__ . '/routes/adminLogin.php';
         break;

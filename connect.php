@@ -1,6 +1,6 @@
 <?php
-$servername = "localhost:3306";
+$servername = "localhost";
 $username = "root";
-$password = "";
+$password = "password";
 $dbname = "ASSIGNMENT";
 $connect = new mysqli($servername, $username, $password, $dbname);

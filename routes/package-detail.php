@@ -25,6 +25,15 @@ if (isset($_SESSION['FAIL'])) {
     $errorMessage = $_SESSION['error'];
     unset($_SESSION['error']);
 }
+$customer_id = $_SESSION['cid'];
+$updateQuery = "UPDATE gwsc_customer SET view_count = view_count + 1 WHERE customer_id = '$customer_id'";
+$updateResult = mysqli_query($connect, $updateQuery);
+
+// if ($updateResult) {
+//     echo "View count updated successfully.";
+// } else {
+//     echo "Error updating view count: " . mysqli_error($connect);
+// }
 
 $pid = $_GET['id'];
 $pid = trim($pid, "'");
@@ -45,10 +54,20 @@ $quantity = $package['quantity'];
 $pquery = "SELECT * FROM gwsc_pitch WHERE pitch_id = '$pitchId'";
 $pitchQ = mysqli_query($connect, $pquery);
 $pitch = mysqli_fetch_assoc($pitchQ);
+$pitchTypeId = $pitch['pitch_type_id'];
+
+$pityquery = "SELECT * FROM gwsc_pitch_type WHERE pitch_type_id = '$pitchTypeId'";
+$pityQ = mysqli_query($connect, $pityquery);
+$pitchType = mysqli_fetch_assoc($pityQ);
 
 $lquery = "SELECT * FROM gwsc_location WHERE location_id = '$lid'";
 $locationQ = mysqli_query($connect, $lquery);
 $local = mysqli_fetch_assoc($locationQ);
+$localType = $local['location_type_id'];
+
+$ltquery = "SELECT * FROM gwsc_location_type WHERE location_type_id = '$localType'";
+$locationTyQ = mysqli_query($connect, $ltquery);
+$localType = mysqli_fetch_assoc($locationTyQ);
 
 $ptquery = "SELECT * FROM gwsc_package_type WHERE package_type_id = '$ptid'";
 $ptQ = mysqli_query($connect, $ptquery);
@@ -226,6 +245,8 @@ VALUES ('$bid', '$cid', '$orderTime', '$status')";
                     </div>
                     <div class="w-full">
                         <p>
+                            <?= $package['package_name'] ?>
+                            <br>
                             <?= $package['pitch_description'] ?>
                         </p>
                     </div>
@@ -236,9 +257,9 @@ VALUES ('$bid', '$cid', '$orderTime', '$status')";
                 <div class="flex items-center w-full" style="padding:50px 10px;">
                     <div class="w-full">
                         <p>
-                        <p>
+                            <?= $pitch['pitch_name'] ?>
+                            <br>
                             <?= $pitch['pitch_description'] ?>
-                        </p>
                         </p>
                     </div>
                     <div style="width:400px">
@@ -381,13 +402,13 @@ VALUES ('$bid', '$cid', '$orderTime', '$status')";
         var map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v11?optimize=true',
-            center: [96.2044674, 16.8666789],
+            center: [<?= $package['longitude'] ?>, <?= $package['latitude'] ?>],
             zoom: 14,
         });
         var marker = new mapboxgl.Marker()
-            .setLngLat([96.2044674, 16.8666789])
+            .setLngLat([<?= $package['longitude'] ?>, <?= $package['latitude'] ?>])
             .addTo(map)
-            .setPopup(new mapboxgl.Popup().setHTML('<b>Global Wild Swimming & Camping</b>'))
+            .setPopup(new mapboxgl.Popup().setHTML('<b><?= $package['package_name'] ?></b>'))
             .togglePopup();
     </script>
 </body>
