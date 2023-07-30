@@ -52,13 +52,13 @@ if (isset($_POST['btnregister'])) {
 
 <body class="min-h-screen min-w-screen flex justify-center items-center bg-gray login-screen">
     <!-- The video -->
-    <video autoplay muted loop style="position: fixed;right: 0;bottom: 0;min-width: 100%;min-height: 100%;">
+    <video autoplay muted loop class="login-video">
         <source src="videos/ads.mp4" type="video/mp4">
     </video>
     <div class="login-card">
         <div class="flex flex-col justify-center items-center text-center pb-5">
-            <img src="images/logo.png" style="width:120px;padding:30px 5px">
-            <h2 style="font-size:20px;font-weight:bold;">GWSC Admin Portal</h2>
+            <img src="images/logo.png" class="login-img">
+            <h2 class="login-title">GWSC Admin Portal</h2>
         </div>
         <form action="/admin-register" method="POST">
             <div class="pb-15">

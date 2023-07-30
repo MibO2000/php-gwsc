@@ -67,19 +67,17 @@ $localCount = mysqli_num_rows($localQuery);
                             onmouseenter="toggleProfileMenu()">
                             <div>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor"
-                                    style="padding-left:20px;height:50px;width:50px;">
+                                    stroke-width="1.5" stroke="currentColor" class="profile-logo">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
                             </div>
-                            <p style="padding-left:7px"><?php echo $_SESSION['cname']; ?></p>
+                            <p class="pl-7"><?php echo $_SESSION['cname']; ?></p>
                         </div>
                         <a class="flex items-center cursor-pointer" href="/cart">
                             <div>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor"
-                                    style="padding-left:20px;height:50px;width:50px;">
+                                    stroke-width="1.5" stroke="currentColor" class="profile-logo">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
                                 </svg>
@@ -99,27 +97,31 @@ $localCount = mysqli_num_rows($localQuery);
                 </div>
             </div>
 
-            <div id="myDropdown2" class="dropdown-content" style="top:72px;right:25px;">
+            <div id="myDropdown2" class="dropdown-content logout">
                 <a href="/logout">Log Out</a>
             </div>
 
             <video class="ads" src="videos/ads.mp4" autoplay muted loop playsinline></video>
 
-            <div style=" position:relative;top:-100px;padding-bottom:50px;">
+            <div class="home-con">
                 <div class="container mx-auto">
-                    <div style="padding-bottom: 40px;" class="mpadding">
+                    <div class="pb-40" class="mpadding">
                         <div class="pb-5">
                             <form class="form-field" action="" method="GET">
-                                <div class="pb-5">
+                                <div class="pb-5 flex">
                                     <input class="w-full" type="search" name="pack" placeholder="Search"
-                                        style="padding:15px 20px;font-size:larger"
                                         value="<?php echo $_GET['pack'] ?? '' ?>">
+                                    <div class="p-5">
+                                        <button class="bg-primary text-white w-full h-100" type="submit">
+                                            Search
+                                        </button>
+                                    </div>
                                 </div>
                             </form>
                         </div>
                     </div>
 
-                    <div style="padding-bottom: 40px;">
+                    <div class="pb-40">
                         <div class="flex justify-between space-x-5 mcard-container">
                             <div class="w-full flex justify-center items-center mcard mpadding">
                                 <div class="pricing-card">
@@ -137,10 +139,11 @@ $localCount = mysqli_num_rows($localQuery);
 
                                     <div class="content">
                                         <h2>Pitch</h2>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus earum
-                                            consequatur adipisci magni delectus nobis ut consectetur! Dolore eaque,
-                                            quia, ea sequi cumque, beatae quod non repellendus ut voluptatibus
-                                            accusamus!</p>
+                                        <p>Discover the perfect pitch for your camping experience. Our sites offer
+                                            various pitch options, each designed to cater to your unique needs. Whether
+                                            you prefer the classic charm of tent camping, the convenience of a touring
+                                            caravan, or the comfort of a motorhome, we have the ideal spot waiting for
+                                            you amidst nature's embrace.</p>
                                         <a href="/pitch">
                                             <button class="bg-primary text-white">Explore &#xbb;</button>
                                         </a>
@@ -152,10 +155,11 @@ $localCount = mysqli_num_rows($localQuery);
                                     <img src="/images/home-bg.jpg">
                                     <div class="content">
                                         <h2>Features</h2>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus earum
-                                            consequatur adipisci magni delectus nobis ut consectetur! Dolore eaque,
-                                            quia, ea sequi cumque, beatae quod non repellendus ut voluptatibus
-                                            accusamus!</p>
+                                        <p>Immerse yourself in a world of amenities and natural wonders. At GWSC, we
+                                            take pride in providing an array of features that enhance your camping
+                                            adventure. Enjoy leisure facilities, relax under hot showers, stay connected
+                                            with internet access, and indulge in an atmosphere where entertainment meets
+                                            the great outdoors.</p>
                                         <a href="/features">
                                             <button class="bg-primary text-white">Explore &#xbb;</button>
                                         </a>
@@ -175,10 +179,12 @@ $localCount = mysqli_num_rows($localQuery);
                                     ?>
                                     <div class="content">
                                         <h2>Local Attraction</h2>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus earum
-                                            consequatur adipisci magni delectus nobis ut consectetur! Dolore eaque,
-                                            quia, ea sequi cumque, beatae quod non repellendus ut voluptatibus
-                                            accusamus!</p>
+                                        <p>Embark on a journey of exploration beyond our campsites. The local
+                                            attractions surrounding GWSC sites offer a delightful blend of history,
+                                            nature, and adventure. From renowned tourist spots to picturesque scenic
+                                            walks, from historical landmarks to hidden gems, our locations open the door
+                                            to a world of captivating experiences for every traveler.
+                                        </p>
                                         <a href="/local-attraction">
                                             <button class="bg-primary text-white">Explore &#xbb;</button>
                                         </a>
@@ -190,18 +196,14 @@ $localCount = mysqli_num_rows($localQuery);
 
                     <div class="grid sm-grid-cols-2 pb-5">
                         <div class="m-5">
-                            <h3 class="text-center" style="font-weight:bold;font-size:large;padding-bottom:15px;">About
-                                Us</h3>
+                            <h3 class="text-center font-pad">
+                                Welcome to Global Wild Swimming and Camping</h3>
                             <div class="mpadding">
+                                <p>Explore Nature's Beauty, Rediscover Adventure!</p>
                                 <p>
-                                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repudiandae architecto
-                                    magni, inventore, molestiae, quas consectetur tenetur rem nulla fugiat facere quos.
-                                    Tempore doloremque autem quos expedita iure? Quis, cum id?
-                                </p>
-                                <p>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio fugiat quas quod
-                                    alias eligendi asperiores! A, tempora voluptatum? Neque odit illum recusandae
-                                    laborum vero architecto voluptatem illo exercitationem repellendus vel.
+                                    Global Wild Swimming and Camping is committed to providing unforgettable outdoor
+                                    experiences, promoting sustainable tourism, and preserving nature's beauty. Our
+                                    dedicated team of outdoor enthusiasts is here to make your stay truly memorable.
                                 </p>
                             </div>
                             <div>

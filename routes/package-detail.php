@@ -158,19 +158,17 @@ VALUES ('$bid', '$cid', '$orderTime', '$status')";
                             onmouseenter="toggleProfileMenu()">
                             <div>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor"
-                                    style="padding-left:20px;height:50px;width:50px;">
+                                    stroke-width="1.5" stroke="currentColor" class="profile-logo">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
                             </div>
-                            <p style="padding-left:7px"><?php echo $_SESSION['cname']; ?></p>
+                            <p class="pl-7"><?php echo $_SESSION['cname']; ?></p>
                         </div>
                         <a class="flex items-center cursor-pointer" href="/cart">
                             <div>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor"
-                                    style="padding-left:20px;height:50px;width:50px;">
+                                    stroke-width="1.5" stroke="currentColor" class="profile-logo">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
                                 </svg>
@@ -190,7 +188,7 @@ VALUES ('$bid', '$cid', '$orderTime', '$status')";
                 </div>
             </div>
 
-            <div id="myDropdown2" class="dropdown-content" style="top:72px;right:25px;">
+            <div id="myDropdown2" class="dropdown-content logout">
                 <a href="/logout">Log Out</a>
             </div>
 
@@ -204,15 +202,15 @@ VALUES ('$bid', '$cid', '$orderTime', '$status')";
                 <p><?= $errorMessage ?></p>
             </div>
             <?php } ?>
-            <div class="container mx-auto" style="padding-top:54px;padding-bottom:50px;">
+            <div class="container mx-auto heading-pa">
                 <form method="POST">
-                    <div class="grid grid-cols-2" style="gap:20px">
+                    <div class="grid grid-cols-2 gap-20">
                         <img class="w-full object-cover object-center detail-thumbnail"
                             src="images/<?= $package['package_image'] ?>">
 
-                        <div class="flex flex-col w-full justify-between" style="padding:20px 10px;">
+                        <div class="flex flex-col w-full justify-between p-2-1">
                             <div>
-                                <h2 style="font-size:xx-large;font-weight:bold;text-align:left">
+                                <h2 class="package-detail-font">
                                     <?= $package['package_name'] ?>
                                 </h2>
                                 <div class="py-5 flex">
@@ -222,7 +220,7 @@ VALUES ('$bid', '$cid', '$orderTime', '$status')";
                                     </div>
                                 </div>
                                 <div class="padding-top:20px">
-                                    <label for="date" style="padding-bottom:5px;display:block">Choose date</label>
+                                    <label for="date" class="package-detail-date">Choose date</label>
                                     <input type="date" name="date" class="w-full" required>
                                     <input type="hidden" name="id" value="<?= $_GET['id'] ?>">
                                 </div>
@@ -231,10 +229,10 @@ VALUES ('$bid', '$cid', '$orderTime', '$status')";
                                 <p class="price"><?= $package['price'] ?></p>
                                 <div class="flex" id="item-count">
                                     <button type="button" id="decrease">-</button>
-                                    <input name="quantity" value=1 class="text-center" style="width:50px" type="number">
+                                    <input name="quantity" value=1 class="text-center w-50" type="number">
                                     <button type="button" id="increase">+</button>
                                 </div>
-                                <div style="padding-top:20px">
+                                <div class="pt-20">
                                     <button class="text-white bg-primary w-full" name='btncart'>
                                         Add to cart
                                     </button>
@@ -245,9 +243,9 @@ VALUES ('$bid', '$cid', '$orderTime', '$status')";
                 </form>
 
                 <hr>
-                <div class="grid grid-cols-2" style="gap:20px;padding:40px 10px;">
+                <div class="grid grid-cols-2 package-detial-head">
                     <div class='w-full'>
-                        <h2 style="font-size:large;font-weight:bold">
+                        <h2 class="font-l">
                             Package Detail
                         </h2>
                     </div>
@@ -259,7 +257,7 @@ VALUES ('$bid', '$cid', '$orderTime', '$status')";
                 </div>
 
                 <hr>
-                <div class="grid grid-cols-2" style="gap:20px;padding:40px 10px;">
+                <div class="grid grid-cols-2 package-detial-head">
                     <div class='w-full'>
                         <img class="w-full object-cover object-center detail-thumbnail"
                             src="images/<?= $ptype['picture'] ?>">
@@ -272,9 +270,9 @@ VALUES ('$bid', '$cid', '$orderTime', '$status')";
                 </div>
 
                 <hr>
-                <div class="grid grid-cols-2" style="gap:20px;padding:40px 10px;">
+                <div class="grid grid-cols-2 package-detial-head">
                     <div class='w-full'>
-                        <h2 style="font-size:large;font-weight:bold">
+                        <h2 class="font-l">
                             Pitch Detail
                         </h2>
                     </div>
@@ -286,7 +284,7 @@ VALUES ('$bid', '$cid', '$orderTime', '$status')";
                 </div>
 
                 <hr>
-                <div class="grid grid-cols-2" style="gap:20px;padding:40px 10px;">
+                <div class="grid grid-cols-2 package-detial-head">
                     <div class="w-full">
                         <img class="w-full object-cover object-center detail-thumbnail"
                             src="images/<?= $pitch['pitch_image'] ?>">
@@ -297,9 +295,9 @@ VALUES ('$bid', '$cid', '$orderTime', '$status')";
                 </div>
 
                 <hr>
-                <div class="grid grid-cols-2" style="gap:20px;padding:40px 10px;">
+                <div class="grid grid-cols-2 package-detial-head">
                     <div class='w-full'>
-                        <h2 style="font-size:large;font-weight:bold">
+                        <h2 class="font-l">
                             Local Attraction
                         </h2>
                     </div>
@@ -311,7 +309,7 @@ VALUES ('$bid', '$cid', '$orderTime', '$status')";
                 </div>
 
                 <hr>
-                <div class="grid grid-cols-2" style="gap:20px;padding:40px 10px;">
+                <div class="grid grid-cols-2 package-detial-head">
                     <div class="w-full">
                         <img class="w-full object-cover object-center detail-thumbnail"
                             src="images/<?= $local['location_picture'] ?>">
@@ -325,9 +323,9 @@ VALUES ('$bid', '$cid', '$orderTime', '$status')";
 
                 <hr>
 
-                <div class="grid grid-cols-2" style="gap:20px;padding:40px 10px;">
+                <div class="grid grid-cols-2 package-detial-head">
                     <div class="flex justify-center items-center h-full flex-col">
-                        <h2 style="font-size:large;font-weight:bold;padding-bottom:15px;">
+                        <h2 class="font-pad">
                             <?= $local['full_location'] ?>
                         </h2>
                         <p class="w-full">

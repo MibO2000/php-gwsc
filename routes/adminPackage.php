@@ -79,40 +79,34 @@ if (isset($_POST['btnsave'])) {
 <body>
     <div class="flex justify-between flex-col min-h-screen">
         <main>
-            <?php if ($isSuccess) { ?>
-            <div class="alert alert-success">
-                <p>Package added SUCCESSFULLY!</p>
-            </div>
-            <?php } ?>
-            <?php if ($isError) { ?>
-            <div class="alert alert-error">
-                <p><?= $errorMessage ?></p>
-            </div>
-            <?php } ?>
+            <?php include('mobilemenu-a.php') ?>
             <div>
                 <div class="nav">
                     <div class="logo">
-                        <img src="images/logo.png" style="width:120px;">
+                        <img src="images/logo.png" class="logoimg-width">
                         <h1>GWSC Admin Portal</h1>
                     </div>
 
-                    <div class="flex">
-                        <div class="flex items-center cursor-pointer" id="profile-bar"
-                            onmouseenter="toggleProfileMenu()">
+                    <div class="flex disappear">
+                        <div class="flex items-center cursor-pointer" id="profile-bar" onmouseenter="toggleProfileMenu()">
                             <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor"
-                                    style="padding-left:20px;height:50px;width:50px;">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="profile-logo">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
                             </div>
-                            <p style="padding-left:7px"><?php echo $_SESSION['aname']; ?></p>
+                            <p class="pl-7"><?php echo $_SESSION['aname']; ?></p>
                         </div>
+                        <a class="flex items-center cursor-pointer" href="/cart">
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="profile-logo">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                                </svg>
+                            </div>
+                        </a>
                     </div>
                 </div>
 
-                <div class="nav-bar">
+                <div class="nav-bar disappear">
                     <a href="/admin-pitch">Pitch</a>
                     <a href="/admin-pitch-type">Pitch Type</a>
                     <a class="active" href="/admin-package">Package</a>
@@ -122,183 +116,187 @@ if (isset($_POST['btnsave'])) {
                 </div>
             </div>
 
-            <div id="myDropdown2" class="dropdown-content" style="top:72px;right:25px;">
+            <div id="myDropdown2" class="dropdown-content logout">
                 <a href="/logout">Log Out</a>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>PACKAGE_ID</th>
-                        <th>PACKAGE_NAME</th>
-                        <th>DURATION</th>
-                        <th>PRICE</th>
-                        <th>DESCRIPTION</th>
-                        <th>PICTURE</th>
-                        <th>QUANTITY</th>
-                        <th>LATITUDE</th>
-                        <th>LONGITUDE</th>
-                        <th>PACKAGE_TYPE</th>
-                        <th>PITCH</th>
-                        <th>LOCATION</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
 
-                    $query = "SELECT * FROM gwsc_package";
-                    $result = mysqli_query($connect, $query);
+            <?php if ($isSuccess) { ?>
+                <div class="alert alert-success">
+                    <p>Package added SUCCESSFULLY!</p>
+                </div>
+            <?php } ?>
+            <?php if ($isError) { ?>
+                <div class="alert alert-error">
+                    <p><?= $errorMessage ?></p>
+                </div>
+            <?php } ?>
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>PACKAGE_ID</th>
+                            <th>PACKAGE_NAME</th>
+                            <th>DURATION</th>
+                            <th>PRICE</th>
+                            <th>DESCRIPTION</th>
+                            <th>PICTURE</th>
+                            <th>QUANTITY</th>
+                            <th>LATITUDE</th>
+                            <th>LONGITUDE</th>
+                            <th>PACKAGE_TYPE</th>
+                            <th>PITCH</th>
+                            <th>LOCATION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
 
-                    // Loop through each row and display the data
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $pkid = $row['package_type_id'];
-                        $pkquery = "SELECT * FROM gwsc_package_type WHERE package_type_id = '$pkid'";
-                        $pkresult = mysqli_query($connect, $pkquery);
+                        $query = "SELECT * FROM gwsc_package";
+                        $result = mysqli_query($connect, $query);
 
-                        $ptid = $row['pitch_id'];
-                        $ptquery = "SELECT * FROM gwsc_pitch WHERE pitch_id = '$ptid'";
-                        $ptresult = mysqli_query($connect, $ptquery);
-                        $lid = $row['location_id'];
-                        $lquery = "SELECT * FROM gwsc_location WHERE location_id = '$lid'";
-                        $lresult = mysqli_query($connect, $lquery);
+                        // Loop through each row and display the data
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            $pkid = $row['package_type_id'];
+                            $pkquery = "SELECT * FROM gwsc_package_type WHERE package_type_id = '$pkid'";
+                            $pkresult = mysqli_query($connect, $pkquery);
 
-                        echo "<tr>";
-                        echo "<td>" . $row['package_id'] . "</td>";
-                        echo "<td>" . $row['package_name'] . "</td>";
-                        echo "<td>" . $row['duration'] . "</td>";
-                        echo "<td>" . $row['price'] . "</td>";
-                        echo "<td>" . $row['pitch_description'] . "</td>";
-                        echo "<td>" . $row['package_image'] . "</td>";
-                        echo "<td>" . $row['quantity'] . "</td>";
-                        echo "<td>" . $row['latitude'] . "</td>";
-                        echo "<td>" . $row['longitude'] . "</td>";
-                        if ($pkresult && mysqli_num_rows($pkresult) > 0) {
-                            $row = mysqli_fetch_assoc($pkresult);
-                            $packageType = $row['package_type_name'];
-                            echo "<td>" . $packageType . "</td>";
+                            $ptid = $row['pitch_id'];
+                            $ptquery = "SELECT * FROM gwsc_pitch WHERE pitch_id = '$ptid'";
+                            $ptresult = mysqli_query($connect, $ptquery);
+                            $lid = $row['location_id'];
+                            $lquery = "SELECT * FROM gwsc_location WHERE location_id = '$lid'";
+                            $lresult = mysqli_query($connect, $lquery);
+
+                            echo "<tr>";
+                            echo "<td>" . $row['package_id'] . "</td>";
+                            echo "<td>" . $row['package_name'] . "</td>";
+                            echo "<td>" . $row['duration'] . "</td>";
+                            echo "<td>" . $row['price'] . "</td>";
+                            echo "<td>" . $row['pitch_description'] . "</td>";
+                            echo "<td>" . $row['package_image'] . "</td>";
+                            echo "<td>" . $row['quantity'] . "</td>";
+                            echo "<td>" . $row['latitude'] . "</td>";
+                            echo "<td>" . $row['longitude'] . "</td>";
+                            if ($pkresult && mysqli_num_rows($pkresult) > 0) {
+                                $row = mysqli_fetch_assoc($pkresult);
+                                $packageType = $row['package_type_name'];
+                                echo "<td>" . $packageType . "</td>";
+                            }
+
+                            if ($ptresult && mysqli_num_rows($ptresult) > 0) {
+                                $row = mysqli_fetch_assoc($ptresult);
+                                $pitchType = $row['pitch_name'];
+                                echo "<td>" . $pitchType . "</td>";
+                            }
+
+                            if ($lresult && mysqli_num_rows($lresult) > 0) {
+                                $row = mysqli_fetch_assoc($lresult);
+                                $location = $row['location_name'];
+                                echo "<td>" . $location . "</td>";
+                            }
+                            echo "</tr>";
                         }
-
-                        if ($ptresult && mysqli_num_rows($ptresult) > 0) {
-                            $row = mysqli_fetch_assoc($ptresult);
-                            $pitchType = $row['pitch_name'];
-                            echo "<td>" . $pitchType . "</td>";
-                        }
-
-                        if ($lresult && mysqli_num_rows($lresult) > 0) {
-                            $row = mysqli_fetch_assoc($lresult);
-                            $location = $row['location_name'];
-                            echo "<td>" . $location . "</td>";
-                        }
-                        echo "</tr>";
-                    }
-                    ?>
-                </tbody>
-            </table>
+                        ?>
+                    </tbody>
+                </table>
 
 
-            <h2>Add Package</h2>
-            <div class="form-container">
-                <form class="form-card justify-center items-center" action="/admin-package" method="POST"
-                    enctype="multipart/form-data">
-                    <div class="pb-15">
-                        <label class="block">PACKAGE_ID</label>
-                        <input class="w-full" type="text" name="txtpid"
-                            value="<?php echo AutoID('gwsc_package', 'package_id', 'PACK', 4); ?>" readonly>
-                    </div>
-                    <div class="pb-15">
-                        <label class="block">PACKAGE_NAME</label>
-                        <input class="w-full" type="text" name="txtpname" placeholder="Enter Pitch name" required>
-                    </div>
-                    <div class="pb-15">
-                        <label class="block">Package Type</label>
-                        <div class="w-full">
-                            <select name="txtpactype" id="txtpactype">
-                                <!-- <option value="">Select an option</option> -->
-                                <?php
-                                $pquery = "SELECT * FROM gwsc_package_type";
-                                $presult = mysqli_query($connect, $pquery);
-                                while ($prow = mysqli_fetch_assoc($presult)) {
-                                    echo "<option value=" . $prow['package_type_id'] . ">" . $prow['package_type_name'] . "</option>";
-                                }
-                                ?>
-                            </select>
+                <h2>Add Package</h2>
+                <div class="form-container">
+                    <form class="form-card justify-center items-center" action="/admin-package" method="POST" enctype="multipart/form-data">
+                        <div class="pb-15">
+                            <label class="block">PACKAGE_ID</label>
+                            <input class="w-full" type="text" name="txtpid" value="<?php echo AutoID('gwsc_package', 'package_id', 'PACK', 4); ?>" readonly>
                         </div>
-                    </div>
-                    <div class="pb-15">
-                        <label class="block">Pitch</label>
-                        <div class="w-full">
-                            <select name="txtpitchtype" id="txtpitchtype">
-                                <!-- <option value="">Select an option</option> -->
-                                <?php
-                                $ptquery = "SELECT * FROM gwsc_pitch";
-                                $ptresult = mysqli_query($connect, $ptquery);
-                                while ($ptrow = mysqli_fetch_assoc($ptresult)) {
-                                    echo "<option value=" . $ptrow['pitch_id'] . ">" . $ptrow['pitch_name'] . "</option>";
-                                }
-                                ?>
-                            </select>
+                        <div class="pb-15">
+                            <label class="block">PACKAGE_NAME</label>
+                            <input class="w-full" type="text" name="txtpname" placeholder="Enter Pitch name" required>
                         </div>
-                    </div>
-                    <div class="pb-15">
-                        <label class="block">Location</label>
-                        <div class="w-full">
-                            <select name="txtlocationtype" id="txtlocationtype">
-                                <!-- <option value="">Select an option</option> -->
-                                <?php
-                                $lquery = "SELECT * FROM gwsc_location";
-                                $lresult = mysqli_query($connect, $lquery);
-                                while ($lrow = mysqli_fetch_assoc($lresult)) {
-                                    echo "<option value=" . $lrow['location_id'] . ">" . $lrow['location_name'] . "</option>";
-                                }
-                                ?>
-                            </select>
+                        <div class="pb-15">
+                            <label class="block">Package Type</label>
+                            <div class="w-full">
+                                <select name="txtpactype" id="txtpactype">
+                                    <!-- <option value="">Select an option</option> -->
+                                    <?php
+                                    $pquery = "SELECT * FROM gwsc_package_type";
+                                    $presult = mysqli_query($connect, $pquery);
+                                    while ($prow = mysqli_fetch_assoc($presult)) {
+                                        echo "<option value=" . $prow['package_type_id'] . ">" . $prow['package_type_name'] . "</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="pb-15">
-                        <label class="block">Duration (hr)</label>
-                        <input class="w-full" type="number" name="txtpduration" placeholder="Enter Package Duration"
-                            required>
+                        <div class="pb-15">
+                            <label class="block">Pitch</label>
+                            <div class="w-full">
+                                <select name="txtpitchtype" id="txtpitchtype">
+                                    <!-- <option value="">Select an option</option> -->
+                                    <?php
+                                    $ptquery = "SELECT * FROM gwsc_pitch";
+                                    $ptresult = mysqli_query($connect, $ptquery);
+                                    while ($ptrow = mysqli_fetch_assoc($ptresult)) {
+                                        echo "<option value=" . $ptrow['pitch_id'] . ">" . $ptrow['pitch_name'] . "</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="pb-15">
+                            <label class="block">Location</label>
+                            <div class="w-full">
+                                <select name="txtlocationtype" id="txtlocationtype">
+                                    <!-- <option value="">Select an option</option> -->
+                                    <?php
+                                    $lquery = "SELECT * FROM gwsc_location";
+                                    $lresult = mysqli_query($connect, $lquery);
+                                    while ($lrow = mysqli_fetch_assoc($lresult)) {
+                                        echo "<option value=" . $lrow['location_id'] . ">" . $lrow['location_name'] . "</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="pb-15">
+                            <label class="block">Duration (hr)</label>
+                            <input class="w-full" type="number" name="txtpduration" placeholder="Enter Package Duration" required>
 
-                    </div>
-                    <div class="pb-15">
-                        <label class="block">Package Price</label>
-                        <input class="w-full" type="number" name="txtpprice" placeholder="Enter Package Price" required>
-                    </div>
-                    <div class="pb-15">
-                        <label class="block">Description</label>
-                        <input class="w-full" type="text" name="txtpdescription"
-                            placeholder="Enter Package Description 1" required>
-                    </div>
-                    <div class="pb-15">
-                        <label class="block">Package Image</label>
-                        <input class="w-full" type="file" name="image" placeholder="Enter Package Image 1" required>
-                    </div>
-                    <div class="pb-15">
-                        <label class="block">Package Quantity</label>
-                        <input class="w-full" type="number" name="txtpquantity" placeholder="Enter Package Quantity"
-                            required>
-                    </div>
-                    <div class="pb-15">
-                        <label class="block">Package Latitude</label>
-                        <input class="w-full" type="number" name="latitude" placeholder="Enter Package latitude"
-                            required>
-                    </div>
-                    <div class="pb-15">
-                        <label class="block">Package Longitude</label>
-                        <input class="w-full" type="number" name="longitude" placeholder="Enter Package longitude"
-                            required>
-                    </div>
+                        </div>
+                        <div class="pb-15">
+                            <label class="block">Package Price</label>
+                            <input class="w-full" type="number" name="txtpprice" placeholder="Enter Package Price" required>
+                        </div>
+                        <div class="pb-15">
+                            <label class="block">Description</label>
+                            <input class="w-full" type="text" name="txtpdescription" placeholder="Enter Package Description 1" required>
+                        </div>
+                        <div class="pb-15">
+                            <label class="block">Package Image</label>
+                            <input class="w-full" type="file" name="image" placeholder="Enter Package Image 1" required>
+                        </div>
+                        <div class="pb-15">
+                            <label class="block">Package Quantity</label>
+                            <input class="w-full" type="number" name="txtpquantity" placeholder="Enter Package Quantity" required>
+                        </div>
+                        <div class="pb-15">
+                            <label class="block">Package Latitude</label>
+                            <input class="w-full" type="number" step=any name="latitude" placeholder="Enter Package latitude" required>
+                        </div>
+                        <div class="pb-15">
+                            <label class="block">Package Longitude</label>
+                            <input class="w-full" type="number" step=any name="longitude" placeholder="Enter Package longitude" required>
+                        </div>
 
-                    <!-- Dropdown List -->
+                        <!-- Dropdown List -->
 
-                    <div class="w-full">
-                        <input class="w-full font-bold bg-primary text-white mb-5" type="submit" name="btnsave"
-                            value="Save">
-                        <a href="/admin-package">
-                            <input class="w-full font-bold bg-secondary text-white" type="button" value="Cancel">
-                        </a>
-                    </div>
-                </form>
-            </div>
+                        <div class="w-full">
+                            <input class="w-full font-bold bg-primary text-white mb-5" type="submit" name="btnsave" value="Save">
+                            <a href="/admin-package">
+                                <input class="w-full font-bold bg-secondary text-white" type="button" value="Cancel">
+                            </a>
+                        </div>
+                    </form>
+                </div>
         </main>
 
         <footer class="social-footer items-center">
@@ -339,42 +337,42 @@ if (isset($_POST['btnsave'])) {
     <div id="overlay-profile" onmouseenter="toggleProfileMenu()" class="overlay display-none"></div>
 
     <script>
-    var isMenuOpen = false;
-    var menuBar = document.getElementById('menu-bar');
-    var overlay = document.getElementById('overlay');
+        var isMenuOpen = false;
+        var menuBar = document.getElementById('menu-bar');
+        var overlay = document.getElementById('overlay');
 
-    function myFunction() {
-        if (isMenuOpen) {
-            isMenuOpen = false;
-            menuBar.classList.remove("change");
-            document.getElementById("myDropdown").classList.remove("show");
-            overlay.classList.add('display-none');
-        } else {
-            isMenuOpen = true;
-            menuBar.classList.add("change");
-            document.getElementById("myDropdown").classList.add("show");
-            overlay.classList.remove('display-none');
+        function myFunction() {
+            if (isMenuOpen) {
+                isMenuOpen = false;
+                menuBar.classList.remove("change");
+                document.getElementById("myDropdown").classList.remove("show");
+                overlay.classList.add('display-none');
+            } else {
+                isMenuOpen = true;
+                menuBar.classList.add("change");
+                document.getElementById("myDropdown").classList.add("show");
+                overlay.classList.remove('display-none');
+            }
         }
-    }
 
-    // profile menu
-    var isProfileMenuOpen = false;
-    var profileMenuBar = document.getElementById('profile-bar');
-    var profileOverlay = document.getElementById('overlay-profile');
+        // profile menu
+        var isProfileMenuOpen = false;
+        var profileMenuBar = document.getElementById('profile-bar');
+        var profileOverlay = document.getElementById('overlay-profile');
 
-    function toggleProfileMenu() {
-        if (isProfileMenuOpen) {
-            isProfileMenuOpen = false;
-            profileMenuBar.classList.remove("change");
-            document.getElementById("myDropdown2").classList.remove("show");
-            profileOverlay.classList.add('display-none');
-        } else {
-            isProfileMenuOpen = true;
-            profileMenuBar.classList.add("change");
-            document.getElementById("myDropdown2").classList.add("show");
-            profileOverlay.classList.remove('display-none');
+        function toggleProfileMenu() {
+            if (isProfileMenuOpen) {
+                isProfileMenuOpen = false;
+                profileMenuBar.classList.remove("change");
+                document.getElementById("myDropdown2").classList.remove("show");
+                profileOverlay.classList.add('display-none');
+            } else {
+                isProfileMenuOpen = true;
+                profileMenuBar.classList.add("change");
+                document.getElementById("myDropdown2").classList.add("show");
+                profileOverlay.classList.remove('display-none');
+            }
         }
-    }
     </script>
 </body>
 

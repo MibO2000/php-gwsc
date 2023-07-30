@@ -62,36 +62,35 @@ if (isset($_POST['btnsave'])) {
 <body>
     <div class="flex justify-between flex-col min-h-screen">
         <main>
-            <?php if ($isSuccess) { ?>
-                <div class="alert alert-success">
-                    <p>Local Attraction added SUCCESSFULLY!</p>
-                </div>
-            <?php } ?>
-            <?php if ($isError) { ?>
-                <div class="alert alert-error">
-                    <p><?= $errorMessage ?></p>
-                </div>
-            <?php } ?>
+
+            <?php include('mobilemenu-a.php') ?>
             <div>
                 <div class="nav">
                     <div class="logo">
-                        <img src="images/logo.png" style="width:120px;">
+                        <img src="images/logo.png" class="logoimg-width">
                         <h1>GWSC Admin Portal</h1>
                     </div>
 
-                    <div class="flex">
+                    <div class="flex disappear">
                         <div class="flex items-center cursor-pointer" id="profile-bar" onmouseenter="toggleProfileMenu()">
                             <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="padding-left:20px;height:50px;width:50px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="profile-logo">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
                             </div>
-                            <p style="padding-left:7px"><?php echo $_SESSION['aname']; ?></p>
+                            <p class="pl-7"><?php echo $_SESSION['aname']; ?></p>
                         </div>
+                        <a class="flex items-center cursor-pointer" href="/cart">
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="profile-logo">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                                </svg>
+                            </div>
+                        </a>
                     </div>
                 </div>
 
-                <div class="nav-bar">
+                <div class="nav-bar disappear">
                     <a href="/admin-pitch">Pitch</a>
                     <a href="/admin-pitch-type">Pitch Type</a>
                     <a href="/admin-package">Package</a>
@@ -101,62 +100,74 @@ if (isset($_POST['btnsave'])) {
                 </div>
             </div>
 
-            <div id="myDropdown2" class="dropdown-content" style="top:72px;right:25px;">
+            <div id="myDropdown2" class="dropdown-content logout">
                 <a href="/logout">Log Out</a>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>LOCATION_TYPE_ID</th>
-                        <th>LOCATION_TYPE_NAME</th>
-                        <th>LOCATION_TYPE_DESCRIPTION</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
 
-                    $query = "SELECT * FROM gwsc_location_type";
-                    $result = mysqli_query($connect, $query);
+            <?php if ($isSuccess) { ?>
+                <div class="alert alert-success">
+                    <p>Package added SUCCESSFULLY!</p>
+                </div>
+            <?php } ?>
+            <?php if ($isError) { ?>
+                <div class="alert alert-error">
+                    <p><?= $errorMessage ?></p>
+                </div>
+            <?php } ?>
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>LOCATION_TYPE_ID</th>
+                            <th>LOCATION_TYPE_NAME</th>
+                            <th>LOCATION_TYPE_DESCRIPTION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
 
-                    // Loop through each row and display the data
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        echo "<tr>";
-                        echo "<td>" . $row['location_type_id'] . "</td>";
-                        echo "<td>" . $row['location_type_name'] . "</td>";
-                        echo "<td>" . $row['location_description'] . "</td>";
-                        echo "</tr>";
-                    }
-                    ?>
-                </tbody>
-            </table>
+                        $query = "SELECT * FROM gwsc_location_type";
+                        $result = mysqli_query($connect, $query);
+
+                        // Loop through each row and display the data
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            echo "<tr>";
+                            echo "<td>" . $row['location_type_id'] . "</td>";
+                            echo "<td>" . $row['location_type_name'] . "</td>";
+                            echo "<td>" . $row['location_description'] . "</td>";
+                            echo "</tr>";
+                        }
+                        ?>
+                    </tbody>
+                </table>
 
 
-            <h2>Add Location Type</h2>
-            <div class="flex form-container justify-center items-center">
-                <form class="form-card" action="/admin-location-type" method="POST">
-                    <div>
-                        <div class="pb-15">
-                            <label class="block">Location Type Id</label>
-                            <input class="w-full" type="text" name="txtptid" value="<?php echo AutoID('gwsc_location_type', 'location_type_id', 'LOCTYP', 4); ?>" readonly>
+                <h2>Add Location Type</h2>
+                <div class="flex form-container justify-center items-center">
+                    <form class="form-card" action="/admin-location-type" method="POST">
+                        <div>
+                            <div class="pb-15">
+                                <label class="block">Location Type Id</label>
+                                <input class="w-full" type="text" name="txtptid" value="<?php echo AutoID('gwsc_location_type', 'location_type_id', 'LOCTYP', 4); ?>" readonly>
+                            </div>
+                            <div class="pb-15">
+                                <label class="block">Location Type Name</label>
+                                <input class="w-full" type="text" name="txtptname" placeholder="Enter Location Type name" required>
+                            </div>
+                            <div class="pb-15">
+                                <label class="block">Location Type Description</label>
+                                <input class="w-full" type="text" name="txtptdes" placeholder="Enter Location Type Description" required>
+                            </div>
+
+                            <div class="w-full">
+                                <input class="w-full font-bold bg-primary text-white mb-5" type="submit" name="btnsave" value="Save">
+                                <a href="/admin-location-type">
+                                    <input class="w-full font-bold bg-secondary text-white" type="button" value="Cancel">
+                                </a>
+                            </div>
                         </div>
-                        <div class="pb-15">
-                            <label class="block">Location Type Name</label>
-                            <input class="w-full" type="text" name="txtptname" placeholder="Enter Location Type name" required>
-                        </div>
-                        <div class="pb-15">
-                            <label class="block">Location Type Description</label>
-                            <input class="w-full" type="text" name="txtptdes" placeholder="Enter Location Type Description" required>
-                        </div>
-
-                        <div class="w-full">
-                            <input class="w-full font-bold bg-primary text-white mb-5" type="submit" name="btnsave" value="Save">
-                            <a href="/admin-location-type">
-                                <input class="w-full font-bold bg-secondary text-white" type="button" value="Cancel">
-                            </a>
-                        </div>
-                    </div>
-                </form>
-            </div>
+                    </form>
+                </div>
 
         </main>
 

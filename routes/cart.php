@@ -124,17 +124,6 @@ $total = 0;
 <body>
     <div class="flex justify-between flex-col min-h-screen">
         <main>
-            <?php if ($isSuccess) { ?>
-            <div class="alert alert-success">
-                <p><?= $message ?></p>
-            </div>
-            <?php } ?>
-
-            <?php if ($isError) { ?>
-            <div class="alert alert-error">
-                <p><?= $message ?></p>
-            </div>
-            <?php } ?>
             <?php include('mobilemenu.php') ?>
             <div>
                 <div class="nav">
@@ -148,19 +137,17 @@ $total = 0;
                             onmouseenter="toggleProfileMenu()">
                             <div>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor"
-                                    style="padding-left:20px;height:50px;width:50px;">
+                                    stroke-width="1.5" stroke="currentColor" class="profile-logo">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
                             </div>
-                            <p style="padding-left:7px"><?php echo $_SESSION['cname']; ?></p>
+                            <p class="pl-7"><?php echo $_SESSION['cname']; ?></p>
                         </div>
                         <a class="flex items-center cursor-pointer" href="/cart">
                             <div>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor"
-                                    style="padding-left:20px;height:50px;width:50px;">
+                                    stroke-width="1.5" stroke="currentColor" class="profile-logo">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
                                 </svg>
@@ -180,19 +167,30 @@ $total = 0;
                 </div>
             </div>
 
-            <div id="myDropdown2" class="dropdown-content" style="top:72px;right:25px;">
+            <div id="myDropdown2" class="dropdown-content logout">
                 <a href="/logout">Log Out</a>
             </div>
 
+            <?php if ($isSuccess) { ?>
+            <div class="alert alert-success">
+                <p><?= $message ?></p>
+            </div>
+            <?php } ?>
+
+            <?php if ($isError) { ?>
+            <div class="alert alert-error">
+                <p><?= $message ?></p>
+            </div>
+            <?php } ?>
             <form method="POST">
-                <div class="container mx-auto" style="padding-top:54px;padding-bottom:50px;">
+                <div class="container mx-auto heading-pa">
                     <?php
                     if (!empty($bookings)) {
 
                         foreach ($bookings as $booking) : ?>
                     <?php $pack = getPack($booking['package_id'], $connect) ?>
                     <form method="POST">
-                        <div class="package-card">
+                        <div class="cart-card">
                             <img class="thumbnail" src="images/<?= $pack['package_image'] ?>">
                             <div class="detail">
                                 <div>
@@ -202,7 +200,7 @@ $total = 0;
                                         <div class="chip"><?= getLocName($pack['location_id'], $connect) ?></div>
                                     </div>
                                     <div>
-                                        <label style="font-size:small;padding-bottom:5px;display:block;">Date</label>
+                                        <label class="label-date">Date</label>
                                         <input type="date"
                                             value="<?= date("Y-m-d", strtotime(($booking['booking_date']))) ?>"
                                             readonly>
@@ -216,10 +214,10 @@ $total = 0;
                                         <input type="hidden" name="id" value="<?= $booking['booking_detail_id'] ?>">
                                         <div class="flex" id="item-count">
                                             <input name="quantity" value="<?= $booking['quantity'] ?>"
-                                                class="text-center" style="width:50px" type="number">
+                                                class="text-center w-50" type="number">
                                         </div>
 
-                                        <div style="padding-top:5px">
+                                        <div class="pt-5">
                                             <button class="w-full bg-error text-white" name="btndelete">Remove</button>
                                         </div>
                                     </div>
@@ -232,13 +230,12 @@ $total = 0;
                     } ?>
 
 
-                    <div style="padding-top:40px;float:right;padding-right:40px;padding-bottom:40px;"
-                        class="flex space-x-5 items-center">
-                        <h2 style="font-size:large;font-weight:bold">Total:</h2>
-                        <p class="price" style="font-size:xx-large;font-weight:bold;color:#0a59cb"><?= $total ?></p>
+                    <div class="cart-total-div" class="flex space-x-5 items-center">
+                        <h2 class="font-l">Total:</h2>
+                        <p class="price" class="cart-total-price"><?= $total ?></p>
                     </div>
 
-                    <div style="padding-top:40px;" class="mpadding">
+                    <div class="pt-50" class="mpadding">
                         <button class="w-full bg-primary text-white" name='btncheckout'>
                             Check Out
                         </button>

@@ -47,19 +47,18 @@ if (isset($_POST['btnregister'])) {
 
 <body class="min-h-screen min-w-screen flex justify-center items-center bg-gray login-screen">
     <!-- The video -->
-    <video autoplay muted loop style="position: fixed;right: 0;bottom: 0;min-width: 100%;min-height: 100%;">
+    <video autoplay muted loop class="login-video">
         <source src="videos/ads.mp4" type="video/mp4">
     </video>
     <div class="login-card">
         <div class="flex flex-col justify-center items-center text-center pb-5">
-            <img src="images/logo.png" style="width:120px;padding:30px 5px">
-            <h2 style="font-size:20px;font-weight:bold;">Global Wildlife Swimming & Camping</h2>
+            <img src="images/logo.png" class="login-img">
+            <h2 class="login-title">Global Wildlife Swimming & Camping</h2>
         </div>
         <form action="/register" method="POST">
             <div class="pb-15">
                 <label class="block">CustomerId</label>
-                <input class="w-full" type="text" name="txtcid"
-                    value="<?php echo AutoID('gwsc_customer', 'customer_id', 'CUS', 4); ?>" readonly>
+                <input class="w-full" type="text" name="txtcid" value="<?php echo AutoID('gwsc_customer', 'customer_id', 'CUS', 4); ?>" readonly>
             </div>
             <div class="pb-15">
                 <label class="block">CustomerFirstName</label>
@@ -77,8 +76,7 @@ if (isset($_POST['btnregister'])) {
             </div>
             <div class="pb-15">
                 <label class="block">CustomerPassword</label>
-                <input class="w-full" type="password" name="txtcpassword" placeholder="Enter customer password"
-                    required>
+                <input class="w-full" type="password" name="txtcpassword" placeholder="Enter customer password" required>
             </div>
             <div class="pb-15">
                 <label class="block">CustomerPhone</label>
@@ -94,8 +92,7 @@ if (isset($_POST['btnregister'])) {
                 <label for="checkbox" class="">Yes,I accept the terms and conditions.</label>
             </div>
             <div class="w-full">
-                <input class="w-full font-bold bg-primary text-white mb-5" type="submit" name="btnregister"
-                    value="Register" required>
+                <input class="w-full font-bold bg-primary text-white mb-5" type="submit" name="btnregister" value="Register" required>
                 <a href="/login">
                     <input class="w-full font-bold bg-secondary text-white" type="button" value="Cancel">
                 </a>
@@ -178,7 +175,7 @@ if (isset($_POST['btnregister'])) {
                         </li>
                     </ul>
                 </div>
-                <button class="close ">
+                <button class="close" id="okBtn">
                     Ok
                 </button>
             </div>
@@ -187,35 +184,41 @@ if (isset($_POST['btnregister'])) {
     </div>
 </body>
 <script>
-// Get the modal
-var modal = document.getElementById("myModal");
+    // Get the modal
+    var modal = document.getElementById("myModal");
 
-// Get the button that opens the modal
-var btn = document.getElementById("checkbox");
+    // Get the button that opens the modal
+    var btn = document.getElementById("checkbox");
 
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
 
-// When the user clicks on the button, open the modal
-btn.onchange = function() {
-    if (btn.checked) {
-        modal.style.display = "block";
-    } else {
+    var okBtn = document.getElementById("okBtn");
+
+    // When the user clicks on the button, open the modal
+    btn.onclick = function() {
+        if (btn.checked) {
+            checkbox.checked = false;
+            modal.style.display = "block";
+            okBtn.addEventListener('click', function() {
+                checkbox.checked = true;
+            });
+        } else {
+            modal.style.display = "none";
+        }
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
         modal.style.display = "none";
     }
-}
 
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-    modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
     }
-}
 </script>
 
 </html>

@@ -80,28 +80,29 @@ if (isset($_POST['btnlogin'])) {
 
 <body class="min-h-screen min-w-screen flex justify-center items-center bg-gray login-screen">
     <!-- The video -->
-    <video autoplay muted loop style="position: fixed;right: 0;bottom: 0;min-width: 100%;min-height: 100%;">
+    <video autoplay muted loop class="login-video">
         <source src="videos/ads.mp4" type="video/mp4">
     </video>
     <div class="login-card">
         <div class="flex flex-col justify-center items-center text-center pb-5">
-            <img src="images/logo.png" style="width:120px;padding:30px 5px">
-            <h2 style="font-size:20px;font-weight:bold;">GWSC Admin Portal</h2>
+            <img src="images/logo.png" class="login-img">
+            <h2 class="login-title">GWSC Admin Portal</h2>
         </div>
         <?php if ($isSuccess) { ?>
-            <div class="alert alert-success">
-                <p>Admin registered SUCCESSFULLY!</p>
-            </div>
+        <div class="alert alert-success">
+            <p>Admin registered SUCCESSFULLY!</p>
+        </div>
         <?php } ?>
         <?php if ($isError) { ?>
-            <div class="alert alert-error">
-                <p><?php echo $errorMessage; ?></p>
-            </div>
+        <div class="alert alert-error">
+            <p><?php echo $errorMessage; ?></p>
+        </div>
         <?php } ?>
         <form action="/admin-login" method="POST">
             <div class="pb-15">
                 <label class="block">Email</label>
-                <input class="w-full" type="email" name="txtaemail" placeholder="Enter valid email" value="<?php echo $_POST['txtaemail'] ?? ''; ?>" required>
+                <input class="w-full" type="email" name="txtaemail" placeholder="Enter valid email"
+                    value="<?php echo $_POST['txtaemail'] ?? ''; ?>" required>
             </div>
             <div class="pb-15">
                 <label class="block">Password</label>
